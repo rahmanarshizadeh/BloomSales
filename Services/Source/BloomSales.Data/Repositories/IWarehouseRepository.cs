@@ -4,26 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BloomSales.Data.Entities;
-using System.ServiceModel;
 
-namespace BloomSales.Services.Contracts
+namespace BloomSales.Data.Repositories
 {
-    [ServiceContract]
-    public interface ILocationService
+    public interface IWarehouseRepository : IRepository
     {
-        IEnumerable<Region> GetAllRegions(string country);
-
         IEnumerable<Warehouse> GetWarehousesByRegion(string region);
-
-        IEnumerable<Warehouse> GetNearestWarehousesTo(Warehouse warehouse);
 
         IEnumerable<Warehouse> GetWarehousesByCity(string city);
 
-        Warehouse GetWarehouseByName(string name);
+        IEnumerable<Warehouse> GetWarehousesByProvince(string province);
 
-        Warehouse GetWarehouseByID(int id);
+        Warehouse GetWarehouse(string name);
 
-        void AddRegion(Region region);
+        Warehouse GetWarehouse(int id);
 
         void AddWarehouse(Warehouse warehouse);
 

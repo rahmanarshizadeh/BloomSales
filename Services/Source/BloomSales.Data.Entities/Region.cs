@@ -23,6 +23,6 @@ namespace BloomSales.Data.Entities
         public string Country { get; set; }
 
         [Required]
-        public string Province { get; set; }
+        public IEnumerable<string> Provinces { get; set; }
     }
 }
