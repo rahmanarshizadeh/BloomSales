@@ -24,6 +24,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8E8765
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloomSales.Data.Tests", "UnitTests\BloomSales.Data.Tests\BloomSales.Data.Tests.csproj", "{74BAB9F4-4740-49EA-9C8D-49F2C950A920}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloomSales.Services.Tests", "UnitTests\BloomSales.Services.Tests\BloomSales.Services.Tests.csproj", "{5F96DA46-09FD-40AB-941B-B8F4EE23FD60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloomSales.TestHelpers", "Source\BloomSales.TestHelpers\BloomSales.TestHelpers.csproj", "{083AAAB8-22D0-4836-8D92-3C6AC1541119}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +56,18 @@ Global
 		{E9121EFD-7B75-4B82-9BF7-892AF2036CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9121EFD-7B75-4B82-9BF7-892AF2036CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9121EFD-7B75-4B82-9BF7-892AF2036CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74BAB9F4-4740-49EA-9C8D-49F2C950A920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74BAB9F4-4740-49EA-9C8D-49F2C950A920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74BAB9F4-4740-49EA-9C8D-49F2C950A920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74BAB9F4-4740-49EA-9C8D-49F2C950A920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F96DA46-09FD-40AB-941B-B8F4EE23FD60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F96DA46-09FD-40AB-941B-B8F4EE23FD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F96DA46-09FD-40AB-941B-B8F4EE23FD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F96DA46-09FD-40AB-941B-B8F4EE23FD60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{083AAAB8-22D0-4836-8D92-3C6AC1541119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{083AAAB8-22D0-4836-8D92-3C6AC1541119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{083AAAB8-22D0-4836-8D92-3C6AC1541119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{083AAAB8-22D0-4836-8D92-3C6AC1541119}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +78,8 @@ Global
 		{41FAE1CF-6134-4A38-9ECE-A39AE35BE037} = {BBC44229-96F1-4064-8E60-EA266CB2F88E}
 		{EE098159-ACD9-4937-AC4D-6AB25713D30A} = {BBC44229-96F1-4064-8E60-EA266CB2F88E}
 		{E9121EFD-7B75-4B82-9BF7-892AF2036CE2} = {BBC44229-96F1-4064-8E60-EA266CB2F88E}
+		{74BAB9F4-4740-49EA-9C8D-49F2C950A920} = {B72ACEF2-922C-421F-B647-A9C4CC7C2599}
+		{5F96DA46-09FD-40AB-941B-B8F4EE23FD60} = {B72ACEF2-922C-421F-B647-A9C4CC7C2599}
+		{083AAAB8-22D0-4836-8D92-3C6AC1541119} = {BBC44229-96F1-4064-8E60-EA266CB2F88E}
 	EndGlobalSection
 EndGlobal
