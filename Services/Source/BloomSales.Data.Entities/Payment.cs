@@ -20,6 +20,10 @@ namespace BloomSales.Data.Entities
         [Required]
         public decimal Amount { get; set; }
 
+        [Required]
+        [StringLength(3)]
+        public string Currency { get; set; }
+
         public DateTime ReceivedDate { get; set; }
 
         public bool IsReceived { get; set; }

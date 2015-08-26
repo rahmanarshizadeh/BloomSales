@@ -30,5 +30,7 @@ namespace BloomSales.Data.Entities
         public int CategoryID { get; set; }
 
         public virtual ProductCategory Category { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

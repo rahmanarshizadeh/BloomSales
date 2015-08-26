@@ -54,7 +54,13 @@ namespace BloomSales.Services.Tests
 
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
-            mockCache.Verify(c => c.Set(It.Is<string>(k => k == "allRegionsInCanada"), It.Is<IEnumerable<Region>>(o => o.Equals(expected)), It.IsAny<CacheItemPolicy>(), null), Times.Once());
+            mockCache.Verify(
+                c => c.Set(
+                    It.Is<string>(k => k == "allRegionsInCanada"), 
+                    It.Is<IEnumerable<Region>>(o => o.Equals(expected)), 
+                    It.IsAny<CacheItemPolicy>(), 
+                    null), 
+                Times.Once());
         }
 
         [TestMethod]
@@ -97,8 +103,13 @@ namespace BloomSales.Services.Tests
 
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
-            mockCache.Verify(c => c.Set(It.Is<string>(k => k == "warehousesInTestRegion"),
-                It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)), It.IsAny<CacheItemPolicy>(), null), Times.Once());
+            mockCache.Verify(
+                c => c.Set(
+                    It.Is<string>(k => k == "warehousesInTestRegion"),
+                    It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)), 
+                    It.IsAny<CacheItemPolicy>(), 
+                    null), 
+                Times.Once());
         }
 
         [TestMethod]
@@ -159,8 +170,13 @@ namespace BloomSales.Services.Tests
 
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
-            mockCache.Verify(c => c.Set(It.Is<string>(k => k == "warehousesInToronto"),
-                It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)), It.IsAny<CacheItemPolicy>(), null), Times.Once());
+            mockCache.Verify(
+                c => c.Set(
+                    It.Is<string>(k => k == "warehousesInToronto"),
+                    It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)), 
+                    It.IsAny<CacheItemPolicy>(), 
+                    null), 
+                Times.Once());
         }
 
         [TestMethod]
@@ -194,8 +210,13 @@ namespace BloomSales.Services.Tests
 
             // assert
             Assert.IsTrue(expected.Equals(actual));
-            mockCache.Verify(c => c.Set(It.Is<string>(k => k == "Montreal#9Warehouse"),
-                It.Is<Warehouse>(o => o.Equals(expected)), It.IsAny<CacheItemPolicy>(), null), Times.Once());
+            mockCache.Verify(
+                c => c.Set(
+                    It.Is<string>(k => k == "Montreal#9Warehouse"),
+                    It.Is<Warehouse>(o => o.Equals(expected)), 
+                    It.IsAny<CacheItemPolicy>(), 
+                    null), 
+                Times.Once());
         }
 
         [TestMethod]
@@ -229,8 +250,13 @@ namespace BloomSales.Services.Tests
 
             // assert
             Assert.IsTrue(expected.Equals(actual));
-            mockCache.Verify(c => c.Set(It.Is<string>(k => k == "Warehouse21"),
-                It.Is<Warehouse>(o => o.Equals(expected)), It.IsAny<CacheItemPolicy>(), null), Times.Once());
+            mockCache.Verify(
+                c => c.Set(
+                    It.Is<string>(k => k == "Warehouse21"),
+                    It.Is<Warehouse>(o => o.Equals(expected)), 
+                    It.IsAny<CacheItemPolicy>(), 
+                    null), 
+                Times.Once());
         }
 
         [TestMethod]
