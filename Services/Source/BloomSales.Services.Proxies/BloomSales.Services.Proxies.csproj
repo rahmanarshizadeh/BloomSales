@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,7 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountingClient.cs" />
+    <Compile Include="LocationClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShippingClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BloomSales.Data.Entities\BloomSales.Data.Entities.csproj">
+      <Project>{ee098159-acd9-4937-ac4d-6ab25713d30a}</Project>
+      <Name>BloomSales.Data.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BloomSales.Services.Contracts\BloomSales.Services.Contracts.csproj">
+      <Project>{59df4e09-23db-4900-b35b-2fe7e56f3521}</Project>
+      <Name>BloomSales.Services.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
