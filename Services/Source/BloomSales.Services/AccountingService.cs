@@ -51,7 +51,7 @@ namespace BloomSales.Services
                 // probably it's not going to change at all, but it's not going to 
                 // be asked for often either. so, set the expiration to 20 minutes
                 policy.SlidingExpiration = new TimeSpan(0, 20, 0);
-                cache.Add(cacheKey, result, policy);
+                cache.Set(cacheKey, result, policy);
             }
 
             return result;

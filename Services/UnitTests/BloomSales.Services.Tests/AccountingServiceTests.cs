@@ -64,7 +64,7 @@ namespace BloomSales.Services.Tests
             // assert
             Assert.AreEqual(expected, actual);
             mockCache.Verify(
-                c => c.Add(
+                c => c.Set(
                     It.Is<string>(k => k.Equals("paymentFor200")),
                     It.Is<PaymentInfo>(p => p.OrderID == 200),
                     It.IsAny<CacheItemPolicy>(),
