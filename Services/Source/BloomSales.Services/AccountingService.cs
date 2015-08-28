@@ -10,7 +10,7 @@ using System.Runtime.Caching;
 
 namespace BloomSales.Services
 {
-    public class AccountingService : IAccountingService
+    public class AccountingService : IAccountingService, IDisposable
     {
         private IPaymentInfoRepository repo;
         private ObjectCache cache;
@@ -55,6 +55,12 @@ namespace BloomSales.Services
             }
 
             return result;
+        }
+
+        public void Dispose()
+        {
+            if (this.repo != null)
+                repo.Dispose();
         }
     }
 }

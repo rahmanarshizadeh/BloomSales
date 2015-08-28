@@ -94,6 +94,9 @@ namespace BloomSales.Data.Repositories
         {
             if (db != null)
                 db.Dispose();
+
+            if (regionRepo != null)
+                regionRepo.Dispose();
         }
 
         private static void UpdateEntity(Warehouse updatedEntity, Warehouse oldEntity)

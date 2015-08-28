@@ -10,7 +10,7 @@ using System.Runtime.Caching;
 
 namespace BloomSales.Services
 {
-    public class ShippingService : IShippingService
+    public class ShippingService : IShippingService, IDisposable
     {
         private IShippingInfoRepository shippingRepo;
         private IDeliveryServiceRepository serviceRepo;
@@ -102,6 +102,18 @@ namespace BloomSales.Services
         public void AddDeliveryService(DeliveryService service)
         {
             this.serviceRepo.AddService(service);
+        }
+
+        public void Dispose()
+        {
+            if (this.shipperRepo != null)
+                shippingRepo.Dispose();
+
+            if (this.shipperRepo != null)
+                shipperRepo.Dispose();
+
+            if (this.serviceRepo != null)
+                serviceRepo.Dispose();
         }
     }
 }
