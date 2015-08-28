@@ -20,6 +20,9 @@ namespace BloomSales.Data.Entities
         public decimal Cost { get; set; }
 
         [Required]
+        public int ShipperID { get; set; }
+
+        [Required]
         public virtual Shipper Shipper { get; set; }
     }
 }

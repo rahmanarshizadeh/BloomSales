@@ -59,6 +59,7 @@
     <Compile Include="AccountingServiceTests.cs" />
     <Compile Include="LocationServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShippingServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

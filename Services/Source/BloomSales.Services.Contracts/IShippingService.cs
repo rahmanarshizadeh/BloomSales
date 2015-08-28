@@ -18,5 +18,9 @@ namespace BloomSales.Services.Contracts
         void RequestShipping(ShippingInfo shipping);
 
         ShippingStatus GetShippingStatus(int orderID);
+
+        void AddShipper(Shipper shipper);
+
+        void AddDeliveryService(DeliveryService service);
     }
 }
