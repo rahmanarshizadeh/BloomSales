@@ -11,7 +11,7 @@ namespace BloomSales.Services.Contracts
     {
         IEnumerable<Product> GetAllProducts();
 
-        IEnumerable<Product> GetProductsByCategory(int categoryID);
+        IEnumerable<Product> GetProductsByCategory(string categoryName);
 
         IEnumerable<ProductCategory> GetCategories();
 
@@ -21,15 +21,17 @@ namespace BloomSales.Services.Contracts
 
         IEnumerable<InventoryItem> GetInventoryByRegion(string region);
 
-        IEnumerable<InventoryItem> GetStockByCity(string city, int productID);
+        IEnumerable<InventoryItem> GetStocksByCity(string city, int productID);
 
-        IEnumerable<InventoryItem> GetStockByRegion(string region, int productID);
+        IEnumerable<InventoryItem> GetStocksByRegion(string region, int productID);
 
         InventoryItem GetStockByWarehouse(string warehouse, int productID);
 
+        void AddProduct(Product product);
+        
         void AddToInventory(InventoryItem item);
 
-        void UpdateInventory(InventoryItem item);
+        void UpdateStock(int inventoryItemID, short newStock);
 
         void AddCategory(ProductCategory category);
     }

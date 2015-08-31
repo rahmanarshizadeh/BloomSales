@@ -64,7 +64,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DeliveryServiceRepositoryTests.cs" />
+    <Compile Include="Repositories\InventoryItemRepositoryTests.cs" />
     <Compile Include="Repositories\PaymentInfoRepositoryTests.cs" />
+    <Compile Include="Repositories\ProductCategoryRepositoryTests.cs" />
+    <Compile Include="Repositories\ProductRepositoryTests.cs" />
     <Compile Include="Repositories\RegionRepositoryTests.cs" />
     <Compile Include="Repositories\ShipperRepositoryTests.cs" />
     <Compile Include="Repositories\ShippingInfoRepositoryTests.cs" />
