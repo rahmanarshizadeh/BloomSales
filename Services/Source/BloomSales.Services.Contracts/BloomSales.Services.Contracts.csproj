@@ -43,7 +43,7 @@
     <Compile Include="IAccountingService.cs" />
     <Compile Include="IInventoryService.cs" />
     <Compile Include="ILocationService.cs" />
-    <Compile Include="IOderService.cs" />
+    <Compile Include="IOrderService.cs" />
     <Compile Include="IShippingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

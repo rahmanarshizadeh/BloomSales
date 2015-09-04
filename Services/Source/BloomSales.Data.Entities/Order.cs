@@ -19,6 +19,15 @@ namespace BloomSales.Data.Entities
         [Required]
         public int CustomerID { get; set; }
 
+        public int ParentOrderID { get; set; }
+
+        /// <summary>
+        /// Indicates wether this is an internal order in BloomSales
+        /// (from one warehouse to another)
+        /// </summary>
+        [Required]
+        public bool IsInternalOrder { get; set; }
+
         [Required]
         public virtual IEnumerable<OrderItem> Items { get; set; }
     }

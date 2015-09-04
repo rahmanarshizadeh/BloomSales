@@ -17,7 +17,7 @@ namespace BloomSales.Data.Entities
         [Required]
         public int WarehouseID { get; set; }
 
-        public virtual Warehouse PickUpLocation { get; set; }
+        public virtual Warehouse PickupLocation { get; set; }
 
         public DateTime ShippedDate { get; set; }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BloomSales.Services.Contracts
 {
     [ServiceContract]
-    public interface IOderService
+    public interface IOrderService
     {
         bool PlaceOrder(Order order, ShippingInfo shipping, PaymentInfo payment);
 

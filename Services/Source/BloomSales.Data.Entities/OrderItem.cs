@@ -10,6 +10,8 @@ namespace BloomSales.Data.Entities
     [DataContract]
     public class OrderItem
     {
+        public int ID { get; set; }
+
         [Required]
         public int OrderID { get; set; }
 

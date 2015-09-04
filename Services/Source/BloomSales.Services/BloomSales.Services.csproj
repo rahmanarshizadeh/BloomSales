@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountingService.cs" />
+    <Compile Include="CachingPolicies.cs" />
     <Compile Include="InventoryService.cs" />
     <Compile Include="LocationService.cs" />
+    <Compile Include="OrderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShippingService.cs" />
   </ItemGroup>
