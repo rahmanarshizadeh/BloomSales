@@ -53,6 +53,11 @@
     <Compile Include="AccountingDb.cs" />
     <Compile Include="InventoryDb.cs" />
     <Compile Include="LocationDb.cs" />
+    <Compile Include="Migrations\AccountingDbConfiguration.cs" />
+    <Compile Include="Migrations\ShippingDbConfiguration.cs" />
+    <Compile Include="Migrations\OrderDbConfiguration.cs" />
+    <Compile Include="Migrations\InventoryDbConfiguration.cs" />
+    <Compile Include="Migrations\LocationDbConfiguration.cs" />
     <Compile Include="OrderDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DeliveryServiceRepository.cs" />
