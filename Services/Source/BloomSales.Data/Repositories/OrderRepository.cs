@@ -9,14 +9,14 @@ namespace BloomSales.Data.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        private OrdersDb db;
+        private OrderDb db;
 
         public OrderRepository()
         {
-            this.db = new OrdersDb();
+            this.db = new OrderDb();
         }
 
-        internal OrderRepository(OrdersDb context)
+        internal OrderRepository(OrderDb context)
         {
             this.db = context;
         }

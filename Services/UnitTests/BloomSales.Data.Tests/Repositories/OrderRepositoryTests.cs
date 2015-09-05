@@ -22,7 +22,7 @@ namespace BloomSales.Data.Tests.Repositories
             List<Order> data = new List<Order>();
             Order order = new Order() { ID = 3 };
             Mock<DbSet<Order>> mockSet = new Mock<DbSet<Order>>();
-            Mock<OrdersDb> mockContext = new Mock<OrdersDb>();
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
             mockContext.Setup(c => c.Orders).Returns(mockSet.Object);
             OrderRepository sut = new OrderRepository(mockContext.Object);
 
@@ -46,7 +46,7 @@ namespace BloomSales.Data.Tests.Repositories
             Order expected = data[2];
             Mock<DbSet<Order>> mockSet = new Mock<DbSet<Order>>();
             mockSet.Setup(s => s.Find(5)).Returns(expected);
-            Mock<OrdersDb> mockContext = new Mock<OrdersDb>();
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
             mockContext.Setup(c => c.Orders).Returns(mockSet.Object);
             OrderRepository sut = new OrderRepository(mockContext.Object);
 
@@ -79,7 +79,7 @@ namespace BloomSales.Data.Tests.Repositories
             expected.Add(data[4]);
             expected.Add(data[8]);
             Mock<DbSet<Order>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<OrdersDb> mockContext = new Mock<OrdersDb>();
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
             mockContext.Setup(c => c.Orders).Returns(mockSet.Object);
             OrderRepository sut = new OrderRepository(mockContext.Object);
 

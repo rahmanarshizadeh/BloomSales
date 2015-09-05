@@ -8,9 +8,9 @@ using BloomSales.Data.Entities;
 
 namespace BloomSales.Data
 {
-    internal class LocationsDb : DbContext
+    internal class LocationDb : DbContext
     {
-        public LocationsDb() : base("LocationsDatabase")
+        public LocationDb() : base("LocationsDatabase")
         {
             // do nothing!
         }

@@ -24,7 +24,7 @@ namespace BloomSales.Data.Tests.Repositories
             data.Add(new Region { ID = 2, Continent = "North America", Country = "Canada", Name = "Northern Canada", Provinces = null });
             data.Add(new Region { ID = 3, Continent = "North America", Country = "Canada", Name = "Western Canada", Provinces = null });
             Mock<DbSet<Region>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
             RegionRepository sut = new RegionRepository(mockContext.Object);
             
@@ -49,7 +49,7 @@ namespace BloomSales.Data.Tests.Repositories
             expected.Add(data[2]);
             expected.Add(data[3]);
             Mock<DbSet<Region>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
             RegionRepository sut = new RegionRepository(mockContext.Object);
 
@@ -68,7 +68,7 @@ namespace BloomSales.Data.Tests.Repositories
             Region expected = new Region { ID = 1, Continent = "North America", Country = "Canada", Name = "Eastern Canada", Provinces = null };
             data.Add(expected);
             Mock<DbSet<Region>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
             RegionRepository sut = new RegionRepository(mockContext.Object);
 
@@ -88,7 +88,7 @@ namespace BloomSales.Data.Tests.Repositories
             data.Add(expected);
             Mock<DbSet<Region>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
             mockSet.Setup(s => s.Find(It.Is<int>(id => id == 1))).Returns(expected);
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
             RegionRepository sut = new RegionRepository(mockContext.Object);
 
@@ -106,7 +106,7 @@ namespace BloomSales.Data.Tests.Repositories
             // arrange
             List<Region> data = new List<Region>();
             Mock<DbSet<Region>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
             RegionRepository sut = new RegionRepository(mockContext.Object);
 

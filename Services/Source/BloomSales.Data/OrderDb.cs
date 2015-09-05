@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BloomSales.Data
 {
-    internal class OrdersDb : DbContext
+    internal class OrderDb : DbContext
     {
         public virtual DbSet<Order> Orders { get; set; }
 

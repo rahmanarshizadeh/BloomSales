@@ -10,16 +10,16 @@ namespace BloomSales.Data.Repositories
 {
     public class WarehouseRepository : IWarehouseRepository
     {
-        private LocationsDb db;
+        private LocationDb db;
         private IRegionRepository regionRepo;
 
         public WarehouseRepository()
         {
-            this.db = new LocationsDb();
+            this.db = new LocationDb();
             this.regionRepo = new RegionRepository(this.db);
         }
 
-        internal WarehouseRepository(LocationsDb context, IRegionRepository repo)
+        internal WarehouseRepository(LocationDb context, IRegionRepository repo)
         {
             this.db = context;
             this.regionRepo = repo;

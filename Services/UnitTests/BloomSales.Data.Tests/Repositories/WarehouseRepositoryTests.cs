@@ -33,7 +33,7 @@ namespace BloomSales.Data.Tests.Repositories
             Mock<IRegionRepository> mockRepo = new Mock<IRegionRepository>();
             mockRepo.Setup(r => r.GetRegion(It.IsIn("A Test Region"))).Returns(region);
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, mockRepo.Object);
 
@@ -59,7 +59,7 @@ namespace BloomSales.Data.Tests.Repositories
             expected.Add(data[0]);
             expected.Add(data[3]);
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 
@@ -85,7 +85,7 @@ namespace BloomSales.Data.Tests.Repositories
             expected.Add(data[0]);
             expected.Add(data[4]);
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 
@@ -108,7 +108,7 @@ namespace BloomSales.Data.Tests.Repositories
             data.Add(new Warehouse() { ID = 5, Name = "Warehouse 5" });
             Warehouse expected = data[2];
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 
@@ -132,7 +132,7 @@ namespace BloomSales.Data.Tests.Repositories
             Warehouse expected = data[2];
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
             mockSet.Setup(s => s.Find(It.IsIn(2))).Returns(data[2]);
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 
@@ -151,7 +151,7 @@ namespace BloomSales.Data.Tests.Repositories
             List<Warehouse> data = new List<Warehouse>();
             Warehouse newRecord = new Warehouse() { ID = 10 };
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 
@@ -171,7 +171,7 @@ namespace BloomSales.Data.Tests.Repositories
             data.Add(new Warehouse() { ID = 10 });
             Warehouse existingRecord = new Warehouse() { ID = 10 };
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationsDb> mockContext = new Mock<LocationsDb>();
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 

@@ -9,14 +9,14 @@ namespace BloomSales.Data.Repositories
 {
     public class RegionRepository : IRegionRepository
     {
-        private LocationsDb db;
+        private LocationDb db;
 
         public RegionRepository()
         {
-            this.db = new LocationsDb();
+            this.db = new LocationDb();
         }
 
-        internal RegionRepository(LocationsDb context)
+        internal RegionRepository(LocationDb context)
         {
             this.db = context;
         }

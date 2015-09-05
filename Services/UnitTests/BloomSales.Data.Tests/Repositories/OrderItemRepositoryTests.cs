@@ -21,7 +21,7 @@ namespace BloomSales.Data.Tests.Repositories
             // arrange
             OrderItem item = new OrderItem() { ID = 23 };
             Mock<DbSet<OrderItem>> mockSet = new Mock<DbSet<OrderItem>>();
-            Mock<OrdersDb> mockContext = new Mock<OrdersDb>();
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
             mockContext.Setup(c => c.OrderItems).Returns(mockSet.Object);
             OrderItemRepository sut = new OrderItemRepository(mockContext.Object);
 
@@ -43,7 +43,7 @@ namespace BloomSales.Data.Tests.Repositories
             items.Add(new OrderItem() { ID = 32 });
             items.Add(new OrderItem() { ID = 33 });
             Mock<DbSet<OrderItem>> mockSet = new Mock<DbSet<OrderItem>>();
-            Mock<OrdersDb> mockContext = new Mock<OrdersDb>();
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
             mockContext.Setup(c => c.OrderItems).Returns(mockSet.Object);
             OrderItemRepository sut = new OrderItemRepository(mockContext.Object);
 
@@ -62,7 +62,7 @@ namespace BloomSales.Data.Tests.Repositories
             OrderItem item = new OrderItem() { ID = 10 };
             Mock<DbSet<OrderItem>> mockSet = new Mock<DbSet<OrderItem>>();
             mockSet.Setup(s => s.Find(10)).Returns(item);
-            Mock<OrdersDb> mockContext = new Mock<OrdersDb>();
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
             mockContext.Setup(c => c.OrderItems).Returns(mockSet.Object);
             OrderItemRepository sut = new OrderItemRepository(mockContext.Object);
 
@@ -90,7 +90,7 @@ namespace BloomSales.Data.Tests.Repositories
             expected.Add(data[2]);
             expected.Add(data[3]);
             Mock<DbSet<OrderItem>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<OrdersDb> mockContext = new Mock<OrdersDb>();
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
             mockContext.Setup(c => c.OrderItems).Returns(mockSet.Object);
             OrderItemRepository sut = new OrderItemRepository(mockContext.Object);
 
