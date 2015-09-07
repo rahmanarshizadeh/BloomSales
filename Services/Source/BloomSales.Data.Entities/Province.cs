@@ -8,22 +8,17 @@ using System.Threading.Tasks;
 
 namespace BloomSales.Data.Entities
 {
-    public class InventoryItem
+    public class Province
     {
         public int ID { get; set; }
 
-        [Required]
-        public int ProductID { get; set; }
-
-        public virtual Product Product { get; set; }
+        public int RegionID { get; set; }
 
         [Required]
-        public int WarehouseID { get; set; }
-
-        [NotMapped]
-        public Warehouse Warehouse { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public short UnitsInStock { get; set; }
+        [StringLength(2)]
+        public string Abbreviation { get; set; }
     }
 }

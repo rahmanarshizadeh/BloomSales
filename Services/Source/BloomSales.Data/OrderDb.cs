@@ -10,6 +10,10 @@ namespace BloomSales.Data
 {
     internal class OrderDb : DbContext
     {
+        public OrderDb() : base("name = OrderDatabase")
+        {
+            // do nothing!
+        }
         public virtual DbSet<Order> Orders { get; set; }
 
         public virtual DbSet<OrderItem> OrderItems { get; set; }

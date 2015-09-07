@@ -10,6 +10,10 @@ namespace BloomSales.Data
 {
     internal class InventoryDb : DbContext
     {
+        public InventoryDb() : base("name = InventoryDatabase")
+        {
+            // do nothing!
+        }
         public virtual DbSet<Product> Products { get; set; }
 
         public virtual DbSet<ProductCategory> Categories { get; set; }

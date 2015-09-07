@@ -14,7 +14,7 @@ namespace BloomSales.Data.Entities
         public int ID { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(120)]
         public string Name { get; set; }
 
         public string Description { get; set; }

@@ -13,7 +13,7 @@ namespace BloomSales.Data.Entities
         public int ID { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(30)]
         public string ServiceName { get; set; }
 
         [Required]

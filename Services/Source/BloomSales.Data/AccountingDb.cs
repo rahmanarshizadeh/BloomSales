@@ -10,7 +10,7 @@ namespace BloomSales.Data
 {
     internal class AccountingDb : DbContext
     {
-        public AccountingDb() : base("AccountingDatabase")
+        public AccountingDb() : base("name = AccountingDatabase")
         {
             // do nothing!
         }

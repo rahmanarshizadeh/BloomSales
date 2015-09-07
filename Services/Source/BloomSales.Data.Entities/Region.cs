@@ -22,7 +22,6 @@ namespace BloomSales.Data.Entities
         [Required]
         public string Country { get; set; }
 
-        [Required]
-        public IEnumerable<string> Provinces { get; set; }
+        public virtual IEnumerable<Province> Provinces { get; set; }
     }
 }

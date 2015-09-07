@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -17,7 +18,8 @@ namespace BloomSales.Data.Entities
         [Required]
         public int WarehouseID { get; set; }
 
-        public virtual Warehouse PickupLocation { get; set; }
+        [NotMapped]
+        public Warehouse PickupLocation { get; set; }
 
         public DateTime ShippedDate { get; set; }
 
