@@ -14,6 +14,8 @@ namespace BloomSales.Data.Entities
 
         public int RegionID { get; set; }
 
+        public virtual Region Region { get; set; }
+
         [Required]
         public string Name { get; set; }
 
