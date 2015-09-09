@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
 using System.Runtime.Caching;
+using System.ServiceModel;
 
 namespace BloomSales.Services
 {
+    [ServiceBehavior(UseSynchronizationContext = false,
+                     ConcurrencyMode = ConcurrencyMode.Multiple,
+                     InstanceContextMode = InstanceContextMode.PerCall)]
     public class ShippingService : IShippingService, IDisposable
     {
         private IShippingInfoRepository shippingRepo;

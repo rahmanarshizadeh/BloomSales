@@ -8,9 +8,13 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
+using System.ServiceModel;
 
 namespace BloomSales.Services
 {
+    [ServiceBehavior(UseSynchronizationContext = false,
+                    ConcurrencyMode = ConcurrencyMode.Multiple,
+                    InstanceContextMode = InstanceContextMode.PerCall)]
     public class InventoryService : IInventoryService, IDisposable
     {
         private ObjectCache cache;

@@ -11,8 +11,10 @@ namespace BloomSales.Services.Contracts
     [ServiceContract]
     public interface IAccountingService
     {
+        [OperationContract]
         bool ProcessPayment(PaymentInfo payment);
 
+        [OperationContract]
         PaymentInfo GetPaymentFor(int orderID);
     }
 }

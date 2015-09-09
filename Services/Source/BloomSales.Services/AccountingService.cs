@@ -7,9 +7,13 @@ using BloomSales.Services.Contracts;
 using BloomSales.Data.Repositories;
 using BloomSales.Data.Entities;
 using System.Runtime.Caching;
+using System.ServiceModel;
 
 namespace BloomSales.Services
 {
+    [ServiceBehavior(UseSynchronizationContext = false,
+                     ConcurrencyMode = ConcurrencyMode.Multiple,
+                     InstanceContextMode = InstanceContextMode.PerCall)]
     public class AccountingService : IAccountingService, IDisposable
     {
         private IPaymentInfoRepository repo;

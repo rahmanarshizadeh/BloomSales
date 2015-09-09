@@ -11,10 +11,13 @@ namespace BloomSales.Services.Contracts
     [ServiceContract]
     public interface IOrderService
     {
+        [OperationContract]
         bool PlaceOrder(Order order, ShippingInfo shipping, PaymentInfo payment);
 
+        [OperationContract]
         Order GetOrder(int id);
 
+        [OperationContract]
         IEnumerable<Order> GetOrderHistoryByCustomer(int customerID, DateTime startDate, DateTime endDate);
     }
 }

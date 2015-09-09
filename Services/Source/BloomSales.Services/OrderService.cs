@@ -8,9 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Caching;
 using BloomSales.Services.Proxies;
+using System.ServiceModel;
 
 namespace BloomSales.Services
 {
+    [ServiceBehavior(UseSynchronizationContext = false,
+                     ConcurrencyMode = ConcurrencyMode.Multiple,
+                     InstanceContextMode = InstanceContextMode.PerCall)]
     public class OrderService : IOrderService, IDisposable
     {
         private ILocationService locationService;
