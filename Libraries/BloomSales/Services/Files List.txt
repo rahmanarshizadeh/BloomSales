@@ -1,0 +1,6 @@
+After building "BloomSalesServices.sln" solution (in Release mode) successfully, the following 5 files should appear in this folder:
++ BloomSales.Data.dll
++ BloomSales.Data.Entities.dll
++ BloomSales.Services.Contracts.dll
++ BloomSales.Services.dll
++ BloomSales.Services.Proxies.dll
