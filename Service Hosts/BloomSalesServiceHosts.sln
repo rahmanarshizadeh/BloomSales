@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{D9D44CF5-7473-420A-8D1F-7ADC57222AF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{90B4DB29-4353-48FB-B794-8B9E96F00E96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloomSales.Hosts.Windows", "Source\BloomSales.Hosts.Windows\BloomSales.Hosts.Windows.csproj", "{219E3C69-2FDF-4039-A63F-C4D290565691}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F94FF1F1-763F-4538-9BB3-B37F29785352}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{219E3C69-2FDF-4039-A63F-C4D290565691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{219E3C69-2FDF-4039-A63F-C4D290565691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{219E3C69-2FDF-4039-A63F-C4D290565691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{219E3C69-2FDF-4039-A63F-C4D290565691}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{219E3C69-2FDF-4039-A63F-C4D290565691} = {D9D44CF5-7473-420A-8D1F-7ADC57222AF4}
+	EndGlobalSection
+EndGlobal
