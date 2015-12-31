@@ -1,0 +1,1 @@
+These diagrams are created using online "draw.io" application. In order to edit them, you should import the .png file into the same web applicaiton.
