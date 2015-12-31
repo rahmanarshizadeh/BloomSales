@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BloomSales.Data.Entities;
-using Moq;
-using System.Data.Entity;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
 using BloomSales.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -16,6 +13,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class RegionRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllRegions_OnNonEmptyTable_ReturnsAllRegions()
         {
             // arrange
@@ -27,7 +25,7 @@ namespace BloomSales.Data.Tests.Repositories
             Mock<LocationDb> mockContext = new Mock<LocationDb>();
             mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
             RegionRepository sut = new RegionRepository(mockContext.Object);
-            
+
             // act
             IEnumerable<Region> actual = sut.GetAllRegions();
 
@@ -36,6 +34,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllRegionsByCountry_GivenAValidCountryOnNonEmptyRecords_RetunsTheRelatedRegions()
         {
             // arrange
@@ -61,6 +60,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetRegion_GivenANameOnNonEmptyDatabase_ReturnsTheRegionRecord()
         {
             // arrange
@@ -80,6 +80,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetRegion_GivenAnIDOnNonEmptyDatabase_ReturnsTheRegionRecord()
         {
             // arrange
@@ -101,6 +102,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddRegion_OnAnEmptyTable_AddsTheNewRecord()
         {
             // arrange

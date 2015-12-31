@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
-using BloomSales.Data.Entities;
+using BloomSales.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Runtime.Caching;
 
 namespace BloomSales.Services.Tests
@@ -15,6 +12,7 @@ namespace BloomSales.Services.Tests
     public class AccountingServiceTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void ProcessPayment_GivenANewPayment_ProcessesAndAddsThePaymentToDatabase()
         {
             // arrange
@@ -33,6 +31,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetPaymentFor_ResultExistsInCache_ReturnsThePaymentResult()
         {
             // arrange
@@ -49,6 +48,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetPaymentFor_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange

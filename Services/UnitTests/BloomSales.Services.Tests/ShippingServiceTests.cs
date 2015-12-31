@@ -3,12 +3,9 @@ using BloomSales.Data.Repositories;
 using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Tests
 {
@@ -16,6 +13,7 @@ namespace BloomSales.Services.Tests
     public class ShippingServiceTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllShippers_ResultExistsInCache_ReturnsTheListOfShippers()
         {
             // arrange
@@ -37,6 +35,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllShippers_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -58,7 +57,7 @@ namespace BloomSales.Services.Tests
             mockShipperRepo.Verify(r => r.GetAllShippers(), Times.Once());
             mockCache.Verify(
                 c => c.Set(
-                    It.Is<string>(s => s.Equals("allShippers")), 
+                    It.Is<string>(s => s.Equals("allShippers")),
                     It.Is<IEnumerable<Shipper>>(l => l.Count() == 4),
                     It.IsAny<CacheItemPolicy>(),
                     null),
@@ -66,6 +65,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetServicesByShipper_ResultExistsInCache_ReturnsTheResult()
         {
             List<DeliveryService> expected = new List<DeliveryService>();
@@ -84,6 +84,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetServiceByShipper_ResultNotExistsInCahce_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -115,6 +116,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void RequestShipping_GivenANewShipping_ReceivedsAndAddsToDatabase()
         {
             // arrange
@@ -124,7 +126,7 @@ namespace BloomSales.Services.Tests
 
             // act
             sut.RequestShipping(shipping);
-            
+
             // assert
             mockShippingRepo.Verify(
                 r => r.AddShipping(It.Is<ShippingInfo>(s => s.Status == ShippingStatus.ReceivedOrder)),
@@ -132,6 +134,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetShippingStatus_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -148,6 +151,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetShippingStatus_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -165,6 +169,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddShipper_GivenANewShipper_AddsToDatabase()
         {
             // arrange
@@ -182,6 +187,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddDeliveryService_GivenANewService_AddsToDatabase()
         {
             // arrange

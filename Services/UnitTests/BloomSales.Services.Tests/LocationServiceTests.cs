@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Runtime.Caching;
-using BloomSales.Data.Entities;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
 using BloomSales.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
+using System.Runtime.Caching;
 
 namespace BloomSales.Services.Tests
 {
@@ -16,6 +12,7 @@ namespace BloomSales.Services.Tests
     public class LocationServiceTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllRegions_ResultExistsInCache_ReturnsTheRelatedRegions()
         {
             // arrange
@@ -32,6 +29,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllRegions_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -56,14 +54,15 @@ namespace BloomSales.Services.Tests
             Assert.IsTrue(Equality.AreEqual(expected, actual));
             mockCache.Verify(
                 c => c.Set(
-                    It.Is<string>(k => k == "allRegionsInCanada"), 
-                    It.Is<IEnumerable<Region>>(o => o.Equals(expected)), 
-                    It.IsAny<CacheItemPolicy>(), 
-                    null), 
+                    It.Is<string>(k => k == "allRegionsInCanada"),
+                    It.Is<IEnumerable<Region>>(o => o.Equals(expected)),
+                    It.IsAny<CacheItemPolicy>(),
+                    null),
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehousesByRegion_ResultExistsInCache_ReturnsTheRelateResult()
         {
             // arrange
@@ -81,6 +80,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehousesByRegion_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -106,13 +106,14 @@ namespace BloomSales.Services.Tests
             mockCache.Verify(
                 c => c.Set(
                     It.Is<string>(k => k == "warehousesInTestRegion"),
-                    It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)), 
-                    It.IsAny<CacheItemPolicy>(), 
-                    null), 
+                    It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)),
+                    It.IsAny<CacheItemPolicy>(),
+                    null),
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetNearestWarehousesTo_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -131,6 +132,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehousesByCity_ResultExistsInCache_ReturnsTheRelatedResult()
         {
             // arrange
@@ -148,6 +150,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehouseByCity_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -173,13 +176,14 @@ namespace BloomSales.Services.Tests
             mockCache.Verify(
                 c => c.Set(
                     It.Is<string>(k => k == "warehousesInToronto"),
-                    It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)), 
-                    It.IsAny<CacheItemPolicy>(), 
-                    null), 
+                    It.Is<IEnumerable<Warehouse>>(o => o.Equals(expected)),
+                    It.IsAny<CacheItemPolicy>(),
+                    null),
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehouseByName_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -196,10 +200,11 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehouseByName_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
-            Warehouse expected = new Warehouse() {  Name = "Montreal#9" };
+            Warehouse expected = new Warehouse() { Name = "Montreal#9" };
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<IWarehouseRepository> mockRepo = new Mock<IWarehouseRepository>();
             mockRepo.Setup(r => r.GetWarehouse("Montreal#9")).Returns(expected);
@@ -213,13 +218,14 @@ namespace BloomSales.Services.Tests
             mockCache.Verify(
                 c => c.Set(
                     It.Is<string>(k => k == "Montreal#9Warehouse"),
-                    It.Is<Warehouse>(o => o.Equals(expected)), 
-                    It.IsAny<CacheItemPolicy>(), 
-                    null), 
+                    It.Is<Warehouse>(o => o.Equals(expected)),
+                    It.IsAny<CacheItemPolicy>(),
+                    null),
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehouseByID_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -236,6 +242,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehouseByID_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -253,13 +260,14 @@ namespace BloomSales.Services.Tests
             mockCache.Verify(
                 c => c.Set(
                     It.Is<string>(k => k == "Warehouse21"),
-                    It.Is<Warehouse>(o => o.Equals(expected)), 
-                    It.IsAny<CacheItemPolicy>(), 
-                    null), 
+                    It.Is<Warehouse>(o => o.Equals(expected)),
+                    It.IsAny<CacheItemPolicy>(),
+                    null),
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddRegion_GivenANewRegion_AddsToDatabase()
         {
             // arrange
@@ -275,6 +283,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddWarehouse_GivenANewWarehouse_AddsToDatabase()
         {
             // arrange
@@ -290,6 +299,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void UpdateWarehouse_GivenAWarehouse_UpdateTheRecordInDatabase()
         {
             // arrange
@@ -305,6 +315,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void RemoveWarehouse_GivenAWarehouse_DeletesTheRecordFromDatabase()
         {
             // arrange

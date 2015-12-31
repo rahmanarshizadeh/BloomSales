@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BloomSales.Data;
-using BloomSales.Data.Entities;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
-using Moq;
-using System.Data.Entity;
 using BloomSales.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -17,6 +13,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class WarehouseRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehousesByRegion_OnNonEmptyRecords_ReturnsTheRelatedRecords()
         {
             // arrange
@@ -29,7 +26,7 @@ namespace BloomSales.Data.Tests.Repositories
             List<Warehouse> expected = new List<Warehouse>();
             expected.Add(data[0]);
             expected.Add(data[2]);
-            Region region = new Region() {ID = 2, Name = "A Test Region"};
+            Region region = new Region() { ID = 2, Name = "A Test Region" };
             Mock<IRegionRepository> mockRepo = new Mock<IRegionRepository>();
             mockRepo.Setup(r => r.GetRegion(It.IsIn("A Test Region"))).Returns(region);
             Mock<DbSet<Warehouse>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
@@ -46,6 +43,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehousesByCity_OnNonEmptyRecords_ReturnsRelatedRecords()
         {
             // arrange
@@ -71,6 +69,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehousesByProvince_OnNonEmptyRecords_ReturnsRelatedRecords()
         {
             // arrange
@@ -97,6 +96,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehouse_GivenANameOnNonEmptyRecords_RetunsTheWarehouseRecord()
         {
             // arrange
@@ -120,6 +120,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetWarehouse_GivenAnIDOnNonEmptyRecords_RetunsTheWarehouseRecord()
         {
             // arrange
@@ -145,6 +146,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddWarehouse_GivenANewWarehouse_AddsToRecords()
         {
             // assert
@@ -155,7 +157,7 @@ namespace BloomSales.Data.Tests.Repositories
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 
-            // act 
+            // act
             sut.AddWarehouse(newRecord);
 
             // assert
@@ -164,6 +166,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void RemoveWarehouse_GivenAnInstance_RemovesTheRecord()
         {
             // assert
@@ -175,7 +178,7 @@ namespace BloomSales.Data.Tests.Repositories
             mockContext.Setup(c => c.Warehouses).Returns(mockSet.Object);
             WarehouseRepository sut = new WarehouseRepository(mockContext.Object, null);
 
-            // act 
+            // act
             sut.RemoveWarehouse(existingRecord);
 
             // assert

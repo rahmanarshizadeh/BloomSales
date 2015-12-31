@@ -3,12 +3,9 @@ using BloomSales.Data.Repositories;
 using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -16,6 +13,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class ShipperRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddShipper_GivenANewShipper_AddsToDatabase()
         {
             // arrange
@@ -34,6 +32,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllShippers_Always_ReturnsTheWholeShipperRecordsFromDatabase()
         {
             // arrange
@@ -52,6 +51,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetShipper_GivenAValidName_ReturnsTheRecordFromDatabase()
         {
             // arrange

@@ -3,12 +3,9 @@ using BloomSales.Data.Repositories;
 using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -16,6 +13,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class InventoryItemRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventories_GivenAValidListOfWarehouses_ReturnsTheirInventories()
         {
             List<Warehouse> warehouses = new List<Warehouse>();
@@ -49,6 +47,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventory_GivenAValidWarehoue_ReturnsItsInventory()
         {
             Warehouse warehouse = new Warehouse() { ID = 11 };
@@ -78,6 +77,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStock_GivenAValidWarehouseAndProductID_ReturnsItsStockInTheWarehouse()
         {
             // arrange
@@ -103,6 +103,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStock_GivenAValidListOfWarehousesAndAProductID_ReturnsTheStocksInTheWarehouses()
         {
             // arrange
@@ -134,6 +135,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddToInventory_GivenANewItem_AddsToDatabase()
         {
             // arrange
@@ -153,6 +155,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void UpdateStock_GivenAValidItemIDAndANewStockValue_UpdatesTheRecord()
         {
             // arrange
@@ -174,6 +177,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void UpdateStock_GivenAValidItemIDAndTheSameStockValue_IngnoresAndDoesNothing()
         {
             // arrange

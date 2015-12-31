@@ -4,12 +4,9 @@ using BloomSales.Services.Contracts;
 using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Tests
 {
@@ -17,6 +14,7 @@ namespace BloomSales.Services.Tests
     public class InventoryServiceTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllProducts_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -39,6 +37,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllProducts_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -62,6 +61,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllProducts_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -87,6 +87,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetProductByCategory_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -108,6 +109,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetProductsByCategory_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -134,6 +136,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetProductsByCategory_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -163,6 +166,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetCategories_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -184,6 +188,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetCategories_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -194,7 +199,7 @@ namespace BloomSales.Services.Tests
             Mock<IProductCategoryRepository> mockCategoryRepo = new Mock<IProductCategoryRepository>();
             mockCategoryRepo.Setup(r => r.GetAllCategories()).Returns(expected);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            InventoryService sut = new InventoryService(null, mockCategoryRepo.Object , null, mockCache.Object, null);
+            InventoryService sut = new InventoryService(null, mockCategoryRepo.Object, null, mockCache.Object, null);
 
             // act
             var actual = sut.GetCategories();
@@ -205,6 +210,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetCategories_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -228,6 +234,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByCity_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -249,6 +256,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByCity_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -281,6 +289,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByCity_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -313,6 +322,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByWarehouse_ResultExistsInCache_ReturnsResult()
         {
             // arrange
@@ -335,6 +345,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByWarehouse_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -348,7 +359,7 @@ namespace BloomSales.Services.Tests
             mockLocationService.Setup(s => s.GetWarehouseByName("W-13")).Returns(warehouse);
             Mock<IInventoryItemRepository> mockInventoryRepo = new Mock<IInventoryItemRepository>();
             mockInventoryRepo.Setup(r => r.GetInventory(It.Is<Warehouse>(w => w.ID == 13))).Returns(expected);
-            InventoryService sut = new InventoryService(mockInventoryRepo.Object, null, null, 
+            InventoryService sut = new InventoryService(mockInventoryRepo.Object, null, null,
                 mockCache.Object, mockLocationService.Object);
 
             // act
@@ -361,6 +372,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByWarehouse_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -388,9 +400,10 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByRegion_ResultExistsInCache_ReturnsTheResult()
         {
-            // arrange 
+            // arrange
             List<InventoryItem> expected = new List<InventoryItem>();
             expected.Add(new InventoryItem() { ID = 1 });
             expected.Add(new InventoryItem() { ID = 2 });
@@ -407,11 +420,12 @@ namespace BloomSales.Services.Tests
 
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
-            mockCache.Verify(c => c[It.Is<string>(s => s.Equals("inventoryInEasternCanadaRegion"))], 
+            mockCache.Verify(c => c[It.Is<string>(s => s.Equals("inventoryInEasternCanadaRegion"))],
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByRegion_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -428,7 +442,7 @@ namespace BloomSales.Services.Tests
             Mock<IInventoryItemRepository> mockInventoryRepo = new Mock<IInventoryItemRepository>();
             mockInventoryRepo.Setup(r => r.GetInventories(It.Is<IEnumerable<Warehouse>>(l => l.Count() == 2)))
                 .Returns(expected);
-            InventoryService sut = new InventoryService(mockInventoryRepo.Object, null, null, 
+            InventoryService sut = new InventoryService(mockInventoryRepo.Object, null, null,
                 mockCache.Object, mockLocationService.Object);
 
             // act
@@ -442,6 +456,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventoryByRegion_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -466,13 +481,14 @@ namespace BloomSales.Services.Tests
 
             // assert
             mockCache.Verify(
-                c => c.Set("inventoryInWesternCanadaRegion", 
+                c => c.Set("inventoryInWesternCanadaRegion",
                            It.Is<IEnumerable<InventoryItem>>(l => l.Count() == 3),
                            It.IsAny<CacheItemPolicy>(), null),
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStocksByCity_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -493,6 +509,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStocksByCity_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -511,7 +528,7 @@ namespace BloomSales.Services.Tests
             Mock<IInventoryItemRepository> mockInventoryRepo = new Mock<IInventoryItemRepository>();
             mockInventoryRepo.Setup(
                 r => r.GetStocks(It.Is<IEnumerable<Warehouse>>(l => l.Count() == 3), 200)).Returns(expected);
-            InventoryService sut = new InventoryService(mockInventoryRepo.Object, null, null, 
+            InventoryService sut = new InventoryService(mockInventoryRepo.Object, null, null,
                 mockCache.Object, mockLocationService.Object);
 
             // act
@@ -525,6 +542,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStocksByCity_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -557,6 +575,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStocksByRegion_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -578,6 +597,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStocksByRegion_ResultNotExistsCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -604,11 +624,12 @@ namespace BloomSales.Services.Tests
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
             mockLocationService.Verify(s => s.GetWarehousesByRegion("WesternCanada"), Times.Once());
-            mockInventoryRepo.Verify(r => r.GetStocks(It.Is<IEnumerable<Warehouse>>(l => l.Count() == 2), 300), 
+            mockInventoryRepo.Verify(r => r.GetStocks(It.Is<IEnumerable<Warehouse>>(l => l.Count() == 2), 300),
                 Times.Once());
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStocksByRegion_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -642,6 +663,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStockByWarehouse_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -659,6 +681,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStockByWarehouse_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -683,6 +706,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetStockByWarehouse_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -708,6 +732,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddToInventory_GivenANewItem_AddsToDatabase()
         {
             // arrange
@@ -723,6 +748,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void UpdateInventory_GivenAValidItemIDAndNewStockValue_UpdatesTheRecordInDatabase()
         {
             // arrange
@@ -737,6 +763,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddCategory_GivenANewCategory_AddsToDatabase()
         {
             // arrange

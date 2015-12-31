@@ -3,12 +3,9 @@ using BloomSales.Data.Repositories;
 using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -16,6 +13,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class ProductRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllProducts_OnNonEmptyTable_ReturnsAllProducts()
         {
             // arrange
@@ -38,6 +36,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetProduct_GivenAValidProductID_ReturnsTheProduct()
         {
             // arrange
@@ -57,6 +56,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddProduct_GivenANewProduct_AddsToDatabase()
         {
             // arrange

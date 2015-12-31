@@ -1,15 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
-using BloomSales.Data.Entities;
-using System.Data.Entity;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
-using BloomSales.Data;
 using BloomSales.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -17,6 +13,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class PaymentInfoRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddPayment_GivenANewPayment_AddsToDatabase()
         {
             // arrange
@@ -35,6 +32,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetPeyment_GivenAValidOrderID_ReturnsThePaymentRecord()
         {
             // arrange

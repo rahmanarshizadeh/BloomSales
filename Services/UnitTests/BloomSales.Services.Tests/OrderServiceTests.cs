@@ -1,14 +1,13 @@
 ﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
 using BloomSales.Services.Contracts;
+using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Tests
 {
@@ -16,6 +15,7 @@ namespace BloomSales.Services.Tests
     public class OrderServiceTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void PlaceOrder_GivenANewOrderShippingAndPayment_PlacesTheOrder()
         {
             // arrange
@@ -77,6 +77,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void PlaceOrder_GivenANewOrderWhereOrderItemsAreNotAvailableInASingleWarehouse_PlacesTheOrder()
         {
             // arrange
@@ -158,6 +159,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrder_ResultExistsInCache_ReturnsResultFromCache()
         {
             // arrange
@@ -174,6 +176,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrder_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -192,6 +195,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrder_ResultNotExistsInCache_CachesTheResult()
         {
             // arrange
@@ -210,6 +214,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrderHistoryByCustomer_ResultExistsInCache_ReturnsResultFromCache()
         {
             // arrange
@@ -232,6 +237,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrderHistoryByCustomer_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -258,6 +264,7 @@ namespace BloomSales.Services.Tests
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrderHistoryByCustomer_ResultNotExistsInCache_CachesTheResult()
         {
             // arrange
@@ -279,7 +286,7 @@ namespace BloomSales.Services.Tests
 
             // assert
             mockCache.Verify(
-                c => c.Set("c#21Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)", 
+                c => c.Set("c#21Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)",
                            It.Is<IEnumerable<Order>>(l => l.Equals(expected)),
                            It.IsAny<CacheItemPolicy>(), null),
                 Times.Once());

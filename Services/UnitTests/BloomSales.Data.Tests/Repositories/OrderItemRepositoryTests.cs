@@ -1,14 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
-using System.Data.Entity;
-using Moq;
 using BloomSales.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -16,6 +13,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class OrderItemRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddItem_GivenANewItem_AddsToDatabase()
         {
             // arrange
@@ -34,6 +32,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddItems_GivenAListOfNewItems_AddsThemToDatabase()
         {
             // arrange
@@ -56,6 +55,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void RemoveItem_GivenAValidID_DeletesTheRecordFromDatabase()
         {
             // arrange
@@ -75,6 +75,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetItemsByOrder_GivenAValidOrderID_ReturnsTheListOfItemsForThatOrder()
         {
             // arrange

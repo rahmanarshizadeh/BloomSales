@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -16,6 +14,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class OrderRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddOrder_GivenANewOrder_AddsToDatabase()
         {
             // arrange
@@ -35,6 +34,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrder_GivenAValidID_ReturnsTheOrderRecord()
         {
             // arrange
@@ -59,6 +59,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetOrdersByCustomer_GivenAValidCustomerIDAndAPeriodOfTime_ReturnsAppropriateRecords()
         {
             // arrange

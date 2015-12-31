@@ -54,6 +54,7 @@
     <Compile Include="Equality.cs" />
     <Compile Include="EntityMockFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

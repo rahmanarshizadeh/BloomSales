@@ -1,13 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
-using System.Data.Entity;
+using BloomSales.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Data.Entity;
 
 namespace BloomSales.Data.Tests.Repositories
 {
@@ -15,6 +11,7 @@ namespace BloomSales.Data.Tests.Repositories
     public class ShippingInfoRepositoryTests
     {
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void AddShipping_GivenANewShipping_AddsToDatabase()
         {
             // arrange
@@ -33,6 +30,7 @@ namespace BloomSales.Data.Tests.Repositories
         }
 
         [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetShippingStatus_GivenAValidOrderID_ReturnsTheShippingStatus()
         {
             // arrange
