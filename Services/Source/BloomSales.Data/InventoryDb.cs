@@ -1,10 +1,5 @@
 ﻿using BloomSales.Data.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data
 {
@@ -12,8 +7,9 @@ namespace BloomSales.Data
     {
         public InventoryDb() : base("name = InventoryDatabase")
         {
-            // do nothing!
+            Database.SetInitializer<InventoryDb>(new InventoryDbInitializer());
         }
+
         public virtual DbSet<Product> Products { get; set; }
 
         public virtual DbSet<ProductCategory> Categories { get; set; }

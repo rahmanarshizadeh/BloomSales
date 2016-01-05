@@ -1,10 +1,5 @@
 ﻿using BloomSales.Data.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data
 {
@@ -12,7 +7,7 @@ namespace BloomSales.Data
     {
         public ShippingDb() : base("name = ShippingDatabase")
         {
-            // do nothing!
+            Database.SetInitializer<ShippingDb>(new ShippingDbInitializer());
         }
 
         public virtual DbSet<Shipper> Shippers { get; set; }

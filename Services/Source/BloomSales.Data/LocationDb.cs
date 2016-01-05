@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BloomSales.Data.Entities;
 using System.Data.Entity;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data
 {
@@ -12,7 +7,7 @@ namespace BloomSales.Data
     {
         public LocationDb() : base("name = LocationDatabase")
         {
-            // do nothing!
+            Database.SetInitializer<LocationDb>(new LocationDbInitializer());
         }
 
         public virtual DbSet<Region> Regions { get; set; }
