@@ -17,7 +17,7 @@ IF EXIST "%dataDir%" (
 	ECHO Directory exists.
 ) ELSE (
 	ECHO Creating '%dataDir%'...
-	mkdir "%dataDir%"
+	MKDIR "%dataDir%"
 	ECHO Directory created successfully.
 )
 
@@ -33,3 +33,25 @@ ECHO ^</connectionStrings^> >> connections.config
 
 ECHO 'connections.config' created successfully.
 
+ECHO.
+ECHO Copying 'connections.config' to destinations...
+
+IF NOT EXIST ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Debug\" (
+	MKDIR ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Debug\"
+)
+
+ECHO   Copying to %cd%\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Debug\
+COPY /Y .\connections.config ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Debug\"
+
+IF NOT EXIST ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Release\" (
+	MKDIR ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Release\"
+)
+
+ECHO   Copying to %cd%\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Release\
+COPY /Y .\connections.config ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Release\"
+
+ECHO.
+ECHO Cleaning up...
+DEL .\connections.config
+
+ECHO Done!
