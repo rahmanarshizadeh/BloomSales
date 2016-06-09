@@ -13,22 +13,28 @@ namespace BloomSales.Data.Entities
     public class ShippingInfo : ContactInfo
     {
         [Key]
+        [DataMember]
         public int OrderID { get; set; }
 
         [Required]
+        [DataMember]
         public int WarehouseID { get; set; }
 
         [NotMapped]
+        [DataMember]
         public Warehouse PickupLocation { get; set; }
 
         public DateTime ShippedDate { get; set; }
 
         [Required]
+        [DataMember]
         public ShippingStatus Status { get; set; }
 
         [Required]
+        [DataMember]
         public int ServiceID { get; set; }
 
+        [DataMember]
         public virtual DeliveryService Service { get; set; }
     }
 }

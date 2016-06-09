@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ServiceModel;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Services.Contracts;
-using BloomSales.Data.Entities;
+using System.Collections.Generic;
+using System.ServiceModel;
 
 namespace BloomSales.Services.Proxies
 {

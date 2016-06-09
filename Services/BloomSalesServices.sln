@@ -30,6 +30,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloomSales.Services.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloomSales.TestHelpers", "Source\BloomSales.TestHelpers\BloomSales.TestHelpers.csproj", "{083AAAB8-22D0-4836-8D92-3C6AC1541119}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration Tests", "Integration Tests", "{09BED3A1-D57F-43E9-B19E-24281F314094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloomSales.Services.IntegrationTests", "IntegrationTests\BloomSales.Services.IntegrationTests\BloomSales.Services.IntegrationTests.csproj", "{2DE0BE4D-DA45-40B0-8976-D5F017515DAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,10 @@ Global
 		{083AAAB8-22D0-4836-8D92-3C6AC1541119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{083AAAB8-22D0-4836-8D92-3C6AC1541119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{083AAAB8-22D0-4836-8D92-3C6AC1541119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE0BE4D-DA45-40B0-8976-D5F017515DAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE0BE4D-DA45-40B0-8976-D5F017515DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE0BE4D-DA45-40B0-8976-D5F017515DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE0BE4D-DA45-40B0-8976-D5F017515DAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +89,6 @@ Global
 		{74BAB9F4-4740-49EA-9C8D-49F2C950A920} = {B72ACEF2-922C-421F-B647-A9C4CC7C2599}
 		{5F96DA46-09FD-40AB-941B-B8F4EE23FD60} = {B72ACEF2-922C-421F-B647-A9C4CC7C2599}
 		{083AAAB8-22D0-4836-8D92-3C6AC1541119} = {BBC44229-96F1-4064-8E60-EA266CB2F88E}
+		{2DE0BE4D-DA45-40B0-8976-D5F017515DAC} = {09BED3A1-D57F-43E9-B19E-24281F314094}
 	EndGlobalSection
 EndGlobal

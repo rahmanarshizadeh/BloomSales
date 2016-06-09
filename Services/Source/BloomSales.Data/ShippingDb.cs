@@ -8,6 +8,7 @@ namespace BloomSales.Data
         public ShippingDb() : base("name = ShippingDatabase")
         {
             Database.SetInitializer<ShippingDb>(new ShippingDbInitializer());
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<Shipper> Shippers { get; set; }

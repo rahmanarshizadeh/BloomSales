@@ -8,6 +8,7 @@ namespace BloomSales.Data
         public LocationDb() : base("name = LocationDatabase")
         {
             Database.SetInitializer<LocationDb>(new LocationDbInitializer());
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<Region> Regions { get; set; }

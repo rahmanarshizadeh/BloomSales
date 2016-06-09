@@ -11,14 +11,18 @@ namespace BloomSales.Data.Entities
     [DataContract]
     public class Order
     {
+        [DataMember]
         public int ID { get; set; }
 
         [Required]
+        [DataMember]
         public DateTime OrderDate { get; set; }
 
         [Required]
+        [DataMember]
         public int CustomerID { get; set; }
 
+        [DataMember]
         public int ParentOrderID { get; set; }
 
         /// <summary>
@@ -26,9 +30,11 @@ namespace BloomSales.Data.Entities
         /// (from one warehouse to another)
         /// </summary>
         [Required]
+        [DataMember]
         public bool IsInternalOrder { get; set; }
 
         [Required]
+        [DataMember]
         public virtual IEnumerable<OrderItem> Items { get; set; }
     }
 }

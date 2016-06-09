@@ -1,18 +1,14 @@
-﻿using BloomSales.Services.Contracts;
-using BloomSales.Data.Entities;
-using BloomSales.Data;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
+using BloomSales.Services.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Caching;
 using System.ServiceModel;
 
 namespace BloomSales.Services
 {
-    [ServiceBehavior(UseSynchronizationContext = false, 
+    [ServiceBehavior(UseSynchronizationContext = false,
                      ConcurrencyMode = ConcurrencyMode.Multiple,
                      InstanceContextMode = InstanceContextMode.PerCall)]
     public class LocationService : ILocationService, IDisposable
@@ -99,7 +95,6 @@ namespace BloomSales.Services
 
             return warehouses;
         }
-
 
         public IEnumerable<Warehouse> GetWarehousesByCity(string city)
         {
@@ -208,6 +203,13 @@ namespace BloomSales.Services
                     result = this.warehouseRepo.GetWarehousesByRegion(region.Name);
                 }
             }
+
+            // remove the warehouse itself from the result
+            List<Warehouse> tempList = new List<Warehouse>(result);
+            var warehouseObject = tempList.Find(w => w.Name == warehouse.Name);
+            tempList.Remove(warehouseObject);
+            result = tempList;
+
             return result;
         }
     }

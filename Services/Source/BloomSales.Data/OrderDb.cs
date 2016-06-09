@@ -8,6 +8,7 @@ namespace BloomSales.Data
         public OrderDb() : base("name = OrderDatabase")
         {
             Database.SetInitializer<OrderDb>(new OrderDbInitializer());
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<Order> Orders { get; set; }
