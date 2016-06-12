@@ -15,6 +15,7 @@ namespace BloomSales.Services.Tests
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetAllProducts_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -38,6 +39,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetAllProducts_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -62,6 +64,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetAllProducts_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -88,6 +91,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetProductByCategory_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -110,6 +114,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetProductsByCategory_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -137,6 +142,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetProductsByCategory_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -167,6 +173,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetCategories_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -189,6 +196,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetCategories_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -211,6 +219,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetCategories_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -235,6 +244,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByCity_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -257,6 +267,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByCity_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -290,6 +301,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByCity_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -323,6 +335,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByWarehouse_ResultExistsInCache_ReturnsResult()
         {
             // arrange
@@ -346,6 +359,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByWarehouse_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -373,6 +387,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByWarehouse_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -401,6 +416,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByRegion_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -426,6 +442,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByRegion_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -457,6 +474,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetInventoryByRegion_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -489,6 +507,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStocksByCity_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -510,6 +529,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStocksByCity_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -543,6 +563,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStocksByCity_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -576,6 +597,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStocksByRegion_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -598,6 +620,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStocksByRegion_ResultNotExistsCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -630,6 +653,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStocksByRegion_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -664,6 +688,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStockByWarehouse_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -682,6 +707,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStockByWarehouse_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -707,6 +733,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void GetStockByWarehouse_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
@@ -733,6 +760,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void AddToInventory_GivenANewItem_AddsToDatabase()
         {
             // arrange
@@ -749,6 +777,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void UpdateInventory_GivenAValidItemIDAndNewStockValue_UpdatesTheRecordInDatabase()
         {
             // arrange
@@ -764,6 +793,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.InventoryServiceTests")]
         public void AddCategory_GivenANewCategory_AddsToDatabase()
         {
             // arrange

@@ -13,6 +13,7 @@ namespace BloomSales.Services.Tests
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetAllRegions_ResultExistsInCache_ReturnsTheRelatedRegions()
         {
             // arrange
@@ -30,6 +31,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetAllRegions_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -63,6 +65,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehousesByRegion_ResultExistsInCache_ReturnsTheRelateResult()
         {
             // arrange
@@ -81,6 +84,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehousesByRegion_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -114,6 +118,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetNearestWarehousesTo_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -133,6 +138,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehousesByCity_ResultExistsInCache_ReturnsTheRelatedResult()
         {
             // arrange
@@ -151,6 +157,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehouseByCity_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -184,6 +191,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehouseByName_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -201,6 +209,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehouseByName_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -226,6 +235,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehouseByID_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -243,6 +253,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void GetWarehouseByID_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange
@@ -268,6 +279,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void AddRegion_GivenANewRegion_AddsToDatabase()
         {
             // arrange
@@ -284,6 +296,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void AddWarehouse_GivenANewWarehouse_AddsToDatabase()
         {
             // arrange
@@ -300,6 +313,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void UpdateWarehouse_GivenAWarehouse_UpdateTheRecordInDatabase()
         {
             // arrange
@@ -316,6 +330,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.LocationServiceTests")]
         public void RemoveWarehouse_GivenAWarehouse_DeletesTheRecordFromDatabase()
         {
             // arrange

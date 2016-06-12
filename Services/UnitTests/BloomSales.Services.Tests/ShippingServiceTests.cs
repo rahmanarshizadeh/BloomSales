@@ -14,6 +14,7 @@ namespace BloomSales.Services.Tests
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetAllShippers_ResultExistsInCache_ReturnsTheListOfShippers()
         {
             // arrange
@@ -36,6 +37,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetAllShippers_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -66,6 +68,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetServicesByShipper_ResultExistsInCache_ReturnsTheResult()
         {
             List<DeliveryService> expected = new List<DeliveryService>();
@@ -85,6 +88,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetServiceByShipper_ResultNotExistsInCahce_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -117,6 +121,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void RequestShipping_GivenANewShipping_ReceivedsAndAddsToDatabase()
         {
             // arrange
@@ -135,6 +140,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetShippingStatus_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
@@ -152,6 +158,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetShippingStatus_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -170,6 +177,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void AddShipper_GivenANewShipper_AddsToDatabase()
         {
             // arrange
@@ -188,6 +196,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void AddDeliveryService_GivenANewService_AddsToDatabase()
         {
             // arrange

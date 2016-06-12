@@ -39,6 +39,7 @@ namespace BloomSales.Services.IntegrationTests
 
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.LocationServiceTests")]
         public void GetAllRegions_GivenCountryCanada_ReturnsListOfRegions()
         {
             // arrange
@@ -57,6 +58,7 @@ namespace BloomSales.Services.IntegrationTests
 
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.LocationServiceTests")]
         public void GetWarehousesByRegion_GivenWesternCanada_ReturnsListOfWarehouses()
         {
             // arrange
@@ -74,6 +76,7 @@ namespace BloomSales.Services.IntegrationTests
 
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.LocationServiceTests")]
         public void GetNearestWarehouseTo_GivenATorontoWarehouse_ReturnsTheOtherTorontoWarehouse()
         {
             // arrange
@@ -96,6 +99,7 @@ namespace BloomSales.Services.IntegrationTests
 
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.LocationServiceTests")]
         public void GetWarehousesByCity_GivenVancouver_ReturnsListOfWarehouses()
         {
             // arrange
@@ -111,6 +115,7 @@ namespace BloomSales.Services.IntegrationTests
 
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.LocationServiceTests")]
         public void GetWarehouseByName_GivenAValidWarehouseName_ReturnsTheWarehouseObject()
         {
             // arrange
@@ -126,6 +131,7 @@ namespace BloomSales.Services.IntegrationTests
 
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.LocationServiceTests")]
         public void GetWarehouseByID_GivenAValidID_ReturnsTheWarehouseObject()
         {
             // arrange
@@ -141,6 +147,7 @@ namespace BloomSales.Services.IntegrationTests
 
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.LocationServiceTests")]
         public void AddRegion_GivenANewRegion_AddsToTheDatabase()
         {
             // Remove the record related to "All Canadian Regions" from
@@ -164,13 +171,13 @@ namespace BloomSales.Services.IntegrationTests
         }
 
         [TestCleanup]
-        public void ClientCleanup()
+        public void CleanupClient()
         {
             locationClient.Close();
         }
 
         [ClassCleanup]
-        public static void ServiceCleanup()
+        public static void CleanupService()
         {
             host.Close();
 

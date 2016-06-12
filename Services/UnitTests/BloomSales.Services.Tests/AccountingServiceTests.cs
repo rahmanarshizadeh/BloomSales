@@ -13,6 +13,7 @@ namespace BloomSales.Services.Tests
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.AccountingServiceTests")]
         public void ProcessPayment_GivenANewPayment_ProcessesAndAddsThePaymentToDatabase()
         {
             // arrange
@@ -32,6 +33,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.AccountingServiceTests")]
         public void GetPaymentFor_ResultExistsInCache_ReturnsThePaymentResult()
         {
             // arrange
@@ -49,6 +51,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.AccountingServiceTests")]
         public void GetPaymentFor_ResultNotExistsInCache_FetchesTheResultFromDatabaseAndAddsToCache()
         {
             // arrange

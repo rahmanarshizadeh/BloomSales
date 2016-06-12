@@ -16,6 +16,7 @@ namespace BloomSales.Services.Tests
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void PlaceOrder_GivenANewOrderShippingAndPayment_PlacesTheOrder()
         {
             // arrange
@@ -78,6 +79,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void PlaceOrder_GivenANewOrderWhereOrderItemsAreNotAvailableInASingleWarehouse_PlacesTheOrder()
         {
             // arrange
@@ -160,6 +162,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void GetOrder_ResultExistsInCache_ReturnsResultFromCache()
         {
             // arrange
@@ -177,6 +180,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void GetOrder_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -196,6 +200,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void GetOrder_ResultNotExistsInCache_CachesTheResult()
         {
             // arrange
@@ -215,6 +220,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void GetOrderHistoryByCustomer_ResultExistsInCache_ReturnsResultFromCache()
         {
             // arrange
@@ -238,6 +244,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void GetOrderHistoryByCustomer_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -265,6 +272,7 @@ namespace BloomSales.Services.Tests
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void GetOrderHistoryByCustomer_ResultNotExistsInCache_CachesTheResult()
         {
             // arrange
