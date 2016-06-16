@@ -459,7 +459,7 @@ namespace BloomSales.Data
                             {
                                 ProductID = p.ID,
                                 WarehouseID = w.ID,
-                                UnitsInStock = (short)rand.Next(0, 40)
+                                UnitsInStock = (short)rand.Next(1, 40)
                             }
                         );
                 }

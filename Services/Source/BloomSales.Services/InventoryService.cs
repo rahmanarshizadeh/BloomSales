@@ -1,14 +1,14 @@
-﻿using BloomSales.Data.Repositories;
+﻿using BloomSales.Data.Entities;
+using BloomSales.Data.Repositories;
 using BloomSales.Services.Contracts;
-using BloomSales.Data.Entities;
 using BloomSales.Services.Proxies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using System.ServiceModel;
 
 namespace BloomSales.Services
 {
@@ -196,6 +196,10 @@ namespace BloomSales.Services
         public void AddProduct(Product product)
         {
             this.productRepo.AddProduct(product);
+
+            // remove the cache record for "All Products"
+            if (cache["allProducts"] != null)
+                cache.Remove("allProducts");
         }
 
         public void AddToInventory(InventoryItem item)
@@ -211,6 +215,10 @@ namespace BloomSales.Services
         public void AddCategory(ProductCategory category)
         {
             this.categoryRepo.AddCategory(category);
+
+            // remove the cache record for "All Categories"
+            if (cache["allCategories"] != null)
+                cache.Remove("allCategories");
         }
 
         public void Dispose()
