@@ -14,6 +14,7 @@ namespace BloomSales.Data.Entities
     {
         [Key]
         [DataMember]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int OrderID { get; set; }
 
         [Required]

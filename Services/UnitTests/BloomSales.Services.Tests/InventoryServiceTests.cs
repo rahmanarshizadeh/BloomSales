@@ -798,8 +798,11 @@ namespace BloomSales.Services.Tests
         {
             // arrange
             ProductCategory category = new ProductCategory() { Name = "Category1" };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            mockCache.Setup(c => c["allCategories"]).Returns(new object());
             Mock<IProductCategoryRepository> mockCategoryRepo = new Mock<IProductCategoryRepository>();
-            InventoryService sut = new InventoryService(null, mockCategoryRepo.Object, null, null, null);
+            InventoryService sut =
+                new InventoryService(null, mockCategoryRepo.Object, null, mockCache.Object, null);
 
             // act
             sut.AddCategory(category);
@@ -807,6 +810,9 @@ namespace BloomSales.Services.Tests
             // assert
             mockCategoryRepo.Verify(
                 r => r.AddCategory(It.Is<ProductCategory>(c => c.Name.Equals("Category1"))),
+                Times.Once());
+            mockCache.Verify(
+                c => c.Remove("allCategories", null),
                 Times.Once());
         }
     }
