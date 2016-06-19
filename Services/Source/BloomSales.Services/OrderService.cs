@@ -1,13 +1,11 @@
-﻿using BloomSales.Services.Contracts;
-using BloomSales.Data.Entities;
+﻿using BloomSales.Data.Entities;
 using BloomSales.Data.Repositories;
+using BloomSales.Services.Contracts;
+using BloomSales.Services.Proxies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Caching;
-using BloomSales.Services.Proxies;
 using System.ServiceModel;
 
 namespace BloomSales.Services
@@ -52,17 +50,27 @@ namespace BloomSales.Services
             this.orderItemRepo = orderItemRepository;
             this.cache = cache;
         }
-        
+
         public bool PlaceOrder(Order order, ShippingInfo shipping, PaymentInfo payment)
         {
+            order.HasProcessed = false;
+            int orderID = orderRepo.AddOrder(order);
+
+            // update order ID wherever needed
+            order.ID = orderID;
+            payment.OrderID = orderID;
+            shipping.OrderID = orderID;
+            foreach (OrderItem item in order.Items)
+                item.OrderID = orderID;
+
             if (!accountingService.ProcessPayment(payment))
                 return false;
 
-            var warehouses = this.locationService.GetWarehousesByCity(shipping.City);
+            var orderSegments = SegmentOrderOnAvailability(order.Items, shipping);
 
-            var orderSegments = SegmentOrderOnAvailability(order.Items, warehouses);
+            order.HasProcessed = true;
 
-            order.ID = this.orderRepo.AddOrder(order);
+            orderRepo.UpdateOrder(order);
 
             Warehouse pickupLocation;
 
@@ -73,7 +81,6 @@ namespace BloomSales.Services
 
             shipping.PickupLocation = pickupLocation;
             shipping.WarehouseID = pickupLocation.ID;
-            shipping.OrderID = order.ID;
             this.shippingService.RequestShipping(shipping);
 
             return true;
@@ -105,7 +112,7 @@ namespace BloomSales.Services
                 result = this.orderRepo.GetOrdersByCustomer(customerID, startDate, endDate);
                 this.cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
             }
-            
+
             return result;
         }
 
@@ -119,12 +126,17 @@ namespace BloomSales.Services
         }
 
         private IDictionary<Warehouse, IEnumerable<OrderItem>> SegmentOrderOnAvailability(
-            IEnumerable<OrderItem> itemsList, IEnumerable<Warehouse> warehouses)
+            IEnumerable<OrderItem> itemsList, ShippingInfo shipping)
         {
             List<OrderItem> items = new List<OrderItem>(itemsList);
 
             Dictionary<Warehouse, IEnumerable<OrderItem>> orderSegments =
                 new Dictionary<Warehouse, IEnumerable<OrderItem>>();
+
+            var warehouses =
+                locationService.GetNearestWarehousesTo(shipping.City,
+                                                       shipping.Province,
+                                                       shipping.Country);
 
             foreach (Warehouse w in warehouses)
             {
@@ -143,7 +155,7 @@ namespace BloomSales.Services
         {
             List<OrderItem> availableItems = new List<OrderItem>();
 
-            for (int i = 0; i < itemsList.Count; )
+            for (int i = 0; i < itemsList.Count;)
             {
                 var inventoryItem =
                     this.inventoryService.GetStockByWarehouse(warehouse.Name, itemsList[i].ProductID);
@@ -166,7 +178,7 @@ namespace BloomSales.Services
                 orderSegments.Add(warehouse, availableItems);
         }
 
-        private Warehouse PlaceSuborders(IDictionary<Warehouse, IEnumerable<OrderItem>> orderSegments, 
+        private Warehouse PlaceSuborders(IDictionary<Warehouse, IEnumerable<OrderItem>> orderSegments,
                                     int parentOrderID)
         {
             var keys = orderSegments.Keys;
@@ -187,11 +199,10 @@ namespace BloomSales.Services
                 this.shippingService.RequestShipping(shipping);
             }
 
-
             return destination;
         }
 
-        private static ShippingInfo CreateShipping(ContactInfo destination, Warehouse warehouse, 
+        private static ShippingInfo CreateShipping(ContactInfo destination, Warehouse warehouse,
                                                    int orderID, int serviceID)
         {
             ShippingInfo shipping = new ShippingInfo()

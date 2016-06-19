@@ -1,9 +1,9 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -16,6 +16,8 @@ namespace BloomSales.Data.Repositories
         Region GetRegion(int id);
 
         Region GetRegion(string name);
+
+        Region GetRegionByProvince(string country, string province);
 
         void AddRegion(Region region);
     }

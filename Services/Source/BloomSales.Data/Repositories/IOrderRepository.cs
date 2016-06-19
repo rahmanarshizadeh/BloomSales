@@ -11,6 +11,8 @@ namespace BloomSales.Data.Repositories
     {
         int AddOrder(Order order);
 
+        void UpdateOrder(Order order);
+
         Order GetOrder(int id);
 
         IEnumerable<Order> GetOrdersByCustomer(int cusotmerID, DateTime startDate, DateTime endDate);

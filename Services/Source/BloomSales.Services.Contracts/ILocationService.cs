@@ -1,10 +1,10 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using BloomSales.Data.Entities;
-using System.ServiceModel;
 
 namespace BloomSales.Services.Contracts
 {
@@ -17,8 +17,11 @@ namespace BloomSales.Services.Contracts
         [OperationContract]
         IEnumerable<Warehouse> GetWarehousesByRegion(string region);
 
-        [OperationContract]
+        [OperationContract(Name = "GetNearestWarehousesByWarehouse")]
         IEnumerable<Warehouse> GetNearestWarehousesTo(Warehouse warehouse);
+
+        [OperationContract(Name = "GetNearestWarehousesByCity")]
+        IEnumerable<Warehouse> GetNearestWarehousesTo(string city, string province, string country);
 
         [OperationContract]
         IEnumerable<Warehouse> GetWarehousesByCity(string city);

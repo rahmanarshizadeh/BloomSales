@@ -30,17 +30,18 @@ namespace BloomSales.Services.Tests
                     new OrderItem() { ProductID = 4, Quantity = 1 },
                 }
             };
-            ShippingInfo shipping = new ShippingInfo() { City = "Montreal" };
+            ShippingInfo shipping = new ShippingInfo() { City = "Montreal", Province = "QC", Country = "Canada" };
             PaymentInfo payment = new PaymentInfo() { Amount = 87 };
             IEnumerable<Warehouse> warehouses = new Warehouse[]
             {
                 new Warehouse() { City = "Montreal", ID = 10, Name = "W11" }
             };
             Mock<IAccountingService> mockAccountingService = new Mock<IAccountingService>();
-            mockAccountingService.Setup(s => s.ProcessPayment(It.Is<PaymentInfo>(p => p.Amount == 87)))
-                .Returns(true);
+            mockAccountingService
+                .Setup(s => s.ProcessPayment(It.Is<PaymentInfo>(p => p.Amount == 87))).Returns(true);
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
-            mockLocationService.Setup(s => s.GetWarehousesByCity("Montreal")).Returns(warehouses);
+            mockLocationService.
+                Setup(s => s.GetNearestWarehousesTo("Montreal", "QC", "Canada")).Returns(warehouses);
             Mock<IInventoryService> mockInventoryService = new Mock<IInventoryService>();
             mockInventoryService.Setup(s => s.GetStockByWarehouse("W11", 1)).Returns(new InventoryItem() { ID = 5, UnitsInStock = 2 });
             mockInventoryService.Setup(s => s.GetStockByWarehouse("W11", 2)).Returns(new InventoryItem() { ID = 6, UnitsInStock = 2 });
@@ -59,7 +60,7 @@ namespace BloomSales.Services.Tests
             // assert
             Assert.AreEqual(true, result);
             mockAccountingService.Verify(s => s.ProcessPayment(It.Is<PaymentInfo>(p => p.Amount == 87)), Times.Once());
-            mockLocationService.Verify(s => s.GetWarehousesByCity("Montreal"), Times.Once());
+            mockLocationService.Verify(s => s.GetNearestWarehousesTo("Montreal", "QC", "Canada"), Times.Once());
             mockInventoryService.Verify(s => s.GetStockByWarehouse("W11", 1), Times.Once());
             mockInventoryService.Verify(s => s.GetStockByWarehouse("W11", 2), Times.Once());
             mockInventoryService.Verify(s => s.GetStockByWarehouse("W11", 3), Times.Once());
@@ -93,7 +94,7 @@ namespace BloomSales.Services.Tests
                     new OrderItem() { ProductID = 4, Quantity = 1 },
                 }
             };
-            ShippingInfo shipping = new ShippingInfo() { City = "Montreal" };
+            ShippingInfo shipping = new ShippingInfo() { City = "Montreal", Province = "QC", Country = "Canada" };
             PaymentInfo payment = new PaymentInfo() { Amount = 87 };
             IEnumerable<Warehouse> warehouses = new Warehouse[]
             {
@@ -109,7 +110,7 @@ namespace BloomSales.Services.Tests
             mockAccountingService.Setup(s => s.ProcessPayment(It.Is<PaymentInfo>(p => p.Amount == 87)))
                 .Returns(true);
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
-            mockLocationService.Setup(s => s.GetWarehousesByCity("Montreal")).Returns(warehouses);
+            mockLocationService.Setup(s => s.GetNearestWarehousesTo("Montreal", "QC", "Canada")).Returns(warehouses);
             Mock<IInventoryService> mockInventoryService = new Mock<IInventoryService>();
             mockInventoryService.Setup(s => s.GetStockByWarehouse("W11", 1)).Returns(new InventoryItem() { ID = 5, UnitsInStock = 2 });
             mockInventoryService.Setup(s => s.GetStockByWarehouse("W11", 4)).Returns(new InventoryItem() { ID = 8, UnitsInStock = 0 });
@@ -134,7 +135,7 @@ namespace BloomSales.Services.Tests
             // assert
             Assert.AreEqual(true, result);
             mockAccountingService.Verify(s => s.ProcessPayment(It.Is<PaymentInfo>(p => p.Amount == 87)), Times.Once());
-            mockLocationService.Verify(s => s.GetWarehousesByCity("Montreal"), Times.Once());
+            mockLocationService.Verify(s => s.GetNearestWarehousesTo("Montreal", "QC", "Canada"), Times.Once());
             mockInventoryService.Verify(s => s.GetStockByWarehouse("W11", 1), Times.Once());
             mockInventoryService.Verify(s => s.GetStockByWarehouse("W11", 2), Times.Once());
             mockInventoryService.Verify(s => s.GetStockByWarehouse("W11", 3), Times.Once());

@@ -96,6 +96,26 @@ namespace BloomSales.Services
             return warehouses;
         }
 
+        public IEnumerable<Warehouse> GetNearestWarehousesTo(string city, string province, string country)
+        {
+            string cacheKey = "nearestToCity" + city;
+
+            var warehouses = cache[cacheKey] as IEnumerable<Warehouse>;
+
+            if (warehouses == null)
+            {
+                warehouses = FindNearestWarehousesTo(city, province, country);
+
+                // set the result in cache
+                CacheItemPolicy policy = new CacheItemPolicy();
+                // doesn't change very often, so set expiration time to 1 day
+                policy.SlidingExpiration = new TimeSpan(1, 0, 0, 0);
+                this.cache.Set(cacheKey, warehouses, policy);
+            }
+
+            return warehouses;
+        }
+
         public IEnumerable<Warehouse> GetWarehousesByCity(string city)
         {
             string cacheKey = "warehousesIn" + city;
@@ -187,28 +207,35 @@ namespace BloomSales.Services
         private IEnumerable<Warehouse> FindNearestWarehousesTo(Warehouse warehouse)
         {
             IEnumerable<Warehouse> result =
-                this.warehouseRepo.GetWarehousesByCity(warehouse.City);
-
-            if (result == null)
-            {
-                result = this.warehouseRepo.GetWarehousesByProvince(warehouse.Province);
-
-                if (result == null)
-                {
-                    Region region = warehouse.Region;
-
-                    if (region == null)
-                        region = this.regionRepo.GetRegion(warehouse.RegionID);
-
-                    result = this.warehouseRepo.GetWarehousesByRegion(region.Name);
-                }
-            }
+                FindNearestWarehousesTo(warehouse.City, warehouse.Province,
+                                        warehouse.Country, warehouse.Region);
 
             // remove the warehouse itself from the result
             List<Warehouse> tempList = new List<Warehouse>(result);
             var warehouseObject = tempList.Find(w => w.Name == warehouse.Name);
             tempList.Remove(warehouseObject);
             result = tempList;
+
+            return result;
+        }
+
+        private IEnumerable<Warehouse> FindNearestWarehousesTo(string city, string province, string country, Region region = null)
+        {
+            IEnumerable<Warehouse> result =
+                this.warehouseRepo.GetWarehousesByCity(city);
+
+            if (result == null)
+            {
+                result = this.warehouseRepo.GetWarehousesByProvince(province);
+
+                if (result == null)
+                {
+                    if (region == null)
+                        region = regionRepo.GetRegionByProvince(country, province);
+
+                    result = this.warehouseRepo.GetWarehousesByRegion(region.Name);
+                }
+            }
 
             return result;
         }

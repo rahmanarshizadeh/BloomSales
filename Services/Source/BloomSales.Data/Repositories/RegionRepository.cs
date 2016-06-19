@@ -51,6 +51,18 @@ namespace BloomSales.Data.Repositories
             return region;
         }
 
+        public Region GetRegionByProvince(string country, string province)
+        {
+            var regions = GetAllRegionsByCountry(country);
+
+            foreach (Region r in regions)
+                foreach (Province p in r.Provinces)
+                    if (p.Name == province || p.Abbreviation == province)
+                        return r;
+
+            return null;
+        }
+
         public void AddRegion(Region region)
         {
             db.Regions.Add(region);

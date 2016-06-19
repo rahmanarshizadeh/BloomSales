@@ -43,6 +43,7 @@
     <Compile Include="AccountingClient.cs" />
     <Compile Include="InventoryClient.cs" />
     <Compile Include="LocationClient.cs" />
+    <Compile Include="OrderClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShippingClient.cs" />
   </ItemGroup>

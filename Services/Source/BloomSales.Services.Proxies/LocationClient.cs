@@ -1,5 +1,6 @@
 ﻿using BloomSales.Data.Entities;
 using BloomSales.Services.Contracts;
+using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 
@@ -20,6 +21,11 @@ namespace BloomSales.Services.Proxies
         public IEnumerable<Warehouse> GetNearestWarehousesTo(Warehouse warehouse)
         {
             return Channel.GetNearestWarehousesTo(warehouse);
+        }
+
+        public IEnumerable<Warehouse> GetNearestWarehousesTo(string city, string province, string country)
+        {
+            return Channel.GetNearestWarehousesTo(city, province, country);
         }
 
         public IEnumerable<Warehouse> GetWarehousesByCity(string city)

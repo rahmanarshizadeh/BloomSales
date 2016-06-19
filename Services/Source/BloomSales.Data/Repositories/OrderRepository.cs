@@ -1,9 +1,9 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -29,9 +29,31 @@ namespace BloomSales.Data.Repositories
             return order.ID;
         }
 
+        public void UpdateOrder(Order order)
+        {
+            var record = (from o in db.Orders
+                          where order.ID == o.ID
+                          select o).Single();
+
+            record.IsInternalOrder = order.IsInternalOrder;
+            record.Items = order.Items;
+            record.ParentOrderID = order.ParentOrderID;
+            record.HasProcessed = order.HasProcessed;
+
+            db.SaveChanges();
+        }
+
         public Order GetOrder(int id)
         {
-            return this.db.Orders.Find(id);
+            var order = this.db.Orders.Find(id);
+            order.Items = (from item in db.OrderItems
+                           where item.OrderID == id
+                           select item).ToArray();
+            order.SubOrders = (from o in db.Orders
+                               where o.ParentOrderID == id
+                               select o).ToArray();
+
+            return order;
         }
 
         public IEnumerable<Order> GetOrdersByCustomer(int cusotmerID, DateTime startDate, DateTime endDate)

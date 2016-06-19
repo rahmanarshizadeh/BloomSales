@@ -25,6 +25,9 @@ namespace BloomSales.Data.Entities
         [DataMember]
         public int ParentOrderID { get; set; }
 
+        [DataMember]
+        public bool HasProcessed { get; set; }
+
         /// <summary>
         /// Indicates wether this is an internal order in BloomSales
         /// (from one warehouse to another)
@@ -36,5 +39,8 @@ namespace BloomSales.Data.Entities
         [Required]
         [DataMember]
         public virtual IEnumerable<OrderItem> Items { get; set; }
+
+        [DataMember]
+        public virtual IEnumerable<Order> SubOrders { get; set; }
     }
 }
