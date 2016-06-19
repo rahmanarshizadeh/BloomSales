@@ -2,7 +2,6 @@
 
 namespace BloomSales.Data.Entities
 {
-    [DataContract]
     public enum PaymentType
     {
         CreditCard,
