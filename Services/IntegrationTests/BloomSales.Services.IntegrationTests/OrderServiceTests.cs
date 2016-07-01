@@ -57,6 +57,36 @@ namespace BloomSales.Services.IntegrationTests
             Assert.AreEqual(3, actualItems.Count);
         }
 
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.OrderServiceTests")]
+        public void AddOrUpdateCart_GivenANewCustomerOrder_AddsToCarts()
+        {
+            // arrange
+            Order order = new Order() { ID = 159357 };
+
+            // act
+            orderClient.AddOrUpdateCart(951, order);
+
+            // assert
+            var actual = orderClient.GetCart(951);
+            Assert.AreEqual(order.ID, actual.ID);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.OrderServiceTests")]
+        public void GetCart_GivenAnInactiveCustomerID_ReturnsNull()
+        {
+            // arrange
+
+            // act
+            var actual = orderClient.GetCart(357951);
+
+            // assert
+            Assert.AreEqual(null, actual);
+        }
+
         [TestCleanup]
         public void CleanupClient()
         {

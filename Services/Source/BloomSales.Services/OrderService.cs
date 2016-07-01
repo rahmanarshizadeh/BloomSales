@@ -116,6 +116,23 @@ namespace BloomSales.Services
             return result;
         }
 
+        public void AddOrUpdateCart(int customerID, Order order)
+        {
+            if (order == null)
+                throw new ArgumentNullException("order", "Order object cannot be null.");
+
+            string cacheKey = "C" + customerID.ToString() + "Cart";
+
+            cache[cacheKey] = order;
+        }
+
+        public Order GetCart(int customerID)
+        {
+            string cacheKey = "C" + customerID.ToString() + "Cart";
+
+            return cache[cacheKey] as Order;
+        }
+
         public void Dispose()
         {
             if (this.orderRepo != null)

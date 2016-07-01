@@ -19,5 +19,11 @@ namespace BloomSales.Services.Contracts
 
         [OperationContract]
         IEnumerable<Order> GetOrderHistoryByCustomer(int customerID, DateTime startDate, DateTime endDate);
+
+        [OperationContract]
+        void AddOrUpdateCart(int customerID, Order order);
+
+        [OperationContract]
+        Order GetCart(int customerID);
     }
 }

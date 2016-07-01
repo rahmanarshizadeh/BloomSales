@@ -300,5 +300,57 @@ namespace BloomSales.Services.Tests
                            It.IsAny<CacheItemPolicy>(), null),
                 Times.Once());
         }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void AddOrUpdateCart_GivenANullOrderObject_ThrowsAnException()
+        {
+            // arrange
+            OrderService sut = new OrderService(null, null, null, null, null, null, null);
+
+            // act
+            sut.AddOrUpdateCart(111, null);
+
+            // assert
+            // nothing to assert.
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void AddOrUpdateCart_GivenANewOrder_AddsTheNewOrderToTheCache()
+        {
+            // arrange
+            Order order = new Order() { ID = 987654321 };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
+
+            // act
+            sut.AddOrUpdateCart(123, order);
+
+            // assert
+            mockCache.VerifySet(c => c["C123Cart"] = order, Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetCart_GivenACustomerHavingActiveCart_ReturnsTheCartContent()
+        {
+            // arrange
+            Order expected = new Order() { ID = 753 };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            mockCache.Setup(c => c["C159Cart"]).Returns(expected);
+            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
+
+            // act
+            var actual = sut.GetCart(159);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+            mockCache.Verify(c => c["C159Cart"], Times.Once());
+        }
     }
 }
