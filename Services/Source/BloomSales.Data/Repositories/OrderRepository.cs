@@ -46,12 +46,15 @@ namespace BloomSales.Data.Repositories
         public Order GetOrder(int id)
         {
             var order = this.db.Orders.Find(id);
-            order.Items = (from item in db.OrderItems
-                           where item.OrderID == id
-                           select item).ToArray();
+
+            order.Items = GetOrderItems(id);
+
             order.SubOrders = (from o in db.Orders
                                where o.ParentOrderID == id
                                select o).ToArray();
+
+            foreach (Order o in order.SubOrders)
+                o.Items = GetOrderItems(o.ID);
 
             return order;
         }
@@ -71,6 +74,13 @@ namespace BloomSales.Data.Repositories
         {
             if (this.db != null)
                 db.Dispose();
+        }
+
+        private OrderItem[] GetOrderItems(int orderID)
+        {
+            return (from item in db.OrderItems
+                    where item.OrderID == orderID
+                    select item).ToArray();
         }
     }
 }

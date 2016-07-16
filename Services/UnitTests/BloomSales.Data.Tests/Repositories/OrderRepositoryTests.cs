@@ -35,27 +35,41 @@ namespace BloomSales.Data.Tests.Repositories
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
-        public void GetOrder_GivenAValidID_ReturnsTheOrderRecord()
+        public void GetOrder_GivenIdOfAnOrderHavingMultipleSuborders_ReturnsTheFullOrderObject()
         {
             // arrange
-            List<Order> data = new List<Order>();
-            data.Add(new Order() { ID = 1 });
-            data.Add(new Order() { ID = 3 });
-            data.Add(new Order() { ID = 5 });
-            data.Add(new Order() { ID = 7 });
-            Order expected = data[2];
-            Mock<DbSet<Order>> mockSet = new Mock<DbSet<Order>>();
-            mockSet.Setup(s => s.Find(5)).Returns(expected);
+            List<Order> orderData = CreateOrderData();
+            List<OrderItem> orderItemsData = CreateOrderItemsData();
+            List<Order> expectedSubOrders = new List<Order>();
+            expectedSubOrders.Add(orderData[3]);
+            expectedSubOrders.Add(orderData[4]);
+            List<OrderItem> expectedSubOrdersItems = new List<OrderItem>();
+            expectedSubOrdersItems.Add(orderItemsData[4]);
+            expectedSubOrdersItems.Add(orderItemsData[5]);
+            expectedSubOrdersItems.Add(orderItemsData[6]);
+            expectedSubOrdersItems.Add(orderItemsData[7]);
+            Order expected = orderData[2];
+            Mock<DbSet<Order>> mockOrdersSet = EntityMockFactory.CreateSet(orderData.AsQueryable());
+            mockOrdersSet.Setup(s => s.Find(5)).Returns(orderData[2]);
+            Mock<DbSet<OrderItem>> mockOrderItemsSet = EntityMockFactory.CreateSet(orderItemsData.AsQueryable());
             Mock<OrderDb> mockContext = new Mock<OrderDb>();
-            mockContext.Setup(c => c.Orders).Returns(mockSet.Object);
+            mockContext.Setup(c => c.Orders).Returns(mockOrdersSet.Object);
+            mockContext.Setup(c => c.OrderItems).Returns(mockOrderItemsSet.Object);
             OrderRepository sut = new OrderRepository(mockContext.Object);
 
             // act
             var actual = sut.GetOrder(5);
 
             // assert
+            var actualSubOrders = new List<Order>(actual.SubOrders);
+            List<OrderItem> actualSubOrderItems = new List<OrderItem>();
+            foreach (Order o in actualSubOrders)
+                foreach (OrderItem oi in o.Items)
+                    actualSubOrderItems.Add(oi);
             Assert.AreEqual(expected, actual);
-            mockSet.Verify(s => s.Find(5), Times.Once());
+            Assert.IsTrue(Equality.AreEqual(expectedSubOrders, actualSubOrders));
+            Assert.IsTrue(Equality.AreEqual(expectedSubOrdersItems, actualSubOrderItems));
+            mockOrdersSet.Verify(s => s.Find(5), Times.Once());
         }
 
         [TestMethod]
@@ -89,6 +103,32 @@ namespace BloomSales.Data.Tests.Repositories
 
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
+        }
+
+        private static List<OrderItem> CreateOrderItemsData()
+        {
+            List<OrderItem> orderItemsData = new List<OrderItem>();
+            orderItemsData.Add(new OrderItem() { ID = 100, OrderID = 5 });
+            orderItemsData.Add(new OrderItem() { ID = 101, OrderID = 5 });
+            orderItemsData.Add(new OrderItem() { ID = 102, OrderID = 5 });
+            orderItemsData.Add(new OrderItem() { ID = 103, OrderID = 5 });
+            orderItemsData.Add(new OrderItem() { ID = 104, OrderID = 7 });
+            orderItemsData.Add(new OrderItem() { ID = 105, OrderID = 7 });
+            orderItemsData.Add(new OrderItem() { ID = 106, OrderID = 8 });
+            orderItemsData.Add(new OrderItem() { ID = 107, OrderID = 8 });
+            return orderItemsData;
+        }
+
+        private static List<Order> CreateOrderData()
+        {
+            // arrange
+            List<Order> orderData = new List<Order>();
+            orderData.Add(new Order() { ID = 1 });
+            orderData.Add(new Order() { ID = 3 });
+            orderData.Add(new Order() { ID = 5 });
+            orderData.Add(new Order() { ID = 7, ParentOrderID = 5 });
+            orderData.Add(new Order() { ID = 8, ParentOrderID = 5 });
+            return orderData;
         }
     }
 }
