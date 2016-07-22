@@ -1,0 +1,9 @@
+﻿
+/*
+    chages to the Bootstrap library
+*/
+
+.navbar-brand {
+    padding-top: 10px;
+    padding-bottom: 9px;
+}
