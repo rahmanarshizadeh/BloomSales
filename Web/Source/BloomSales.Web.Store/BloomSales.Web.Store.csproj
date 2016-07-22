@@ -193,6 +193,10 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\promotion banner.png" />
+    <Content Include="Content\Images\bedding_promotion_1.jpg" />
+    <Content Include="Content\Images\bedding_promotion_2.jpg" />
+    <Content Include="Content\Images\bedding_promotion_3.jpg" />
     <Content Include="Content\shop-homepage.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -253,6 +257,7 @@
     <Content Include="Views\Store\CategoriesList.cshtml" />
     <Content Include="Views\Store\Products.cshtml" />
     <Content Include="Views\Store\Index.cshtml" />
+    <Content Include="Views\Store\CatalogFrontPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -22,7 +22,7 @@ namespace BloomSales.Web.Store.Controllers
             this.locationService = new LocationClient();
         }
 
-        public ActionResult Index(string categoryName = "Fridges")
+        public ActionResult Index(string categoryName = "")
         {
             return View((object)categoryName);
         }

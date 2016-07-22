@@ -39,42 +39,4 @@
             </div>
         }
     </div>
-
-    @*<div>
-            <div class="panel-group">
-                @foreach (string k in Model.Keys)
-                {
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a>
-                                    @k
-                                </a>
-                            </h4>
-                        </div>
-                    </div>
-
-                        <div class="">
-                            <div class="panel-collapse">
-                            @foreach (string item in Model[k])
-                            {
-                                <div class="">
-                                    <a>
-                                        @Ajax.ActionLink(item,
-                                                     "Products",
-                                                     new { categoryName = item },
-                                                     new AjaxOptions()
-                                                     {
-                                                         HttpMethod = "GET",
-                                                         UpdateTargetId = "productsList",
-                                                         InsertionMode = InsertionMode.Replace
-                                                     })
-                                    </a>
-                                </div>
-                            }
-                                </div>
-                        </div>
-                }
-            </div>
-        </div>*@
 </div>

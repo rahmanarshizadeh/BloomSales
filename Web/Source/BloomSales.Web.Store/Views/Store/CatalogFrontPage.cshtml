@@ -1,0 +1,51 @@
+﻿
+<div class="col-md-9">
+    <div>
+        <img class="center-block img-responsive" style="padding-top:5em" src="~/Content/Images/promotion banner.png" />
+    </div>
+    <div class="center-block">
+        <h3 class="page-header text-center">
+            @Ajax.ActionLink("Bedding and Bedroom Sale",
+                             "Products",
+                             new { categoryName = "Bedroom" },
+                             new AjaxOptions()
+                             {
+                                 HttpMethod = "GET",
+                                 UpdateTargetId = "productsList",
+                                 InsertionMode = InsertionMode.Replace
+                             })
+        </h3>
+        <div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <img class="promotionImage img-responsive center-block" src="~/Content/Images/bedding_promotion_1.jpg" />
+                <div class="promotionBlock">
+                    <div class="text-center">
+                        <h3 style="color:#f81359">$18.99</h3>
+                        <h4>SIMMONS Microfibre Twin Pack Pillow</h4>
+                        <p>Regular $45.99</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <img class="promotionImage img-responsive center-block" src="~/Content/Images/bedding_promotion_2.jpg" />
+                <div class="promotionBlock">
+                    <div class="text-center">
+                        <h3 style="color:#f81359">$53.99</h3>
+                        <h4>COULORIT Cotton Jersey Sheet Set</h4>
+                        <p>Regular $78.99</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <img class="promotionImage img-responsive center-block" src="~/Content/Images/bedding_promotion_3.jpg" />
+                <div class="promotionBlock">
+                    <div class="text-center">
+                        <h3 style="color:#f81359">$34.99</h3>
+                        <h4>WHOLEHOME Chevy' Collection Comforter Set</h4>
+                        <p>Regular $89.99</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
