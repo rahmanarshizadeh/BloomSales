@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BloomSales.Data.Entities.Product>
+
+<div class="col-md-9">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+
+        @{
+            var it = Model.GetEnumerator();
+
+            if (it.MoveNext())
+            {
+                <h2 class="page-header">@it.Current.Category.Name</h2>
+            }
+            else
+            {
+                <h2 class="page-header">No products have found in this category</h2>
+            }
+        }
+    </div>
+
+    <div>
+        @foreach (var p in Model)
+            {
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="productBox">
+                    <div class="thumbnail img-responsive">
+                        <div>
+                            <img class="center-block" style="padding:1em" src="@p.ImageUrl" alt="@p.Name">
+                        </div>
+                        <div class="caption">
+                            <h5 class="text-center fadeout-box">
+                                <a href="#">@p.Name</a>
+                            </h5>
+                            <h6 class="pull-right">$@p.UnitPrice</h6>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-default btn-sm center-block" role="button">Add to Cart</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

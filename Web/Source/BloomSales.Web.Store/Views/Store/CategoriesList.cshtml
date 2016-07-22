@@ -1,0 +1,80 @@
+﻿@model System.Collections.Generic.IDictionary<string, List<string>>
+
+<div class="col-md-3">
+    <p class="lead">Departments</p>
+
+    <div class="panel-group" id="categoryList" role="tablist" aria-multiselectable="false">
+        @foreach (string k in Model.Keys)
+            {
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="@string.Format("heading{0}",k)">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#categoryList"
+                           href="#@string.Format("collapse{0}",k)" aria-expanded="false"
+                           aria-controls="@string.Format("collapse{0}",k)">
+                            @k
+                        </a>
+                    </h4>
+                </div>
+                <div id="@string.Format("collapse{0}",k)"
+                     class="panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="@string.Format("heading{0}",k)">
+                    <ul class="list-group">
+                        @foreach (string item in Model[k])
+                        {
+                            <li class="list-group-item">
+                                @Ajax.ActionLink(item,
+                                                 "Products",
+                                                 new { categoryName = item },
+                                                 new AjaxOptions()
+                                                 {
+                                                     HttpMethod = "GET",
+                                                     UpdateTargetId = "productsList",
+                                                     InsertionMode = InsertionMode.Replace
+                                                 })
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+
+    @*<div>
+            <div class="panel-group">
+                @foreach (string k in Model.Keys)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a>
+                                    @k
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+
+                        <div class="">
+                            <div class="panel-collapse">
+                            @foreach (string item in Model[k])
+                            {
+                                <div class="">
+                                    <a>
+                                        @Ajax.ActionLink(item,
+                                                     "Products",
+                                                     new { categoryName = item },
+                                                     new AjaxOptions()
+                                                     {
+                                                         HttpMethod = "GET",
+                                                         UpdateTargetId = "productsList",
+                                                         InsertionMode = InsertionMode.Replace
+                                                     })
+                                    </a>
+                                </div>
+                            }
+                                </div>
+                        </div>
+                }
+            </div>
+        </div>*@
+</div>

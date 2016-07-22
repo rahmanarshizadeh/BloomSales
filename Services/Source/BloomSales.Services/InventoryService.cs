@@ -76,6 +76,10 @@ namespace BloomSales.Services
             {
                 ProductCategory category = this.categoryRepo.GetCategory(categoryName);
                 result = this.productRepo.GetProducts(category.ID);
+
+                foreach (var item in result)
+                    item.Category = category;
+
                 this.cache.Set(cacheKey, result, this.oneDayPolicy);
             }
 

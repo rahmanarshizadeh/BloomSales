@@ -1,20 +1,7 @@
 ﻿using BloomSales.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BloomSales.Host.Windows
 {
@@ -32,9 +19,6 @@ namespace BloomSales.Host.Windows
         public MainWindow()
         {
             InitializeComponent();
-            string path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            path += @"\..\..\App Data";
-            AppDomain.CurrentDomain.SetData("DataDirectory", path);
         }
 
         private void StartLocationService()
@@ -94,7 +78,7 @@ namespace BloomSales.Host.Windows
 
         private void Log(string log)
         {
-            this.txtLog.Text += 
+            this.txtLog.Text +=
                 string.Format("[{0}]: {1}{2}", DateTime.Now.ToString(), log, Environment.NewLine);
         }
 
