@@ -86,6 +86,31 @@ namespace BloomSales.Services
             return result;
         }
 
+        public IEnumerable<Product> GetProductsByIDs(IEnumerable<int> productIDs)
+        {
+            string cacheKey = string.Empty;
+            Product p;
+            List<Product> result = new List<Product>();
+
+            foreach (int id in productIDs)
+            {
+                cacheKey = string.Format("product#{0}", id);
+
+                p = cache[cacheKey] as Product;
+
+                if (p == null)
+                {
+                    p = productRepo.GetProduct(id);
+
+                    cache.Set(cacheKey, p, this.oneDayPolicy);
+                }
+
+                result.Add(p);
+            }
+
+            return result;
+        }
+
         public IEnumerable<ProductCategory> GetCategories()
         {
             string cacheKey = "allCategories";

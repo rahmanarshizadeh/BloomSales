@@ -1,11 +1,11 @@
-﻿using BloomSales.Services.Contracts;
+﻿using BloomSales.Data.Entities;
+using BloomSales.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Services.Proxies
 {
@@ -19,6 +19,11 @@ namespace BloomSales.Services.Proxies
         public IEnumerable<Product> GetProductsByCategory(string categoryName)
         {
             return Channel.GetProductsByCategory(categoryName);
+        }
+
+        public IEnumerable<Product> GetProductsByIDs(IEnumerable<int> productIDs)
+        {
+            return Channel.GetProductsByIDs(productIDs);
         }
 
         public IEnumerable<ProductCategory> GetCategories()

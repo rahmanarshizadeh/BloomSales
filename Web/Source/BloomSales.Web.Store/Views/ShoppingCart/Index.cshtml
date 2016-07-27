@@ -1,0 +1,115 @@
+﻿@model Tuple<List<BloomSales.Data.Entities.OrderItem>, IEnumerable<BloomSales.Data.Entities.Product>>
+
+@{
+    ViewBag.Title = "Shopping Cart";
+
+    var productIt = Model.Item2.GetEnumerator();
+}
+
+<h2>Shopping Cart</h2>
+
+<div class="container" style="padding-bottom:3em;">
+
+    <div class="col-md-8">
+        <div class="row" style="padding-top:3em;">
+            <div class="col-md-1">
+                <h4 class="text-muted">#</h4>
+            </div>
+            <div class="col-md-7">
+                <h4 class="text-center text-muted">Item Name</h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="text-center text-muted">Unit Price</h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="text-center text-muted">Quantity</h4>
+            </div>
+        </div>
+        @using (Ajax.BeginForm("Update", "ShoppingCart", new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "subtotal", InsertionMode = InsertionMode.Replace }, new { id = "cartItems" }))
+        {
+            @Html.AntiForgeryToken();
+
+            for (int i = 0; i < Model.Item1.Count; i++)
+            {
+                productIt.MoveNext();
+
+                @Html.Hidden(string.Format("items[{0}].Index", @i), @i);
+                <div style="padding-bottom:20px;" class="row form-group">
+                    @Html.Hidden(string.Format("items[{0}].ProductID", @i), Model.Item1[i].ProductID)
+                    <hr />
+                    <div class="col-md-1">
+                        <h4>@(i + 1)</h4>
+                    </div>
+                    <div class="col-md-2">
+
+                        <img src="@productIt.Current.ImageUrl" alt="@productIt.Current.Name"
+                             class="img-responsive" style="padding-top:10px;" />
+                    </div>
+                    <div class="col-md-5">
+                        <h4>@productIt.Current.Name</h4>
+                        <p>@productIt.Current.Producer</p>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            @Html.Hidden(string.Format("items[{0}].UnitPrice", @i), Model.Item1[i].UnitPrice)
+                            <h4 class="text-center">$@string.Format("{0:n}", Model.Item1[i].UnitPrice)</h4>
+                        </div>
+                        <div class="row">
+                            @if (@Model.Item1[i].Discount > 0)
+                            {
+                                <p class="text-center">@(Model.Item1[i].Discount * 100)% Discount</p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.TextBox(string.Format("items[{0}].Quantity", @i),
+                                      Model.Item1[i].Quantity,
+                                      new { type = "number", min = "0", @class = "form-control center-block", onchange = "onQuantityChange()" })
+                    </div>
+                </div>
+
+            }
+
+        }
+    </div>
+
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-3">
+        <div class="row" style="padding-top:2.5em;">
+        </div>
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <div class="panel-title text-center">Subtotal (@Model.Item1.Count Items)</div>
+            </div>
+            <div id="subtotal" class="panel-body">
+                @Html.Action("Calculate")
+            </div>
+        </div>
+        <div class="well">
+            <div class="row" style="padding:1em;">
+                @Html.ActionLink("Proceed to Checkout", "Index", "Store", new { @class = "btn btn-primary center-block", role = "button" })
+            </div>
+            <div class="row">
+                <p class="text-center">or</p>
+            </div>
+
+            <div class="row">
+                <p class="text-center">
+                    @Html.ActionLink("Go Back to Shopping", "Index", "Store")
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function onQuantityChange() {
+            $("#cartItems").submit();
+        }
+    </script>
+}

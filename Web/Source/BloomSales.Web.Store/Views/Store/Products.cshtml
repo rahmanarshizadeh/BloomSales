@@ -19,7 +19,11 @@
 
     <div>
         @foreach (var p in Model)
+        {
+            if (p.IsDiscontinued)
             {
+                continue;
+            }
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="productBox">
                     <div class="thumbnail img-responsive">
@@ -30,10 +34,26 @@
                             <h5 class="text-center fadeout-box">
                                 <a href="#">@p.Name</a>
                             </h5>
-                            <h6 class="pull-right">$@p.UnitPrice</h6>
+                            <h6 class="pull-right">$@string.Format("{0:n}", p.UnitPrice)</h6>
                         </div>
                     </div>
-                    <a href="#" class="btn btn-default btn-sm center-block" role="button">Add to Cart</a>
+                    @Ajax.ActionLink("Add to Cart", "Add", "ShoppingCart",
+                                    new
+                                    {
+                                        productItemID = p.ID,
+                                        unitPrice = p.UnitPrice
+                                    },
+                                    new AjaxOptions()
+                                    {
+                                        HttpMethod = "POST",
+                                        UpdateTargetId = "shoppingCart",
+                                        InsertionMode = InsertionMode.Replace
+                                    },
+                                    new
+                                    {
+                                        @class = "btn btn-default btn-sm center-block",
+                                        role = "button"
+                                    })
                 </div>
             </div>
         }
