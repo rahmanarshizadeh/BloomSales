@@ -202,7 +202,6 @@
     <Content Include="Content\Images\bedding_promotion_2.jpg" />
     <Content Include="Content\Images\bedding_promotion_3.jpg" />
     <Content Include="Content\shop-homepage.css" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
