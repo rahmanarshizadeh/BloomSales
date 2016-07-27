@@ -50,6 +50,20 @@ IF NOT EXIST ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\b
 ECHO   Copying to %cd%\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Release\
 COPY /Y .\connections.config ".\Services\IntegrationTests\BloomSales.Services.IntegrationTests\bin\Release\"
 
+IF NOT EXIST ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Debug\" (
+	MKDIR ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Debug\"
+)
+
+ECHO   Copying to %cd%\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Debug\
+COPY /Y .\connections.config ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Debug\"
+
+IF NOT EXIST ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Release\" (
+	MKDIR ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Release\"
+)
+
+ECHO   Copying to %cd%\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Release\
+COPY /Y .\connections.config ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Release\"
+
 ECHO.
 ECHO Cleaning up...
 DEL .\connections.config
