@@ -311,7 +311,7 @@ namespace BloomSales.Services.Tests
             OrderService sut = new OrderService(null, null, null, null, null, null, null);
 
             // act
-            sut.AddOrUpdateCart(111, null);
+            sut.AddOrUpdateCart("111", null);
 
             // assert
             // nothing to assert.
@@ -328,7 +328,7 @@ namespace BloomSales.Services.Tests
             OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
 
             // act
-            sut.AddOrUpdateCart(123, order);
+            sut.AddOrUpdateCart("123", order);
 
             // assert
             mockCache.VerifySet(c => c["C123Cart"] = order, Times.Once());
@@ -346,7 +346,7 @@ namespace BloomSales.Services.Tests
             OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
 
             // act
-            var actual = sut.GetCart(159);
+            var actual = sut.GetCart("159");
 
             // assert
             Assert.AreEqual(expected, actual);

@@ -116,7 +116,7 @@ namespace BloomSales.Services
             return result;
         }
 
-        public void AddOrUpdateCart(int customerID, Order order)
+        public void AddOrUpdateCart(string customerID, Order order)
         {
             if (order == null)
                 throw new ArgumentNullException("order", "Order object cannot be null.");
@@ -126,7 +126,7 @@ namespace BloomSales.Services
             cache[cacheKey] = order;
         }
 
-        public Order GetCart(int customerID)
+        public Order GetCart(string customerID)
         {
             string cacheKey = "C" + customerID.ToString() + "Cart";
 

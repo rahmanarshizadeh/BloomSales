@@ -26,12 +26,12 @@ namespace BloomSales.Services.Proxies
             return Channel.PlaceOrder(order, shipping, payment);
         }
 
-        public void AddOrUpdateCart(int customerID, Order order)
+        public void AddOrUpdateCart(string customerID, Order order)
         {
             Channel.AddOrUpdateCart(customerID, order);
         }
 
-        public Order GetCart(int customerID)
+        public Order GetCart(string customerID)
         {
             return Channel.GetCart(customerID);
         }

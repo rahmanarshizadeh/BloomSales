@@ -66,10 +66,10 @@ namespace BloomSales.Services.IntegrationTests
             Order order = new Order() { ID = 159357 };
 
             // act
-            orderClient.AddOrUpdateCart(951, order);
+            orderClient.AddOrUpdateCart("951", order);
 
             // assert
-            var actual = orderClient.GetCart(951);
+            var actual = orderClient.GetCart("951");
             Assert.AreEqual(order.ID, actual.ID);
         }
 
@@ -81,7 +81,7 @@ namespace BloomSales.Services.IntegrationTests
             // arrange
 
             // act
-            var actual = orderClient.GetCart(357951);
+            var actual = orderClient.GetCart("357951");
 
             // assert
             Assert.AreEqual(null, actual);
