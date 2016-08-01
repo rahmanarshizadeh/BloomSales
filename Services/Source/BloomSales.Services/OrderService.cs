@@ -101,7 +101,7 @@ namespace BloomSales.Services
             return result;
         }
 
-        public IEnumerable<Order> GetOrderHistoryByCustomer(int customerID, DateTime startDate, DateTime endDate)
+        public IEnumerable<Order> GetOrderHistoryByCustomer(string customerID, DateTime startDate, DateTime endDate)
         {
             string cacheKey = "c#" + customerID.ToString() + "Orders(" + startDate.ToString() + "-" + endDate.ToString() + ")";
 
@@ -246,7 +246,7 @@ namespace BloomSales.Services
             Order suborder = new Order()
             {
                 IsInternalOrder = true,
-                CustomerID = -1,
+                CustomerID = string.Empty,
                 ParentOrderID = parentOrderID,
                 Items = items,
                 OrderDate = DateTime.Now

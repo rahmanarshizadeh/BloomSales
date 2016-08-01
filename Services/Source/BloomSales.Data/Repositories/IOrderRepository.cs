@@ -15,6 +15,6 @@ namespace BloomSales.Data.Repositories
 
         Order GetOrder(int id);
 
-        IEnumerable<Order> GetOrdersByCustomer(int cusotmerID, DateTime startDate, DateTime endDate);
+        IEnumerable<Order> GetOrdersByCustomer(string cusotmerID, DateTime startDate, DateTime endDate);
     }
 }

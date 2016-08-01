@@ -59,7 +59,7 @@ namespace BloomSales.Data.Repositories
             return order;
         }
 
-        public IEnumerable<Order> GetOrdersByCustomer(int cusotmerID, DateTime startDate, DateTime endDate)
+        public IEnumerable<Order> GetOrdersByCustomer(string cusotmerID, DateTime startDate, DateTime endDate)
         {
             var result = (from o in db.Orders
                           where o.CustomerID == cusotmerID &&

@@ -20,7 +20,7 @@ namespace BloomSales.Data.Entities
 
         [Required]
         [DataMember]
-        public int CustomerID { get; set; }
+        public string CustomerID { get; set; }
 
         [DataMember]
         public int ParentOrderID { get; set; }

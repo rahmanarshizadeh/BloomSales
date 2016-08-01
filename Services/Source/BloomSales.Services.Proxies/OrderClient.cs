@@ -16,7 +16,7 @@ namespace BloomSales.Services.Proxies
             return Channel.GetOrder(id);
         }
 
-        public IEnumerable<Order> GetOrderHistoryByCustomer(int customerID, DateTime startDate, DateTime endDate)
+        public IEnumerable<Order> GetOrderHistoryByCustomer(string customerID, DateTime startDate, DateTime endDate)
         {
             return Channel.GetOrderHistoryByCustomer(customerID, startDate, endDate);
         }

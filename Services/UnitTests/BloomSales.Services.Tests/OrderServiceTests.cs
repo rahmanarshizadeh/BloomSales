@@ -236,7 +236,7 @@ namespace BloomSales.Services.Tests
             OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
 
             // act
-            var actual = sut.GetOrderHistoryByCustomer(12, new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
+            var actual = sut.GetOrderHistoryByCustomer("12", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
 
             // assert
             Assert.AreEqual(expected, actual);
@@ -258,16 +258,16 @@ namespace BloomSales.Services.Tests
             };
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
-            mockOrderRepo.Setup(r => r.GetOrdersByCustomer(21, It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
+            mockOrderRepo.Setup(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
                 It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015"))).Returns(expected);
             OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
 
             // act
-            var actual = sut.GetOrderHistoryByCustomer(21, new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
+            var actual = sut.GetOrderHistoryByCustomer("21", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
 
             // assert
             Assert.AreEqual(expected, actual);
-            mockOrderRepo.Verify(r => r.GetOrdersByCustomer(21, It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
+            mockOrderRepo.Verify(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
                 It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015")), Times.Once());
         }
 
@@ -286,12 +286,12 @@ namespace BloomSales.Services.Tests
             };
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
-            mockOrderRepo.Setup(r => r.GetOrdersByCustomer(21, It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
+            mockOrderRepo.Setup(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
                 It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015"))).Returns(expected);
             OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
 
             // act
-            var actual = sut.GetOrderHistoryByCustomer(21, new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
+            var actual = sut.GetOrderHistoryByCustomer("21", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
 
             // assert
             mockCache.Verify(

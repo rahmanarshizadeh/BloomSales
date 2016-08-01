@@ -142,7 +142,7 @@ namespace BloomSales.Services.IntegrationTests
         {
             return new Order()
             {
-                CustomerID = 21,
+                CustomerID = "21",
                 Items = new List<OrderItem>()
                 {
                     new OrderItem()
