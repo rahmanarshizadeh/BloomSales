@@ -24,14 +24,14 @@ namespace BloomSales.Web.Store.Controllers
         // GET: ShoppingCart
         public ActionResult Index()
         {
-            var order = GetCartFromSession();
+            var order = GetShoppingCart();
             var productIDs = new List<int>();
 
             foreach (var item in order.Items)
                 productIDs.Add(item.ProductID);
 
             var products = inventoryService.GetProductsByIDs(productIDs);
-            var items = order.Items as List<OrderItem>;
+            var items = new List<OrderItem>(order.Items);
 
             Tuple<List<OrderItem>, IEnumerable<Product>> cartItems =
                 new Tuple<List<OrderItem>, IEnumerable<Product>>(items, products);
@@ -39,11 +39,11 @@ namespace BloomSales.Web.Store.Controllers
             return View(cartItems);
         }
 
-        public ActionResult Count(int customerID = 0)
+        public ActionResult Count()
         {
             Order order = null;
 
-            order = GetCartFromSession();
+            order = GetShoppingCart();
 
             if (order == null)
                 return PartialView(0);
@@ -55,29 +55,21 @@ namespace BloomSales.Web.Store.Controllers
         [HttpPost]
         public ActionResult Add(int productItemID, decimal unitPrice)
         {
+            Order order;
+            List<OrderItem> items;
             OrderItem item = new OrderItem();
             item.ProductID = productItemID;
             item.Quantity = 1;
             item.UnitPrice = unitPrice;
 
-            Order order = GetCartFromSession();
-            List<OrderItem> items;
+            order = GetShoppingCart();
+            items = GetItems(ref order);
 
-            if (order == null)
-            {
-                order = new Order();
-                items = new List<OrderItem>();
-            }
-            else
-            {
-                items = order.Items as List<OrderItem>;
-            }
-
-            AddItemToCart(items, item);
+            AddItemToList(items, item);
 
             order.Items = items;
 
-            SetCartInSession(order);
+            SetShoppingCart(order);
 
             return RedirectToAction("Count");
         }
@@ -91,15 +83,18 @@ namespace BloomSales.Web.Store.Controllers
                 if (item.Quantity > 0)
                     updatedItemsList.Add(item);
 
-            var order = GetCartFromSession();
+            var order = GetShoppingCart();
+
             order.Items = updatedItemsList;
+
+            SetShoppingCart(order);
 
             return RedirectToAction("Calculate");
         }
 
         public ActionResult Calculate()
         {
-            var order = GetCartFromSession();
+            var order = GetShoppingCart();
             decimal subtotal = 0;
 
             foreach (var item in order.Items)
@@ -108,7 +103,42 @@ namespace BloomSales.Web.Store.Controllers
             return PartialView(subtotal);
         }
 
-        private void AddItemToCart(List<OrderItem> items, OrderItem item)
+        private void SetShoppingCart(Order order)
+        {
+            if (User.Identity.IsAuthenticated)
+                orderService.AddOrUpdateCart(User.Identity.GetUserId(), order);
+            else
+                SetCartInSession(order);
+        }
+
+        private List<OrderItem> GetItems(ref Order order)
+        {
+            List<OrderItem> items;
+
+            if (order == null)
+            {
+                order = new Order();
+                items = new List<OrderItem>();
+            }
+            else
+            {
+                items = new List<OrderItem>(order.Items);
+            }
+
+            return items;
+        }
+
+        private Order GetShoppingCart()
+        {
+            Order order;
+            if (User.Identity.IsAuthenticated)
+                order = orderService.GetCart(User.Identity.GetUserId());
+            else
+                order = GetCartFromSession();
+            return order;
+        }
+
+        private void AddItemToList(List<OrderItem> items, OrderItem item)
         {
             var duplicate = items.Find(i => i.ProductID == item.ProductID);
 
