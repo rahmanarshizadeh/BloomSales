@@ -56,9 +56,15 @@ namespace BloomSales.Data.Repositories
             var regions = GetAllRegionsByCountry(country);
 
             foreach (Region r in regions)
+            {
+                r.Provinces = db.Provinces
+                    .Where(p => p.RegionID == r.ID)
+                    .ToArray();
+
                 foreach (Province p in r.Provinces)
                     if (p.Name == province || p.Abbreviation == province)
                         return r;
+            }
 
             return null;
         }

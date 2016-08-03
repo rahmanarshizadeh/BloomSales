@@ -3,6 +3,7 @@ using BloomSales.Data.Repositories;
 using BloomSales.Services.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Caching;
 using System.ServiceModel;
 
@@ -262,11 +263,11 @@ namespace BloomSales.Services
             IEnumerable<Warehouse> result =
                 this.warehouseRepo.GetWarehousesByCity(city);
 
-            if (result == null)
+            if (result.Count() == 0)
             {
                 result = this.warehouseRepo.GetWarehousesByProvince(province);
 
-                if (result == null)
+                if (result.Count() == 0)
                 {
                     if (region == null)
                         region = regionRepo.GetRegionByProvince(country, province);
