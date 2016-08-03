@@ -1,0 +1,20 @@
+﻿<div id="checkoutStep">
+    @Html.Action("Address")
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function shipperChanged() {
+            $("#shippingCompany").submit();
+        }
+
+        function serviceSelected() {
+            $("#btnService").removeClass("hidden");
+        }
+
+        function paymentMethodChanged() {
+            $("#paymentMethod").submit();
+        }
+    </script>
+}

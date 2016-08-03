@@ -8,6 +8,11 @@ namespace BloomSales.Services.Proxies
 {
     public class LocationClient : ClientBase<ILocationService>, ILocationService
     {
+        public IEnumerable<Province> GetAllProvinces(string country)
+        {
+            return Channel.GetAllProvinces(country);
+        }
+
         public IEnumerable<Region> GetAllRegions(string country)
         {
             return Channel.GetAllRegions(country);

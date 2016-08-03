@@ -12,6 +12,9 @@ namespace BloomSales.Services.Contracts
     public interface ILocationService
     {
         [OperationContract]
+        IEnumerable<Province> GetAllProvinces(string country);
+
+        [OperationContract]
         IEnumerable<Region> GetAllRegions(string country);
 
         [OperationContract]

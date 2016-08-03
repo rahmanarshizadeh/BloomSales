@@ -76,8 +76,10 @@
     <Compile Include="Repositories\IPaymentInfoRepository.cs" />
     <Compile Include="Repositories\IProductCategoryRepository.cs" />
     <Compile Include="Repositories\IProductRepository.cs" />
+    <Compile Include="Repositories\IProvinceRepository.cs" />
     <Compile Include="Repositories\IRegionRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\ISalesTaxRepository.cs" />
     <Compile Include="Repositories\IShipperRepository.cs" />
     <Compile Include="Repositories\IShippingInfoRepository.cs" />
     <Compile Include="Repositories\IWarehouseRepository.cs" />
@@ -86,7 +88,9 @@
     <Compile Include="Repositories\PaymentInfoRepository.cs" />
     <Compile Include="Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\ProvinceRepository.cs" />
     <Compile Include="Repositories\RegionRepository.cs" />
+    <Compile Include="Repositories\SalesTaxRepository.cs" />
     <Compile Include="Repositories\ShipperRepository.cs" />
     <Compile Include="Repositories\ShippingInfoRepository.cs" />
     <Compile Include="Repositories\WarehouseRepository.cs" />

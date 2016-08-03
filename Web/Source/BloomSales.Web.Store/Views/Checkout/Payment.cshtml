@@ -1,0 +1,109 @@
+﻿@model BloomSales.Web.Store.Models.BillViewModel
+
+<h3 style="padding-bottom:3em;">Review and Payment</h3>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title text-center">Summary</div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Subtotal:</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="pull-right">@string.Format("${0:n}", Model.OrderSubtotal)</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Shipping:</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="pull-right">@string.Format("${0:n}", Model.ShippingCost)</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 center-block">
+                        <hr class="text-center" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Federal Sales Tax:</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="pull-right">@(Model.Tax.Federal * 100)%</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Provincial Sales Tax:</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="pull-right">@(Model.Tax.Provincial * 100)%</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Total:</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="pull-right">@string.Format("${0:n}", Model.Payment.Amount)</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-1">
+    </div>
+
+    <div class="col-md-6">
+        <div class="row">
+            <div class="well">
+                <h5><strong>Shipping To:</strong></h5>
+                <div class="container">
+                    <h5>@Model.Shipping.Name</h5>
+                    <h5>@Model.Shipping.StreetAddress</h5>
+                    <h5>@Model.Shipping.City, @Model.Shipping.PostalCode</h5>
+                    <h5>@Model.Shipping.Province, @Model.Shipping.Country</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @using (Ajax.BeginForm("PaymentMethod", new { }, new AjaxOptions() { HttpMethod = "POST" }, new { id = "paymentMethod" }))
+                    {
+                        <div class="col-md-6">
+                            <label class="control-label">Payment Method:</label>
+                        </div>
+
+                        <select class="col-md-6 form-control" onchange="paymentMethodChanged()" name="method">
+                            <option value="1">Credit Card</option>
+                            <option value="2">Online Banking</option>
+                            <option value="3">PayPal</option>
+                            <option value="4">Bitcoin</option>
+                        </select>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-11">
+        <div class="form-gourp" id="btnService">
+            <form action="@Url.Action("Submit")" method="post">
+                <input class = "btn btn-primary pull-right col-md-3" value="Submit Order" type="submit"/>
+            </form>
+            @*@Html.ActionLink("Submit Order", "Submit", new { }, new { role = "button", @class = "btn btn-primary pull-right col-md-3" })*@
+        </div>
+    </div>
+</div>

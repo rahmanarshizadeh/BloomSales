@@ -15,6 +15,7 @@ namespace BloomSales.Services
     {
         private IRegionRepository regionRepo;
         private IWarehouseRepository warehouseRepo;
+        private IProvinceRepository provinceRepo;
         private ObjectCache cache;
         private CacheItemPolicy defaultPolicy;
 
@@ -22,6 +23,7 @@ namespace BloomSales.Services
         {
             this.regionRepo = new RegionRepository();
             this.warehouseRepo = new WarehouseRepository();
+            this.provinceRepo = new ProvinceRepository();
             this.cache = MemoryCache.Default;
 
             this.defaultPolicy = new CacheItemPolicy();
@@ -30,12 +32,48 @@ namespace BloomSales.Services
         }
 
         public LocationService(IRegionRepository regionRepo,
-                                IWarehouseRepository warehouseRepo,
-                                ObjectCache cache)
+                               IWarehouseRepository warehouseRepo,
+                               IProvinceRepository provinceRepo,
+                               ObjectCache cache)
         {
             this.regionRepo = regionRepo;
             this.warehouseRepo = warehouseRepo;
+            this.provinceRepo = provinceRepo;
             this.cache = cache;
+        }
+
+        public IEnumerable<Province> GetAllProvinces(string country)
+        {
+            string cacheKey = "provincesOf" + country;
+
+            var result = cache[cacheKey] as List<Province>;
+
+            if (result == null)
+            {
+                // get all regions
+                var regions = regionRepo.GetAllRegionsByCountry(country);
+                List<IEnumerable<Province>> provinces = new List<IEnumerable<Province>>();
+                IEnumerable<Province> regionalProvinces;
+                result = new List<Province>();
+
+                // get provinces for each region
+                foreach (var region in regions)
+                {
+                    regionalProvinces = provinceRepo.GetProvincesForRegion(region.ID);
+
+                    provinces.Add(regionalProvinces);
+                }
+
+                // add all provinces into a single list
+                for (int i = 0; i < provinces.Count; i++)
+                    foreach (var p in provinces[i])
+                        result.Add(p);
+
+                // cache the result
+                cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
+            }
+
+            return result;
         }
 
         public IEnumerable<Region> GetAllRegions(string country)

@@ -1,4 +1,5 @@
 ﻿using BloomSales.Data.Entities;
+using System;
 using System.Data.Entity;
 
 namespace BloomSales.Data
@@ -9,6 +10,12 @@ namespace BloomSales.Data
         {
             Database.SetInitializer<OrderDb>(new OrderDbInitializer());
             this.Configuration.ProxyCreationEnabled = false;
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Properties<DateTime>()
+                .Configure(c => c.HasColumnType("datetime2"));
         }
 
         public virtual DbSet<Order> Orders { get; set; }

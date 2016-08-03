@@ -1,13 +1,13 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
+using BloomSales.Data.Repositories;
+using BloomSales.Services.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Services.Contracts;
-using BloomSales.Data.Repositories;
-using BloomSales.Data.Entities;
 using System.Runtime.Caching;
 using System.ServiceModel;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BloomSales.Services
 {
@@ -16,18 +16,22 @@ namespace BloomSales.Services
                      InstanceContextMode = InstanceContextMode.PerCall)]
     public class AccountingService : IAccountingService, IDisposable
     {
-        private IPaymentInfoRepository repo;
+        private IPaymentInfoRepository paymentRepo;
+        private ISalesTaxRepository taxRepo;
         private ObjectCache cache;
 
         public AccountingService()
         {
-            this.repo = new PaymentInfoRepository();
+            this.paymentRepo = new PaymentInfoRepository();
+            this.taxRepo = new SalesTaxRepository();
             this.cache = MemoryCache.Default;
         }
 
-        public AccountingService(IPaymentInfoRepository repository, ObjectCache cache)
+        public AccountingService(IPaymentInfoRepository paymentRepository,
+                                 SalesTaxRepository taxRepository, ObjectCache cache)
         {
-            this.repo = repository;
+            this.paymentRepo = paymentRepository;
+            this.taxRepo = taxRepository;
             this.cache = cache;
         }
 
@@ -38,7 +42,7 @@ namespace BloomSales.Services
             payment.ReceivedDate = DateTime.Now;
             payment.IsReceived = true;
 
-            this.repo.AddPayment(payment);
+            this.paymentRepo.AddPayment(payment);
 
             return true;
         }
@@ -50,9 +54,9 @@ namespace BloomSales.Services
 
             if (result == null)
             {
-                result = repo.GetPayment(orderID);
+                result = paymentRepo.GetPayment(orderID);
                 CacheItemPolicy policy = new CacheItemPolicy();
-                // probably it's not going to change at all, but it's not going to 
+                // probably it's not going to change at all, but it's not going to
                 // be asked for often either. so, set the expiration to 20 minutes
                 policy.SlidingExpiration = new TimeSpan(0, 20, 0);
                 cache.Set(cacheKey, result, policy);
@@ -61,10 +65,38 @@ namespace BloomSales.Services
             return result;
         }
 
+        public void AddTaxInfo(SalesTaxInfo taxInfo)
+        {
+            taxRepo.AddTaxInfo(taxInfo);
+        }
+
+        public SalesTaxInfo GetTaxInfo(string country, string province)
+        {
+            string cacheKey = "taxFor" + province + country;
+
+            SalesTaxInfo result = cache[cacheKey] as SalesTaxInfo;
+
+            if (result == null)
+            {
+                result = taxRepo.GetTaxInfo(country, province);
+                cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
+            }
+
+            return result;
+        }
+
+        public void UpdateTaxInfo(SalesTaxInfo taxInfo)
+        {
+            taxRepo.UpdateTaxInfo(taxInfo);
+        }
+
         public void Dispose()
         {
-            if (this.repo != null)
-                repo.Dispose();
+            if (this.paymentRepo != null)
+                paymentRepo.Dispose();
+
+            if (this.taxRepo != null)
+                taxRepo.Dispose();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BloomSales.Data.Entities;
+using System;
 using System.Data.Entity;
 
 namespace BloomSales.Data
@@ -11,6 +12,14 @@ namespace BloomSales.Data
             this.Configuration.ProxyCreationEnabled = false;
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Properties<DateTime>()
+                .Configure(c => c.HasColumnType("datetime2"));
+        }
+
         public virtual DbSet<PaymentInfo> Payments { get; set; }
+
+        public virtual DbSet<SalesTaxInfo> Taxes { get; set; }
     }
 }

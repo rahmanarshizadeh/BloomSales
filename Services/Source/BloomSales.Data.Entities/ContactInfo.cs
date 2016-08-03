@@ -17,7 +17,6 @@ namespace BloomSales.Data.Entities
         [DataMember]
         public string Name { get; set; }
 
-        [Required]
         [StringLength(24)]
         [DataMember]
         public string Phone { get; set; }

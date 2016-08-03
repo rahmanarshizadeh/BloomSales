@@ -90,7 +90,8 @@
         </div>
         <div class="well">
             <div class="row" style="padding:1em;">
-                @Html.ActionLink("Proceed to Checkout", "Index", "Store", new { @class = "btn btn-primary center-block", role = "button" })
+                @Html.ActionLink("Proceed to Checkout", "CheckoutTransition", new { },
+                                 new { @class = "btn btn-primary center-block", role = "button" })
             </div>
             <div class="row">
                 <p class="text-center">or</p>

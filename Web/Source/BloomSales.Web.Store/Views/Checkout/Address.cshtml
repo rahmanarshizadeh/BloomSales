@@ -1,0 +1,80 @@
+﻿<h3 style="padding-bottom:3em;">Shipping Address</h3>
+
+<div class="container">
+
+    <div class="form-horizontal">
+        @using (Ajax.BeginForm("Address", new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "checkoutStep", InsertionMode = InsertionMode.Replace }))
+        {
+            <div class="">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label class="control-label">Name:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input id="receiverName" type="text" class="form-control" name="Name" placeholder="Receiver's Name" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label class="control-label">Street Address:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="StreetAddress" placeholder="Street Address" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label class="control-label">City:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="City" placeholder="City" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label class="control-label">Province:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="Province">
+                            @{
+                                var provinces = ViewData["provinces"] as IEnumerable<BloomSales.Data.Entities.Province>;
+
+                                foreach (var p in provinces)
+                                {
+                                    <option value="@p.Name">@p.Name (@p.Abbreviation)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label class="control-label">Postal Code:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="PostalCode" placeholder="Postal Code" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label class="control-label">Country:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="Country">
+                            <option value="Canada">Canada</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-bottom:2em;">
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-11">
+                    <input type="submit" value="Continue" class="btn btn-primary pull-right col-md-3" />
+                </div>
+            </div>
+                                }
+    </div>
+</div>

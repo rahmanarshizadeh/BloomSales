@@ -71,6 +71,7 @@
     <Compile Include="Repositories\ProductCategoryRepositoryTests.cs" />
     <Compile Include="Repositories\ProductRepositoryTests.cs" />
     <Compile Include="Repositories\RegionRepositoryTests.cs" />
+    <Compile Include="Repositories\SalesTaxRepositoryTests.cs" />
     <Compile Include="Repositories\ShipperRepositoryTests.cs" />
     <Compile Include="Repositories\ShippingInfoRepositoryTests.cs" />
     <Compile Include="Repositories\WarehouseRepositoryTests.cs" />

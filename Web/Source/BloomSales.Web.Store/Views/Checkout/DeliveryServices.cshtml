@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BloomSales.Data.Entities.DeliveryService>
+
+@using (Ajax.BeginForm("Shipping", new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "checkoutStep", InsertionMode = InsertionMode.Replace }))
+{
+    <div class="form-group">
+        <div class="col-md-3">
+            <label class="control-label">Services:</label>
+        </div>
+
+        <div class="col-md-5">
+            @foreach (var service in Model)
+            {
+                <div class="">
+                    <div class="radio">
+                        <label class="radio">
+                            @Html.Hidden("serviceCost", service.Cost)
+                            <input type="radio" name="shippingServiceID" value="@service.ID" onclick="serviceSelected()" />
+                            @service.ServiceName
+                        </label>
+                    </div>
+                </div>
+                <div class="">
+                    <label class="">$@service.Cost</label>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="form-group" style="padding-bottom:2em;">
+    </div>
+
+        <div class="col-lg-11">
+            <div class="form-gourp hidden" id="btnService">
+                <input type="submit" value="Continue" class="btn btn-primary pull-right col-md-3" />
+            </div>
+        </div>
+}

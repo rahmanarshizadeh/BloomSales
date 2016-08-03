@@ -67,6 +67,7 @@ namespace BloomSales.Services
                 return false;
 
             var orderSegments = SegmentOrderOnAvailability(order.Items, shipping);
+            order.OrderDate = DateTime.Today;
 
             order.HasProcessed = true;
 
@@ -82,6 +83,8 @@ namespace BloomSales.Services
             shipping.PickupLocation = pickupLocation;
             shipping.WarehouseID = pickupLocation.ID;
             this.shippingService.RequestShipping(shipping);
+
+            RemoveFromCart(order.CustomerID);
 
             return true;
         }
@@ -121,7 +124,7 @@ namespace BloomSales.Services
             if (order == null)
                 throw new ArgumentNullException("order", "Order object cannot be null.");
 
-            string cacheKey = "C" + customerID.ToString() + "Cart";
+            string cacheKey = "C" + customerID + "Cart";
 
             cache[cacheKey] = order;
         }
@@ -210,6 +213,7 @@ namespace BloomSales.Services
                 var items = orderSegments[warehouse];
 
                 Order suborder = CreateSuborder(parentOrderID, items);
+                suborder.OrderDate = DateTime.Today;
                 suborder.ID = this.orderRepo.AddOrder(suborder);
 
                 ShippingInfo shipping = CreateShipping(destination, warehouse, suborder.ID, serviceID);
@@ -219,7 +223,7 @@ namespace BloomSales.Services
             return destination;
         }
 
-        private static ShippingInfo CreateShipping(ContactInfo destination, Warehouse warehouse,
+        private ShippingInfo CreateShipping(ContactInfo destination, Warehouse warehouse,
                                                    int orderID, int serviceID)
         {
             ShippingInfo shipping = new ShippingInfo()
@@ -241,7 +245,7 @@ namespace BloomSales.Services
             return shipping;
         }
 
-        private static Order CreateSuborder(int parentOrderID, IEnumerable<OrderItem> items)
+        private Order CreateSuborder(int parentOrderID, IEnumerable<OrderItem> items)
         {
             Order suborder = new Order()
             {
@@ -252,6 +256,13 @@ namespace BloomSales.Services
                 OrderDate = DateTime.Now
             };
             return suborder;
+        }
+
+        private void RemoveFromCart(string customerID)
+        {
+            string cacheKey = "C" + customerID + "Cart";
+
+            cache.Remove(cacheKey);
         }
     }
 }

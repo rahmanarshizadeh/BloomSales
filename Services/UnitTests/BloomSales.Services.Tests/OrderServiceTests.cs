@@ -51,8 +51,9 @@ namespace BloomSales.Services.Tests
             Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
             mockOrderRepo.Setup(r => r.AddOrder(It.Is<Order>(o => o.Items.Count() == 4))).Returns(100);
             Mock<IShippingService> mockShippingService = new Mock<IShippingService>();
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             OrderService sut = new OrderService(mockLocationService.Object, mockShippingService.Object, mockAccountingService.Object,
-                mockInventoryService.Object, mockOrderRepo.Object, mockOrderItemRepo.Object, null);
+                mockInventoryService.Object, mockOrderRepo.Object, mockOrderItemRepo.Object, mockCache.Object);
 
             // act
             var result = sut.PlaceOrder(order, shipping, payment);
@@ -126,8 +127,9 @@ namespace BloomSales.Services.Tests
             mockOrderRepo.Setup(r => r.AddOrder(It.Is<Order>(o => o.Items.Count() == 4))).Returns(100);
             Mock<IShippingService> mockShippingService = new Mock<IShippingService>();
             mockShippingService.Setup(s => s.GetServicesByShipper("BloomSales")).Returns(services);
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             OrderService sut = new OrderService(mockLocationService.Object, mockShippingService.Object, mockAccountingService.Object,
-                mockInventoryService.Object, mockOrderRepo.Object, mockOrderItemRepo.Object, null);
+                mockInventoryService.Object, mockOrderRepo.Object, mockOrderItemRepo.Object, mockCache.Object);
 
             // act
             var result = sut.PlaceOrder(order, shipping, payment);

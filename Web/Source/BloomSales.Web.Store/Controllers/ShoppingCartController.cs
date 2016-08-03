@@ -103,6 +103,26 @@ namespace BloomSales.Web.Store.Controllers
             return PartialView(subtotal);
         }
 
+        public ActionResult CheckoutTransition()
+        {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Checkout");
+            else
+                return RedirectToAction("SaveCart");
+        }
+
+        [Authorize]
+        public ActionResult SaveCart()
+        {
+            Order order = GetCartFromSession();
+
+            SetShoppingCart(order);
+
+            DeleteCartFromSession();
+
+            return RedirectToAction("Index", "Checkout");
+        }
+
         private void SetShoppingCart(Order order)
         {
             if (User.Identity.IsAuthenticated)
@@ -156,6 +176,11 @@ namespace BloomSales.Web.Store.Controllers
         private void SetCartInSession(Order order)
         {
             Session["cart"] = order;
+        }
+
+        private void DeleteCartFromSession()
+        {
+            Session["cart"] = null;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace BloomSales.Services.Tests
             // arrange
             Mock<IPaymentInfoRepository> mockRepo = new Mock<IPaymentInfoRepository>();
             PaymentInfo payment = new PaymentInfo() { OrderID = 10 };
-            AccountingService sut = new AccountingService(mockRepo.Object, null);
+            AccountingService sut = new AccountingService(mockRepo.Object, null, null);
 
             // act
             sut.ProcessPayment(payment);
@@ -40,7 +40,7 @@ namespace BloomSales.Services.Tests
             PaymentInfo expected = new PaymentInfo() { OrderID = 10 };
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             mockCache.SetupGet(c => c["paymentFor10"]).Returns(expected);
-            AccountingService sut = new AccountingService(null, mockCache.Object);
+            AccountingService sut = new AccountingService(null, null, mockCache.Object);
 
             // act
             PaymentInfo actual = sut.GetPaymentFor(10);
@@ -59,7 +59,7 @@ namespace BloomSales.Services.Tests
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<IPaymentInfoRepository> mockRepo = new Mock<IPaymentInfoRepository>();
             mockRepo.Setup(r => r.GetPayment(It.Is<int>(p => p == 200))).Returns(expected);
-            AccountingService sut = new AccountingService(mockRepo.Object, mockCache.Object);
+            AccountingService sut = new AccountingService(mockRepo.Object, null, mockCache.Object);
 
             // act
             PaymentInfo actual = sut.GetPaymentFor(200);

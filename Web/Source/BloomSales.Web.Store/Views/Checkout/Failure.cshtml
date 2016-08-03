@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Failed";
+}
+
+<div class="row" style="padding-bottom:4em;">
+</div>
+
+<div class="row">
+    <div class="col-md-1">
+    </div>
+
+    <div class="col-md-10">
+        <div class="well text-center">
+            <span class="glyphicon glyphicon-remove" style="font-size:xx-large; color:crimson"></span>
+            <span2 style="font-size:xx-large; padding-left:0.5em;">The order was not processed successfully.</span2>
+            <h4 style="padding-top:2em;">Please try again in a few moments.</h4>
+        </div>
+    </div>
+
+    <div class="col-md-1">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4" style="padding-top:5em; padding-bottom:3em;">
+        @Html.ActionLink("Go Back to Store", "Index", "Store", new { },
+                         new { @class = "btn btn-primary col-md-12", role = "button" })
+    </div>
+    <div class="col-md-4"></div>
+</div>
