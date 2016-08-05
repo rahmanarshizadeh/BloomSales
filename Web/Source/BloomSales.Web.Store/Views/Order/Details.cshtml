@@ -1,0 +1,145 @@
+﻿@model Tuple<BloomSales.Web.Store.Models.BillViewModel, IEnumerable<BloomSales.Data.Entities.ShippingInfo>, string, IEnumerable<string>>
+
+@{
+    var bill = Model.Item1;
+    var shippingIt = Model.Item2.GetEnumerator();
+    var statusIt = Model.Item4.GetEnumerator();
+    var products = ViewData["products"] as IEnumerable<IEnumerable<BloomSales.Data.Entities.Product>>;
+    var productsIt = products.GetEnumerator();
+}
+
+<div class="container col-md-10">
+    <div class="col-md-12" style="padding-top:10px; padding-bottom:15px;">
+
+        <!--order summary panel-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    Order Summary
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6><strong>Shipping Address:</strong></h6>
+                        <h6>@bill.Shipping.Name</h6>
+                        <h6>@bill.Shipping.StreetAddress</h6>
+                        <h6>@bill.Shipping.City, @bill.Shipping.PostalCode</h6>
+                        <h6>@bill.Shipping.Province, @bill.Shipping.Country</h6>
+                    </div>
+                    <div class="col-md-3 center-block">
+                        <h6><strong>Payment Method:</strong></h6>
+                        <h6>@Model.Item3</h6>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="col-md-8">
+                            <h6><strong>Payment Details:</strong></h6>
+                            <h6>Item(s) Subtotal:</h6>
+                            <h6>Shipping:</h6>
+                            <h6>Provincial Sales Tax (@bill.Tax.Province):</h6>
+                            <h6>Federal Sales Tax:</h6>
+                            <hr class="col-md-10" />
+                            <h6><strong>Total:</strong></h6>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-muted">@bill.Payment.Currency</h6>
+                            <h6>$@bill.OrderSubtotal</h6>
+                            <h6>$@bill.ShippingCost</h6>
+                            <h6>$@(bill.Tax.Provincial * 100)</h6>
+                            <h6>$@(bill.Tax.Federal * 100)</h6>
+                            <hr class="col-md-10" />
+                            <h6><strong>$@bill.Payment.Amount</strong></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--sub-order details-->
+        @foreach (var subOrder in bill.Order.SubOrders)
+        {
+            shippingIt.MoveNext();
+            statusIt.MoveNext();
+            productsIt.MoveNext();
+
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="panel-title text-center">
+                        Sub-order (#@subOrder.ID) Details
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <h6><strong>Postal Service:</strong></h6>
+                            <h6>@shippingIt.Current.Service.Shipper.Name (@shippingIt.Current.Service.ServiceName)</h6>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h6><strong>Shipped Date:</strong></h6>
+                            <h6>@shippingIt.Current.ShippedDate.ToShortDateString()</h6>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h6><strong>Status:</strong></h6>
+                            <h6>@statusIt.Current</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr />
+                    </div>
+                    <!--sub-order items-->
+                    <h5 style="padding-top:1em; padding-bottom:1em;"><strong>Items:</strong></h5>
+                    <div class="row">
+                        <div class="col-md-1 text-center">
+                            <h6 class="text-muted"><strong>#</strong></h6>
+                        </div>
+                        <div class="col-md-7 text-center">
+                            <h6 class="text-muted"><strong>Title</strong></h6>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <h6 class="text-muted"><strong>Quantity</strong></h6>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <h6 class="text-muted"><strong>Discount</strong></h6>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <h6 class="text-muted"><strong>Unit Price</strong></h6>
+                        </div>
+                    </div>
+                    @{
+                        int i = 1;
+                        var pIt = productsIt.Current.GetEnumerator();
+
+                        foreach (var item in subOrder.Items)
+                        {
+                            pIt.MoveNext();
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-1 text-center">
+                                    <h6>@i</h6>
+                                </div>
+                                <div class="col-md-1 center-block">
+                                    <img src="@pIt.Current.ImageUrl" style="height:50px; width:50px" />
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>@pIt.Current.Name</h6>
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <h6>@item.Quantity</h6>
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <h6>@(item.Discount * 100)%</h6>
+                                </div>
+
+                                <div class="col-md-2 text-center">
+                                    <h6>$@item.UnitPrice</h6>
+                                </div>
+                            </div>
+                            i++;
+                        }
+                    }
+                </div>
+            </div>
+                        }
+    </div>
+</div>

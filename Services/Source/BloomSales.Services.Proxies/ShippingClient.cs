@@ -1,11 +1,11 @@
-﻿using BloomSales.Services.Contracts;
+﻿using BloomSales.Data.Entities;
+using BloomSales.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Services.Proxies
 {
@@ -29,6 +29,11 @@ namespace BloomSales.Services.Proxies
         public ShippingStatus GetShippingStatus(int orderID)
         {
             return Channel.GetShippingStatus(orderID);
+        }
+
+        public ShippingInfo GetShipping(int orderID)
+        {
+            return Channel.GetShipping(orderID);
         }
 
         public void AddShipper(Shipper shipper)

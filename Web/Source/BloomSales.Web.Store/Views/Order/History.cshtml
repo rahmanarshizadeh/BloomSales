@@ -1,0 +1,70 @@
+﻿@model Tuple<IEnumerable<BloomSales.Data.Entities.Order>, List<BloomSales.Data.Entities.PaymentInfo>, List<string>>
+
+@{
+    ViewBag.Title = "Order History";
+}
+
+<h2 style="padding-bottom:3em;">Order History</h2>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-2 text-center">
+            <h4 class="text-muted">Order #</h4>
+        </div>
+        <div class="col-md-5  text-center">
+            <h4 class="text-muted">Order Date</h4>
+        </div>
+        <div class="col-md-3  text-center">
+            <h4 class="text-muted">Total</h4>
+        </div>
+    </div>
+
+    @{
+        int i = -1;
+
+        foreach (var order in Model.Item1)
+        {
+            i++;
+
+            <div class="row">
+                <hr class="col-md-11" />
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <h4>@order.ID</h4>
+                </div>
+                <div class="col-md-5  text-center">
+                    <h4>@order.OrderDate.ToShortDateString()</h4>
+                </div>
+                <div class="col-md-3  text-center">
+                    <h4>$@string.Format("{0:n}", Model.Item2[i].Amount)</h4>
+                </div>
+                <div class="col-md-2" style="padding-top:4px;">
+                    @Ajax.ActionLink("Details", "Details", new { orderID = order.ID },
+                                     new AjaxOptions()
+                                     {
+                                         HttpMethod = "GET",
+                                         UpdateTargetId = string.Format("details{0}", order.ID),
+                                         InsertionMode = InsertionMode.Replace
+                                     },
+                                     new
+                                     {
+                                         role = "button",
+                                         @class = "btn btn-default btn-sm col-md-6",
+                                         data_toggle = "collapse",
+                                         data_target = string.Format("#collapse{0}", order.ID)
+                                     })
+                </div>
+            </div>
+
+            <div class="row collapse" id="collapse@(order.ID)">
+                <div id="details@(order.ID)">
+                </div>
+            </div>
+
+        }
+    }
+</div>
+<div style="padding-bottom:3em;">
+</div>

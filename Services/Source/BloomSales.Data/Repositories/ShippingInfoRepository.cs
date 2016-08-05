@@ -1,9 +1,9 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -32,6 +32,19 @@ namespace BloomSales.Data.Repositories
             ShippingInfo shipping = db.Shippings.Find(orderID);
 
             return shipping.Status;
+        }
+
+        public ShippingInfo GetShipping(int orderID)
+        {
+            var record = (from shipping in db.Shippings
+                          where shipping.OrderID == orderID
+                          select shipping).SingleOrDefault();
+
+            record.Service = (from service in db.Services.Include("Shipper")
+                              where service.ID == record.ServiceID
+                              select service).SingleOrDefault();
+
+            return record;
         }
 
         public void Dispose()

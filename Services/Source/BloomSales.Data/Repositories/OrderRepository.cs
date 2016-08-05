@@ -63,8 +63,9 @@ namespace BloomSales.Data.Repositories
         {
             var result = (from o in db.Orders
                           where o.CustomerID == cusotmerID &&
-                                o.OrderDate > startDate &&
-                                o.OrderDate < endDate
+                                o.ParentOrderID == -1 &&
+                                o.OrderDate >= startDate &&
+                                o.OrderDate <= endDate
                           select o).ToArray();
 
             return result;

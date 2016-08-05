@@ -14,7 +14,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Order History</a></li>
+                        <li>@Html.ActionLink("Orders History", "History", "Order", null, null)</li>
                         <li>
                             @Html.ActionLink("Account Settings", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                         </li>

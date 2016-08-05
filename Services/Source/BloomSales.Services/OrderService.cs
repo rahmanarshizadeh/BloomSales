@@ -67,8 +67,9 @@ namespace BloomSales.Services
                 return false;
 
             var orderSegments = SegmentOrderOnAvailability(order.Items, shipping);
-            order.OrderDate = DateTime.Today;
 
+            order.OrderDate = DateTime.Today;
+            order.ParentOrderID = -1;
             order.HasProcessed = true;
 
             orderRepo.UpdateOrder(order);
@@ -113,7 +114,7 @@ namespace BloomSales.Services
             if (result == null)
             {
                 result = this.orderRepo.GetOrdersByCustomer(customerID, startDate, endDate);
-                this.cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
+                this.cache.Set(cacheKey, result, CachingPolicies.TenMinutesPolicy);
             }
 
             return result;

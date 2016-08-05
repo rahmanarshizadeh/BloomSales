@@ -12,5 +12,7 @@ namespace BloomSales.Data.Repositories
         void AddShipping(ShippingInfo shipping);
 
         ShippingStatus GetShippingStatus(int orderID);
+
+        ShippingInfo GetShipping(int orderID);
     }
 }

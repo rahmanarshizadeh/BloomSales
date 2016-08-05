@@ -78,15 +78,15 @@ namespace BloomSales.Data.Tests.Repositories
         {
             // arrange
             List<Order> data = new List<Order>();
-            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 4, 1) });
-            data.Add(new Order() { CustomerID = "13", OrderDate = new DateTime(2015, 4, 1) });
-            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 5, 1) });
-            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 6, 1) });
-            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 7, 1) });
-            data.Add(new Order() { CustomerID = "15", OrderDate = new DateTime(2015, 4, 1) });
-            data.Add(new Order() { CustomerID = "16", OrderDate = new DateTime(2015, 4, 1) });
-            data.Add(new Order() { CustomerID = "17", OrderDate = new DateTime(2015, 4, 1) });
-            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 8, 1) });
+            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 4, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "13", OrderDate = new DateTime(2015, 4, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 5, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 6, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 7, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "15", OrderDate = new DateTime(2015, 4, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "16", OrderDate = new DateTime(2015, 4, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "17", OrderDate = new DateTime(2015, 4, 1), ParentOrderID = -1 });
+            data.Add(new Order() { CustomerID = "12", OrderDate = new DateTime(2015, 8, 1), ParentOrderID = -1 });
             List<Order> expected = new List<Order>();
             expected.Add(data[0]);
             expected.Add(data[2]);

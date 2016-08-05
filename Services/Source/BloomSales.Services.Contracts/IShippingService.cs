@@ -24,6 +24,9 @@ namespace BloomSales.Services.Contracts
         ShippingStatus GetShippingStatus(int orderID);
 
         [OperationContract]
+        ShippingInfo GetShipping(int orderID);
+
+        [OperationContract]
         void AddShipper(Shipper shipper);
 
         [OperationContract]

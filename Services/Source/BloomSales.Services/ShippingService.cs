@@ -1,13 +1,13 @@
-﻿using BloomSales.Services.Contracts;
+﻿using BloomSales.Data.Entities;
+using BloomSales.Data.Repositories;
+using BloomSales.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
-using BloomSales.Data.Repositories;
 using System.Runtime.Caching;
 using System.ServiceModel;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BloomSales.Services
 {
@@ -96,6 +96,22 @@ namespace BloomSales.Services
             }
 
             return (ShippingStatus)status;
+        }
+
+        public ShippingInfo GetShipping(int orderID)
+        {
+            string cacheKey = "shippingForOrder#" + orderID.ToString();
+
+            var shipping = cache[cacheKey] as ShippingInfo;
+
+            if (shipping == null)
+            {
+                shipping = shippingRepo.GetShipping(orderID);
+
+                cache.Set(cacheKey, shipping, CachingPolicies.ThirtyMinutesPolicy);
+            }
+
+            return shipping;
         }
 
         public void AddShipper(Shipper shipper)
