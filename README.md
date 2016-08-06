@@ -1,3 +1,5 @@
+[![Build Status](https://myopensource.visualstudio.com/_apis/public/build/definitions/8ccd03bc-2148-4a6a-ade6-0beda21510d0/1/badge)](https://github.com/moriazat/BloomSales)
+
 # BloomSales Inc.
 
 BloomSales Inc. is a fictional trading company which also has retail stores. 
