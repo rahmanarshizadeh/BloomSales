@@ -46,7 +46,10 @@
                              class="img-responsive" style="padding-top:10px;" />
                     </div>
                     <div class="col-md-5">
-                        <h4>@productIt.Current.Name</h4>
+                        <h4>
+                            <a href="javascript:showDetails(@productIt.Current.ID);">@productIt.Current.Name</a>
+                        </h4>
+
                         <p>@productIt.Current.Producer</p>
                     </div>
 
@@ -106,11 +109,22 @@
     </div>
 </div>
 
+
+@Html.Partial("ProductDetailsModal")
+
+
 @section scripts
 {
     <script type="text/javascript">
         function onQuantityChange() {
             $("#cartItems").submit();
+        }
+
+        function showDetails(productID) {
+            var modal = $("#productDetailsModal #productDetails");
+            modal.html("<p>Loading product details ...</p>");
+            modal.load("@Url.Action("Details", "Product")", { id : productID });
+            $("#productDetailsModal").modal("show");
         }
     </script>
 }

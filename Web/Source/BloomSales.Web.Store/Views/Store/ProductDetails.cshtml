@@ -1,0 +1,42 @@
+﻿@model Tuple<int, decimal>
+
+@{
+    var productID = Model.Item1;
+    var unitPrice = Model.Item2;
+}
+
+<div style="padding-top:3.5em;">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Product Details</div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                @Html.Action("Details", "Product", new { id = productID })
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                </div>
+                <div class="col-md-3">
+                    @Ajax.ActionLink("Add to Cart", "Add", "ShoppingCart",
+                                        new
+                                        {
+                                            productItemID = productID,
+                                            unitPrice = unitPrice
+                                        },
+                                        new AjaxOptions()
+                                        {
+                                            HttpMethod = "POST",
+                                            UpdateTargetId = "shoppingCart",
+                                            InsertionMode = InsertionMode.Replace
+                                        },
+                                        new
+                                        {
+                                            @class = "btn btn-default center-block",
+                                            role = "button"
+                                        })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

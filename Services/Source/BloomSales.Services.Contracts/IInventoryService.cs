@@ -17,6 +17,9 @@ namespace BloomSales.Services.Contracts
         IEnumerable<Product> GetProductsByIDs(IEnumerable<int> productsIDs);
 
         [OperationContract]
+        Product GetProductByID(int productID);
+
+        [OperationContract]
         IEnumerable<ProductCategory> GetCategories();
 
         [OperationContract]

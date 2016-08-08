@@ -1,0 +1,15 @@
+﻿@model BloomSales.Data.Entities.Product
+
+<div>
+    <div class="col-md-3">
+        <img src=@Model.ImageUrl class="img-responsive center-block"/>
+    </div>
+    <div class="col-md-7">
+        <h4>@Model.Name</h4>
+        <h5 class="text-muted">@Model.Producer</h5>
+        <h6>@Model.Description</h6>
+    </div>
+    <div class="col-md-2">
+        <h4 class="text-danger">@string.Format("${0:n}", Model.UnitPrice)</h4>
+    </div>
+</div>

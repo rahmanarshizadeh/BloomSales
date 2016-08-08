@@ -122,7 +122,10 @@
                                     <img src="@pIt.Current.ImageUrl" style="height:50px; width:50px" />
                                 </div>
                                 <div class="col-md-6">
-                                    <h6>@pIt.Current.Name</h6>
+                                    <h6>
+                                        <a href="javascript:showDetails(@pIt.Current.ID);">@pIt.Current.Name</a>
+                                        @*@pIt.Current.Name*@
+                                    </h6>
                                 </div>
                                 <div class="col-md-1 text-center">
                                     <h6>@item.Quantity</h6>

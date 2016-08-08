@@ -26,6 +26,11 @@ namespace BloomSales.Services.Proxies
             return Channel.GetProductsByIDs(productIDs);
         }
 
+        public Product GetProductByID(int productID)
+        {
+            return Channel.GetProductByID(productID);
+        }
+
         public IEnumerable<ProductCategory> GetCategories()
         {
             return Channel.GetCategories();

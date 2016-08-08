@@ -68,3 +68,17 @@
 </div>
 <div style="padding-bottom:3em;">
 </div>
+
+@Html.Partial("ProductDetailsModal")
+
+@section scripts
+{
+    <script type="text/javascript">
+        function showDetails(productID) {
+            var modal = $("#productDetailsModal #productDetails");
+            modal.html("<p>Loading product details ...</p>");
+            modal.load("@Url.Action("Details", "Product")", { id : productID });
+            $("#productDetailsModal").modal("show");
+        }
+    </script>
+}

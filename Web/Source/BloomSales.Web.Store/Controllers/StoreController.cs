@@ -60,5 +60,12 @@ namespace BloomSales.Web.Store.Controllers
 
             return PartialView(products);
         }
+
+        public ActionResult ProductDetails(int id, decimal unitPrice)
+        {
+            Tuple<int, decimal> model = new Tuple<int, decimal>(id, unitPrice);
+
+            return PartialView(model);
+        }
     }
 }

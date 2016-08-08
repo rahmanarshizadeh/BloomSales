@@ -182,6 +182,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Global.asax.cs">
@@ -281,6 +282,9 @@
     <Content Include="Views\Order\EmptyHistory.cshtml" />
     <Content Include="Views\Order\History.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Store\ProductDetails.cshtml" />
+    <Content Include="Views\Shared\ProductDetailsModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

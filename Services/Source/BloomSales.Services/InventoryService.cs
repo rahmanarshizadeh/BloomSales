@@ -94,7 +94,7 @@ namespace BloomSales.Services
 
             foreach (int id in productIDs)
             {
-                cacheKey = string.Format("product#{0}", id);
+                cacheKey = "product#" + id;
 
                 p = cache[cacheKey] as Product;
 
@@ -102,10 +102,26 @@ namespace BloomSales.Services
                 {
                     p = productRepo.GetProduct(id);
 
-                    cache.Set(cacheKey, p, this.oneDayPolicy);
+                    cache.Set(cacheKey, p, CachingPolicies.OneDayPolicy);
                 }
 
                 result.Add(p);
+            }
+
+            return result;
+        }
+
+        public Product GetProductByID(int productID)
+        {
+            string cacheKey = "product#" + productID;
+
+            Product result = cache[cacheKey] as Product;
+
+            if (result == null)
+            {
+                result = productRepo.GetProduct(productID);
+
+                cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
             }
 
             return result;

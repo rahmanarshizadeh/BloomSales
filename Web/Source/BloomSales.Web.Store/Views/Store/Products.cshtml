@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BloomSales.Data.Entities.Product>
 
-<div class="col-md-9">
+<div>
     <div class="col-lg-12 col-md-12 col-sm-12">
 
         @{
@@ -32,7 +32,13 @@
                         </div>
                         <div class="caption">
                             <h5 class="text-center fadeout-box">
-                                <a href="#">@p.Name</a>
+                                @Ajax.ActionLink(p.Name, "ProductDetails", "Store", new { id = p.ID, unitPrice = p.UnitPrice },
+                                                 new AjaxOptions()
+                                                 {
+                                                     HttpMethod = "GET",
+                                                     UpdateTargetId = "productsList",
+                                                     InsertionMode = InsertionMode.Replace
+                                                 })
                             </h5>
                             <h6 class="pull-right">$@string.Format("{0:n}", p.UnitPrice)</h6>
                         </div>
