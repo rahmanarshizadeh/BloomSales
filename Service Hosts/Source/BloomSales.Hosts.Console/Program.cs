@@ -23,11 +23,11 @@ namespace BloomSales.Hosts.Console
             {
                 StartServices(args);
             }
-            catch (InvalidOperationException ivox)
+            catch (InvalidOperationException)
             {
                 System.Console.WriteLine("Oops! Could not start service(s) requested.");
             }
-            catch (AddressAlreadyInUseException aax)
+            catch (AddressAlreadyInUseException)
             {
                 System.Console.WriteLine("The addresses for given requested services are in use.");
             }

@@ -64,6 +64,20 @@ IF NOT EXIST ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Release\" (
 ECHO   Copying to %cd%\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Release\
 COPY /Y .\connections.config ".\Service Hosts\Source\BloomSales.Hosts.Windows\bin\Release\"
 
+IF NOT EXIST ".\Service Hosts\Source\BloomSales.Hosts.Console\bin\Debug\" (
+	MKDIR ".\Service Hosts\Source\BloomSales.Hosts.Console\bin\Debug\"
+)
+
+ECHO   Copying to %cd%\Service Hosts\Source\BloomSales.Hosts.Console\bin\Debug\
+COPY /Y .\connections.config ".\Service Hosts\Source\BloomSales.Hosts.Console\bin\Debug\"
+
+IF NOT EXIST ".\Service Hosts\Source\BloomSales.Hosts.Console\bin\Release\" (
+	MKDIR ".\Service Hosts\Source\BloomSales.Hosts.Console\bin\Release\"
+)
+
+ECHO   Copying to %cd%\Service Hosts\Source\BloomSales.Hosts.Console\bin\Release\
+COPY /Y .\connections.config ".\Service Hosts\Source\BloomSales.Hosts.Console\bin\Release\"
+
 ECHO.
 ECHO Cleaning up...
 DEL .\connections.config
