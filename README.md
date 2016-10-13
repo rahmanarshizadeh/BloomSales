@@ -2,15 +2,12 @@
 
 # BloomSales Inc.
 
-BloomSales Inc. is a fictional trading company which also has retail stores. 
+BloomSales Inc. is a fictive retail company which also has stores. 
 This project consists of its underlying services and its online store. 
 
 The whole system is written as a *showcase only and nothing more*. 
 
-You can find the systems diagram in the following folder:
-```
-\Documentation\Diagrams
-```
+You can learn more about the project, its design and architecture [here](https://moriazat.wordpress.com/bloomsales).
 
 ## Getting Started
 
