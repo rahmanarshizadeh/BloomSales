@@ -7,7 +7,7 @@ This project consists of its underlying services and its online store.
 
 The whole system is written as a *showcase only and nothing more*. 
 
-You can learn more about the project, its design and architecture [here](https://moriazat.wordpress.com/bloomsales).
+You can learn more about the project, its design and architecture in [this blog post](https://moriazat.wordpress.com/bloomsales).
 
 ## Getting Started
 
