@@ -1,11 +1,7 @@
-﻿using BloomSales.Data.Entities;
-using BloomSales.Services.Contracts;
+﻿using BloomSales.Services.Contracts;
 using BloomSales.Services.Proxies;
-using BloomSales.Web.Store.Models;
+using BloomSales.Web.Store.Controllers.Business;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BloomSales.Web.Store.Controllers
@@ -17,9 +13,8 @@ namespace BloomSales.Web.Store.Controllers
 
         public StoreController()
         {
-            //this.inventoryService = inventoryServiceProxy;
-            this.inventoryService = new InventoryClient();
-            this.locationService = new LocationClient();
+            inventoryService = new InventoryClient();
+            locationService = new LocationClient();
         }
 
         public ActionResult Index(string categoryName = "")
@@ -29,28 +24,8 @@ namespace BloomSales.Web.Store.Controllers
 
         public ActionResult CategoriesList()
         {
-            var allCategories = inventoryService.GetCategories();
-            var categoriesList = new Dictionary<string, List<string>>();
-
-            // put the children under each parent and create the full object tree
-            foreach (var cat in allCategories)
-            {
-                if (cat.Parent != null)
-                {
-                    if (!categoriesList.ContainsKey(cat.Parent.Name))
-                        categoriesList.Add(cat.Parent.Name, new List<string>());
-
-                    categoriesList[cat.Parent.Name].Add(cat.Name);
-                }
-            }
-
-            // sort the children
-            foreach (var key in categoriesList.Keys)
-            {
-                var children = categoriesList[key];
-                children.Sort();
-            }
-
+            var retriever = new CategoriesRetriever(inventoryService);
+            var categoriesList = retriever.GetList();
             return PartialView(categoriesList);
         }
 

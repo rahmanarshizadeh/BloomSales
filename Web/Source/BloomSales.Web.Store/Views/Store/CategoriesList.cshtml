@@ -1,26 +1,26 @@
-﻿@model System.Collections.Generic.IDictionary<string, List<string>>
+﻿@model BloomSales.Web.Store.Models.CategoryListViewModel
 
 <div class="col-md-3">
     <p class="lead">Departments</p>
 
     <div class="panel-group" id="categoryList" role="tablist" aria-multiselectable="false">
-        @foreach (string k in Model.Keys)
+        @foreach (string p in Model.Parents)
             {
             <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="@string.Format("heading{0}",k)">
+                <div class="panel-heading" role="tab" id="@string.Format("heading{0}",p)">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-parent="#categoryList"
-                           href="#@string.Format("collapse{0}",k)" aria-expanded="false"
-                           aria-controls="@string.Format("collapse{0}",k)">
-                            @k
+                           href="#@string.Format("collapse{0}",p)" aria-expanded="false"
+                           aria-controls="@string.Format("collapse{0}",p)">
+                            @p
                         </a>
                     </h4>
                 </div>
-                <div id="@string.Format("collapse{0}",k)"
+                <div id="@string.Format("collapse{0}",p)"
                      class="panel-collapse collapse" role="tabpanel"
-                     aria-labelledby="@string.Format("heading{0}",k)">
+                     aria-labelledby="@string.Format("heading{0}",p)">
                     <ul class="list-group">
-                        @foreach (string item in Model[k])
+                        @foreach (string item in Model.GetChildren(p))
                         {
                             <li class="list-group-item">
                                 @Ajax.ActionLink(item,
