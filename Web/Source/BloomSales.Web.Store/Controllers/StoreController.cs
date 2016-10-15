@@ -22,6 +22,14 @@ namespace BloomSales.Web.Store.Controllers
             return View((object)categoryName);
         }
 
+        public ActionResult Catalog(string categoryName)
+        {
+            if (string.IsNullOrEmpty(categoryName))
+                return PartialView("CatalogFrontPage");
+            else
+                return Products(categoryName);
+        }
+
         public ActionResult CategoriesList()
         {
             var retriever = new CategoriesRetriever(inventoryService);

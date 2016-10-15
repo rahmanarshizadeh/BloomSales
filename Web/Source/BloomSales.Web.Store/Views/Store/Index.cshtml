@@ -10,16 +10,7 @@
         @Html.Action("CategoriesList")
 
         <div id="productsList" class="col-md-9">
-            @if (Model.IsEmpty())
-            {
-                <!--catalog front page-->
-                @Html.Partial("CatalogFrontPage");
-            }
-            else
-            {
-                <!--list of products-->
-                @Html.Action("Products", new { categoryName = Model })
-            }
+            @Html.Action("Catalog", new { categoryName = Model })
         </div>
     </div>
 </div>
