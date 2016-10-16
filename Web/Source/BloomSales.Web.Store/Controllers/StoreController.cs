@@ -1,7 +1,7 @@
 ﻿using BloomSales.Services.Contracts;
 using BloomSales.Services.Proxies;
 using BloomSales.Web.Store.Controllers.Business;
-using System;
+using BloomSales.Web.Store.Models;
 using System.Web.Mvc;
 
 namespace BloomSales.Web.Store.Controllers
@@ -46,9 +46,9 @@ namespace BloomSales.Web.Store.Controllers
 
         public ActionResult ProductDetails(int id, decimal unitPrice)
         {
-            Tuple<int, decimal> model = new Tuple<int, decimal>(id, unitPrice);
+            var productDetails = new ProductDetailsViewModel(id, unitPrice);
 
-            return PartialView(model);
+            return PartialView(productDetails);
         }
     }
 }

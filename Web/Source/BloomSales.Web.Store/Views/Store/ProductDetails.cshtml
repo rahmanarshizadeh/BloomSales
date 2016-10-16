@@ -1,9 +1,4 @@
-﻿@model Tuple<int, decimal>
-
-@{
-    var productID = Model.Item1;
-    var unitPrice = Model.Item2;
-}
+﻿@model BloomSales.Web.Store.Models.ProductDetailsViewModel
 
 <div style="padding-top:3.5em;">
     <div class="panel panel-default">
@@ -12,7 +7,7 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                @Html.Action("Details", "Product", new { id = productID })
+                @Html.Action("Details", "Product", new { id = Model.ID })
             </div>
             <div class="row">
                 <div class="col-md-9">
@@ -21,8 +16,8 @@
                     @Ajax.ActionLink("Add to Cart", "Add", "ShoppingCart",
                                         new
                                         {
-                                            productItemID = productID,
-                                            unitPrice = unitPrice
+                                            ID = Model.ID,
+                                            UnitPrice = Model.UnitPrice
                                         },
                                         new AjaxOptions()
                                         {

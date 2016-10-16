@@ -1,11 +1,11 @@
 ﻿using BloomSales.Data.Entities;
 using BloomSales.Services.Contracts;
 using BloomSales.Services.Proxies;
+using BloomSales.Web.Store.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BloomSales.Web.Store.Controllers
@@ -53,14 +53,14 @@ namespace BloomSales.Web.Store.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(int productItemID, decimal unitPrice)
+        public ActionResult Add(ProductDetailsViewModel productDetails)
         {
             Order order;
             List<OrderItem> items;
             OrderItem item = new OrderItem();
-            item.ProductID = productItemID;
+            item.ProductID = productDetails.ID;
             item.Quantity = 1;
-            item.UnitPrice = unitPrice;
+            item.UnitPrice = productDetails.UnitPrice;
 
             order = GetShoppingCart();
             items = GetItems(ref order);
