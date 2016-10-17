@@ -1,6 +1,7 @@
 ﻿using BloomSales.Data.Entities;
 using BloomSales.Services.Contracts;
 using BloomSales.Services.Proxies;
+using BloomSales.Web.Store.Controllers.Business;
 using BloomSales.Web.Store.Models;
 using Microsoft.AspNet.Identity;
 using System;
@@ -114,11 +115,12 @@ namespace BloomSales.Web.Store.Controllers
         [Authorize]
         public ActionResult SaveCart()
         {
-            Order order = GetCartFromSession();
+            var sessionHandler = new SessionHandler(Session);
+            Order order = sessionHandler.Cart;
 
             SetShoppingCart(order);
 
-            DeleteCartFromSession();
+            sessionHandler.DeleteCart();
 
             return RedirectToAction("Index", "Checkout");
         }
@@ -128,7 +130,10 @@ namespace BloomSales.Web.Store.Controllers
             if (User.Identity.IsAuthenticated)
                 orderService.AddOrUpdateCart(User.Identity.GetUserId(), order);
             else
-                SetCartInSession(order);
+            {
+                var sessionHandler = new SessionHandler(Session);
+                sessionHandler.Cart = order;
+            }
         }
 
         private List<OrderItem> GetItems(ref Order order)
@@ -154,7 +159,10 @@ namespace BloomSales.Web.Store.Controllers
             if (User.Identity.IsAuthenticated)
                 order = orderService.GetCart(User.Identity.GetUserId());
             else
-                order = GetCartFromSession();
+            {
+                var sessionHandler = new SessionHandler(Session);
+                order = sessionHandler.Cart;
+            }
             return order;
         }
 
@@ -166,21 +174,6 @@ namespace BloomSales.Web.Store.Controllers
                 duplicate.Quantity++;
             else
                 items.Add(item);
-        }
-
-        private Order GetCartFromSession()
-        {
-            return Session["cart"] as Order;
-        }
-
-        private void SetCartInSession(Order order)
-        {
-            Session["cart"] = order;
-        }
-
-        private void DeleteCartFromSession()
-        {
-            Session["cart"] = null;
         }
     }
 }
