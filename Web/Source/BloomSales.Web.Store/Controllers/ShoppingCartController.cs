@@ -6,7 +6,6 @@ using BloomSales.Web.Store.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace BloomSales.Web.Store.Controllers
@@ -25,14 +24,11 @@ namespace BloomSales.Web.Store.Controllers
         // GET: ShoppingCart
         public ActionResult Index()
         {
-            var order = GetShoppingCart();
-            var productIDs = new List<int>();
-
-            foreach (var item in order.Items)
-                productIDs.Add(item.ProductID);
+            var cart = GetShoppingCart();
+            var productIDs = cart.ItemsProductIDs;
 
             var products = inventoryService.GetProductsByIDs(productIDs);
-            var items = new List<OrderItem>(order.Items);
+            var items = new List<OrderItem>(cart.Items);
 
             Tuple<List<OrderItem>, IEnumerable<Product>> cartItems =
                 new Tuple<List<OrderItem>, IEnumerable<Product>>(items, products);
@@ -42,35 +38,23 @@ namespace BloomSales.Web.Store.Controllers
 
         public ActionResult Count()
         {
-            Order order = null;
+            var cart = GetShoppingCart();
 
-            order = GetShoppingCart();
-
-            if (order == null)
-                return PartialView(0);
-
-            int count = order.Items.Count();
-            return PartialView(count);
+            return PartialView(cart.NumberOfItems);
         }
 
         [HttpPost]
         public ActionResult Add(ProductDetailsViewModel productDetails)
         {
-            Order order;
-            List<OrderItem> items;
             OrderItem item = new OrderItem();
             item.ProductID = productDetails.ID;
             item.Quantity = 1;
             item.UnitPrice = productDetails.UnitPrice;
 
-            order = GetShoppingCart();
-            items = GetItems(ref order);
+            var cart = GetShoppingCart();
+            cart.AddItem(item);
 
-            AddItemToList(items, item);
-
-            order.Items = items;
-
-            SetShoppingCart(order);
+            SetShoppingCart(cart);
 
             return RedirectToAction("Count");
         }
@@ -78,28 +62,18 @@ namespace BloomSales.Web.Store.Controllers
         [HttpPost]
         public ActionResult Update(List<OrderItem> items)
         {
-            List<OrderItem> updatedItemsList = new List<OrderItem>();
+            var cart = GetShoppingCart();
+            cart.Update(items);
 
-            foreach (OrderItem item in items)
-                if (item.Quantity > 0)
-                    updatedItemsList.Add(item);
-
-            var order = GetShoppingCart();
-
-            order.Items = updatedItemsList;
-
-            SetShoppingCart(order);
+            SetShoppingCart(cart);
 
             return RedirectToAction("Calculate");
         }
 
         public ActionResult Calculate()
         {
-            var order = GetShoppingCart();
-            decimal subtotal = 0;
-
-            foreach (var item in order.Items)
-                subtotal += item.Quantity * item.UnitPrice;
+            var cart = GetShoppingCart();
+            var subtotal = cart.Subtotal;
 
             return PartialView(subtotal);
         }
@@ -118,62 +92,37 @@ namespace BloomSales.Web.Store.Controllers
             var sessionHandler = new SessionHandler(Session);
             Order order = sessionHandler.Cart;
 
-            SetShoppingCart(order);
+            SetShoppingCart(new Cart(order));
 
             sessionHandler.DeleteCart();
 
             return RedirectToAction("Index", "Checkout");
         }
 
-        private void SetShoppingCart(Order order)
+        private void SetShoppingCart(Cart cart)
         {
             if (User.Identity.IsAuthenticated)
-                orderService.AddOrUpdateCart(User.Identity.GetUserId(), order);
+                orderService.AddOrUpdateCart(User.Identity.GetUserId(), cart.Order);
             else
             {
                 var sessionHandler = new SessionHandler(Session);
-                sessionHandler.Cart = order;
+                sessionHandler.Cart = cart.Order;
             }
         }
 
-        private List<OrderItem> GetItems(ref Order order)
-        {
-            List<OrderItem> items;
-
-            if (order == null)
-            {
-                order = new Order();
-                items = new List<OrderItem>();
-            }
-            else
-            {
-                items = new List<OrderItem>(order.Items);
-            }
-
-            return items;
-        }
-
-        private Order GetShoppingCart()
+        private Cart GetShoppingCart()
         {
             Order order;
             if (User.Identity.IsAuthenticated)
+            {
                 order = orderService.GetCart(User.Identity.GetUserId());
+            }
             else
             {
                 var sessionHandler = new SessionHandler(Session);
                 order = sessionHandler.Cart;
             }
-            return order;
-        }
-
-        private void AddItemToList(List<OrderItem> items, OrderItem item)
-        {
-            var duplicate = items.Find(i => i.ProductID == item.ProductID);
-
-            if (duplicate != null)
-                duplicate.Quantity++;
-            else
-                items.Add(item);
+            return new Cart(order);
         }
     }
 }
