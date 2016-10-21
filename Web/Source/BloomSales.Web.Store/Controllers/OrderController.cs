@@ -68,8 +68,6 @@ namespace BloomSales.Web.Store.Controllers
             if (order.Items == null)
                 AggregateItems(order);
 
-            var statuses = GetStatusTitles(shippings);
-
             BillViewModel bill = new BillViewModel()
             {
                 Order = order,
@@ -80,12 +78,7 @@ namespace BloomSales.Web.Store.Controllers
                 Tax = accountingService.GetTaxInfo(shippings[0].Country, shippings[0].Province)
             };
 
-            ViewData["products"] = products;
-            var model =
-                new Tuple<BillViewModel, IEnumerable<ShippingInfo>, string, IEnumerable<string>>(
-                                                        bill, shippings,
-                                                        GetPaymentMethodTitle(bill.Payment.Type),
-                                                        statuses);
+            var model = new OrderDetailsViewModel(bill, shippings, products);
 
             return PartialView(model);
         }
@@ -107,16 +100,6 @@ namespace BloomSales.Web.Store.Controllers
             }
 
             return products;
-        }
-
-        private IEnumerable<string> GetStatusTitles(List<ShippingInfo> shippings)
-        {
-            var list = new List<string>();
-
-            foreach (var shipping in shippings)
-                list.Add(GetStatusTitle(shipping.Status));
-
-            return list;
         }
 
         private decimal CalculateSubtotal(IEnumerable<OrderItem> orderItems)
@@ -141,32 +124,6 @@ namespace BloomSales.Web.Store.Controllers
             }
         }
 
-        private string GetPaymentMethodTitle(PaymentType type)
-        {
-            switch (type)
-            {
-                case PaymentType.CreditCard:
-                    return "Credit Card";
-
-                case PaymentType.OnlineBanking:
-                    return "Online Banking";
-
-                default:
-                    return type.ToString();
-            }
-        }
-
-        private void AggregateItems(Order order)
-        {
-            List<OrderItem> items = new List<OrderItem>();
-
-            foreach (var subOrder in order.SubOrders)
-                foreach (var item in subOrder.Items)
-                    items.Add(item);
-
-            order.Items = items;
-        }
-
         private string GetStatusTitle(ShippingStatus status)
         {
             switch (status)
@@ -183,6 +140,17 @@ namespace BloomSales.Web.Store.Controllers
                 default:
                     return status.ToString();
             }
+        }
+
+        private void AggregateItems(Order order)
+        {
+            List<OrderItem> items = new List<OrderItem>();
+
+            foreach (var subOrder in order.SubOrders)
+                foreach (var item in subOrder.Items)
+                    items.Add(item);
+
+            order.Items = items;
         }
     }
 }

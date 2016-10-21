@@ -1,12 +1,4 @@
-﻿@model Tuple<BloomSales.Web.Store.Models.BillViewModel, IEnumerable<BloomSales.Data.Entities.ShippingInfo>, string, IEnumerable<string>>
-
-@{
-    var bill = Model.Item1;
-    var shippingIt = Model.Item2.GetEnumerator();
-    var statusIt = Model.Item4.GetEnumerator();
-    var products = ViewData["products"] as IEnumerable<IEnumerable<BloomSales.Data.Entities.Product>>;
-    var productsIt = products.GetEnumerator();
-}
+﻿@model BloomSales.Web.Store.Models.OrderDetailsViewModel
 
 <div class="container col-md-10">
     <div class="col-md-12" style="padding-top:10px; padding-bottom:15px;">
@@ -22,33 +14,33 @@
                 <div class="row">
                     <div class="col-md-4">
                         <h6><strong>Shipping Address:</strong></h6>
-                        <h6>@bill.Shipping.Name</h6>
-                        <h6>@bill.Shipping.StreetAddress</h6>
-                        <h6>@bill.Shipping.City, @bill.Shipping.PostalCode</h6>
-                        <h6>@bill.Shipping.Province, @bill.Shipping.Country</h6>
+                        <h6>@Model.Contact.Name</h6>
+                        <h6>@Model.Contact.StreetAddress</h6>
+                        <h6>@Model.Contact.City, @Model.Contact.PostalCode</h6>
+                        <h6>@Model.Contact.Province, @Model.Contact.Country</h6>
                     </div>
                     <div class="col-md-3 center-block">
                         <h6><strong>Payment Method:</strong></h6>
-                        <h6>@Model.Item3</h6>
+                        <h6>@Model.PaymentMethod</h6>
                     </div>
                     <div class="col-md-5">
                         <div class="col-md-8">
                             <h6><strong>Payment Details:</strong></h6>
                             <h6>Item(s) Subtotal:</h6>
                             <h6>Shipping:</h6>
-                            <h6>Provincial Sales Tax (@bill.Tax.Province):</h6>
+                            <h6>Provincial Sales Tax (@Model.Contact.Province):</h6>
                             <h6>Federal Sales Tax:</h6>
                             <hr class="col-md-10" />
                             <h6><strong>Total:</strong></h6>
                         </div>
                         <div class="col-md-4">
-                            <h6 class="text-muted">@bill.Payment.Currency</h6>
-                            <h6>$@bill.OrderSubtotal</h6>
-                            <h6>$@bill.ShippingCost</h6>
-                            <h6>$@(bill.Tax.Provincial * 100)</h6>
-                            <h6>$@(bill.Tax.Federal * 100)</h6>
+                            <h6 class="text-muted">@Model.PaymentCurrency</h6>
+                            <h6>$@Model.Subtotal</h6>
+                            <h6>$@Model.ShippingCost</h6>
+                            <h6>$@Model.ProvincialTax</h6>
+                            <h6>$@Model.FederalTax</h6>
                             <hr class="col-md-10" />
-                            <h6><strong>$@bill.Payment.Amount</strong></h6>
+                            <h6><strong>$@Model.Total</strong></h6>
                         </div>
                     </div>
                 </div>
@@ -56,7 +48,12 @@
         </div>
 
         <!--sub-order details-->
-        @foreach (var subOrder in bill.Order.SubOrders)
+        @{
+            var shippingIt = Model.Shippings.GetEnumerator();
+            var statusIt = Model.ShippingStatuses.GetEnumerator();
+            var productsIt = Model.Products.GetEnumerator();
+        }
+        @foreach (var subOrder in Model.SubOrders)
         {
             shippingIt.MoveNext();
             statusIt.MoveNext();
