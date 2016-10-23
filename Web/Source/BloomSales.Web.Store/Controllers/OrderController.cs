@@ -6,7 +6,6 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BloomSales.Web.Store.Controllers
@@ -33,7 +32,7 @@ namespace BloomSales.Web.Store.Controllers
                                                                 DateTime.MinValue,
                                                                 DateTime.Today);
             var payments = new List<PaymentInfo>();
-            var shippingStatuses = new List<string>();
+            var shippingStatuses = new List<ShippingStatus>();
             PaymentInfo payment;
             ShippingStatus status;
             string statusTitle;
@@ -46,16 +45,13 @@ namespace BloomSales.Web.Store.Controllers
                 payment = accountingService.GetPaymentFor(order.ID);
                 payments.Add(payment);
                 status = shippingService.GetShippingStatus(order.ID);
-                statusTitle = GetStatusTitle(status);
-                shippingStatuses.Add(statusTitle);
+                shippingStatuses.Add(status);
             }
 
-            Tuple<IEnumerable<Order>, List<PaymentInfo>, List<string>> model =
-                new Tuple<IEnumerable<Order>, List<PaymentInfo>, List<string>>(orders,
-                                                                               payments,
-                                                                               shippingStatuses);
+            OrderHistoryViewModel history =
+                new OrderHistoryViewModel(orders, shippingStatuses, payments);
 
-            return View(model);
+            return View(history);
         }
 
         public ActionResult Details(int orderID)
