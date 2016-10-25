@@ -120,24 +120,6 @@ namespace BloomSales.Web.Store.Controllers
             }
         }
 
-        private string GetStatusTitle(ShippingStatus status)
-        {
-            switch (status)
-            {
-                case ShippingStatus.OutForDelivery:
-                    return "Out for Delivery";
-
-                case ShippingStatus.PickedUp:
-                    return "Picked up";
-
-                case ShippingStatus.ReceivedOrder:
-                    return "Received order";
-
-                default:
-                    return status.ToString();
-            }
-        }
-
         private void AggregateItems(Order order)
         {
             List<OrderItem> items = new List<OrderItem>();
