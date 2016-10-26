@@ -35,7 +35,6 @@ namespace BloomSales.Web.Store.Controllers
             var shippingStatuses = new List<ShippingStatus>();
             PaymentInfo payment;
             ShippingStatus status;
-            string statusTitle;
 
             if (orders.Count() == 0)
                 return View("EmptyHistory");
@@ -67,7 +66,6 @@ namespace BloomSales.Web.Store.Controllers
             BillViewModel bill = new BillViewModel()
             {
                 Order = order,
-                OrderSubtotal = CalculateSubtotal(order.Items),
                 Payment = accountingService.GetPaymentFor(orderID),
                 Shipping = shippings[0],
                 ShippingCost = shippings[0].Service.Cost,
@@ -96,16 +94,6 @@ namespace BloomSales.Web.Store.Controllers
             }
 
             return products;
-        }
-
-        private decimal CalculateSubtotal(IEnumerable<OrderItem> orderItems)
-        {
-            decimal result = 0;
-
-            foreach (var item in orderItems)
-                result += item.Quantity * item.UnitPrice;
-
-            return result;
         }
 
         private void GetShippings(Order order, List<ShippingInfo> shippings)

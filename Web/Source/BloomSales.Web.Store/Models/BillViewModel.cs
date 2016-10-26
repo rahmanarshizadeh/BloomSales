@@ -14,10 +14,23 @@ namespace BloomSales.Web.Store.Models
 
         public SalesTaxInfo Tax { get; set; }
 
-        public decimal OrderSubtotal { get; set; }
-
         public decimal ShippingCost { get; set; }
 
         public PaymentInfo Payment { get; set; }
+
+        public decimal OrderSubtotal
+        {
+            get { return CalculateSubtotal(); }
+        }
+
+        private decimal CalculateSubtotal()
+        {
+            decimal result = 0;
+
+            foreach (var item in Order.Items)
+                result += item.Quantity * item.UnitPrice;
+
+            return result;
+        }
     }
 }

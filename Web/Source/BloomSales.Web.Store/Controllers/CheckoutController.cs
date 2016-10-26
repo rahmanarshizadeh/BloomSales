@@ -89,7 +89,6 @@ namespace BloomSales.Web.Store.Controllers
                                                     bill.Shipping.Province);
             bill.Order = orderService.GetCart(userID);
             bill.Payment = new PaymentInfo() { Currency = "CAD", Type = PaymentType.CreditCard };
-            bill.OrderSubtotal = CalculateSubtotal(bill.Order.Items);
             bill.Payment.Amount = CalculateTotal(bill.OrderSubtotal, bill.Tax);
             bill.ShippingCost = (decimal)GetShippingCostFromSession();
             SetShippingCostInSession(null);
