@@ -180,6 +180,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Business\Cart.cs" />
     <Compile Include="Controllers\Business\CategoriesRetriever.cs" />
+    <Compile Include="Controllers\Business\IOrdersRetriever.cs" />
+    <Compile Include="Controllers\Business\OrdersRetriever.cs" />
     <Compile Include="Controllers\Business\SessionHandler.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -197,7 +199,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OrderDetailsViewModel.cs" />
-    <Compile Include="Models\OrderHistoryViewModel.cs" />
+    <Compile Include="Models\OrdersHistoryViewModel.cs" />
     <Compile Include="Models\OrderViewModelBase.cs" />
     <Compile Include="Models\ProductDetailsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

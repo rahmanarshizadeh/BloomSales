@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BloomSales.Web.Store.Models
 {
-    public class OrderHistoryViewModel : OrderViewModelBase
+    public class OrdersHistoryViewModel : OrderViewModelBase
     {
         public class OrderHistoryItem
         {
@@ -26,7 +26,7 @@ namespace BloomSales.Web.Store.Models
 
         private IList<OrderHistoryItem> history;
 
-        public OrderHistoryViewModel(IEnumerable<Order> orders,
+        public OrdersHistoryViewModel(IEnumerable<Order> orders,
                                      IEnumerable<ShippingStatus> statuses,
                                      IEnumerable<PaymentInfo> payments)
         {
