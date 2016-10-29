@@ -1,6 +1,7 @@
 ﻿using BloomSales.Data.Entities;
 using BloomSales.Services.Contracts;
 using BloomSales.Services.Proxies;
+using BloomSales.Web.Store.Controllers.Business;
 using BloomSales.Web.Store.Models;
 using Microsoft.AspNet.Identity;
 using System;
@@ -47,7 +48,8 @@ namespace BloomSales.Web.Store.Controllers
         [HttpPost]
         public ActionResult Address(ShippingInfo shipping)
         {
-            SetShippingInSession(shipping);
+            var sessionHandler = new SessionHandler(Session);
+            sessionHandler.Shipping = shipping;
 
             return RedirectToAction("Shipping");
         }
@@ -64,10 +66,11 @@ namespace BloomSales.Web.Store.Controllers
         [HttpPost]
         public ActionResult Shipping(int shippingServiceID, decimal serviceCost)
         {
-            var shipping = GetShippingFromSession();
+            var sessionHandler = new SessionHandler(Session);
+            var shipping = sessionHandler.Shipping;
             shipping.ServiceID = shippingServiceID;
-            SetShippingInSession(shipping);
-            SetShippingCostInSession(serviceCost);
+            sessionHandler.Shipping = shipping;
+            sessionHandler.ShippingCost = serviceCost;
 
             return RedirectToAction("Payment");
         }
@@ -81,19 +84,20 @@ namespace BloomSales.Web.Store.Controllers
 
         public ActionResult Payment()
         {
+            var sessionHandler = new SessionHandler(Session);
             var userID = User.Identity.GetUserId();
             BillViewModel bill = new BillViewModel();
-            bill.Shipping = GetShippingFromSession();
-            SetShippingInSession(null);
+            bill.Shipping = sessionHandler.Shipping;
+            sessionHandler.Shipping = null;
             bill.Tax = accountingService.GetTaxInfo(bill.Shipping.Country,
                                                     bill.Shipping.Province);
             bill.Order = orderService.GetCart(userID);
             bill.Payment = new PaymentInfo() { Currency = "CAD", Type = PaymentType.CreditCard };
             bill.Payment.Amount = CalculateTotal(bill.OrderSubtotal, bill.Tax);
-            bill.ShippingCost = (decimal)GetShippingCostFromSession();
-            SetShippingCostInSession(null);
+            bill.ShippingCost = (decimal)sessionHandler.ShippingCost;
+            sessionHandler.ShippingCost = null;
 
-            SetBillInSession(bill);
+            sessionHandler.Bill = bill;
 
             return PartialView(bill);
         }
@@ -101,9 +105,10 @@ namespace BloomSales.Web.Store.Controllers
         [HttpPost]
         public ActionResult PaymentMethod(int method)
         {
-            var bill = GetBillFromSession();
+            var sessionHandler = new SessionHandler(Session);
+            var bill = sessionHandler.Bill;
             bill.Payment.Type = (PaymentType)method;
-            SetBillInSession(bill);
+            sessionHandler.Bill = bill;
 
             return PartialView();
         }
@@ -111,13 +116,14 @@ namespace BloomSales.Web.Store.Controllers
         [HttpPost]
         public ActionResult Submit()
         {
-            var bill = GetBillFromSession();
+            var sessionHandler = new SessionHandler(Session);
+            var bill = sessionHandler.Bill;
 
             var result = orderService.PlaceOrder(bill.Order, bill.Shipping, bill.Payment);
 
             if (result)
             {
-                SetBillInSession(null);
+                sessionHandler.Bill = null;
                 return RedirectToAction("Success");
             }
             else
@@ -138,8 +144,9 @@ namespace BloomSales.Web.Store.Controllers
 
         private decimal CalculateTotal(decimal subtotal, SalesTaxInfo tax)
         {
+            var sessionHandler = new SessionHandler(Session);
             var totalTax = tax.Federal + tax.Provincial;
-            var shipping = (decimal)GetShippingCostFromSession();
+            var shipping = (decimal)sessionHandler.ShippingCost;
 
             var result = subtotal + shipping;
             result += (result * (decimal)totalTax);
@@ -155,36 +162,6 @@ namespace BloomSales.Web.Store.Controllers
                 result += item.Quantity * item.UnitPrice;
 
             return result;
-        }
-
-        private ShippingInfo GetShippingFromSession()
-        {
-            return Session["shipping"] as ShippingInfo;
-        }
-
-        private void SetShippingInSession(ShippingInfo shipping)
-        {
-            Session["shipping"] = shipping;
-        }
-
-        private decimal? GetShippingCostFromSession()
-        {
-            return Session["shippingCost"] as decimal?;
-        }
-
-        private void SetShippingCostInSession(decimal? cost)
-        {
-            Session["shippingCost"] = cost;
-        }
-
-        private BillViewModel GetBillFromSession()
-        {
-            return Session["bill"] as BillViewModel;
-        }
-
-        private void SetBillInSession(BillViewModel bill)
-        {
-            Session["bill"] = bill;
         }
     }
 }
