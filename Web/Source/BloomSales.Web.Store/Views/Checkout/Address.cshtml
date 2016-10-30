@@ -1,4 +1,6 @@
-﻿<h3 style="padding-bottom:3em;">Shipping Address</h3>
+﻿@model IEnumerable<BloomSales.Data.Entities.Province>
+
+<h3 style="padding-bottom:3em;">Shipping Address</h3>
 
 <div class="container">
 
@@ -36,13 +38,9 @@
                     </div>
                     <div class="col-md-3">
                         <select class="form-control" name="Province">
-                            @{
-                                var provinces = ViewData["provinces"] as IEnumerable<BloomSales.Data.Entities.Province>;
-
-                                foreach (var p in provinces)
-                                {
-                                    <option value="@p.Name">@p.Name (@p.Abbreviation)</option>
-                                }
+                            @foreach (var p in Model)
+                            {
+                                <option value="@p.Name">@p.Name (@p.Abbreviation)</option>
                             }
                         </select>
                     </div>
@@ -75,6 +73,6 @@
                     <input type="submit" value="Continue" class="btn btn-primary pull-right col-md-3" />
                 </div>
             </div>
-                                }
+        }
     </div>
 </div>

@@ -40,9 +40,9 @@ namespace BloomSales.Web.Store.Controllers
 
         public ActionResult Address()
         {
-            ViewData["provinces"] = locationService.GetAllProvinces("Canada");
+            var provinces = locationService.GetAllProvinces("Canada");
 
-            return PartialView();
+            return PartialView(provinces);
         }
 
         [HttpPost]
