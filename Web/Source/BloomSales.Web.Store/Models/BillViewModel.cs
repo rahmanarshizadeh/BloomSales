@@ -23,12 +23,29 @@ namespace BloomSales.Web.Store.Models
             get { return CalculateSubtotal(); }
         }
 
+        public decimal OrderTotal
+        {
+            get { return CalculateTotal(); }
+        }
+
         private decimal CalculateSubtotal()
         {
             decimal result = 0;
 
             foreach (var item in Order.Items)
                 result += item.Quantity * item.UnitPrice;
+
+            return result;
+        }
+
+        private decimal CalculateTotal()
+        {
+            var subtotal = CalculateSubtotal();
+
+            var totalTax = Tax.Federal + Tax.Provincial;
+
+            var result = subtotal + ShippingCost;
+            result += (result * (decimal)totalTax);
 
             return result;
         }

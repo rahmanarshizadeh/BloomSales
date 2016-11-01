@@ -4,10 +4,7 @@ using BloomSales.Services.Proxies;
 using BloomSales.Web.Store.Controllers.Business;
 using BloomSales.Web.Store.Models;
 using Microsoft.AspNet.Identity;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BloomSales.Web.Store.Controllers
@@ -93,7 +90,8 @@ namespace BloomSales.Web.Store.Controllers
                                                     bill.Shipping.Province);
             bill.Order = orderService.GetCart(userID);
             bill.Payment = new PaymentInfo() { Currency = "CAD", Type = PaymentType.CreditCard };
-            bill.Payment.Amount = CalculateTotal(bill.OrderSubtotal, bill.Tax);
+            bill.ShippingCost = (decimal)sessionHandler.ShippingCost;
+            bill.Payment.Amount = bill.OrderTotal;
             bill.ShippingCost = (decimal)sessionHandler.ShippingCost;
             sessionHandler.ShippingCost = null;
 
@@ -140,28 +138,6 @@ namespace BloomSales.Web.Store.Controllers
         public ActionResult Failure()
         {
             return View("Failure");
-        }
-
-        private decimal CalculateTotal(decimal subtotal, SalesTaxInfo tax)
-        {
-            var sessionHandler = new SessionHandler(Session);
-            var totalTax = tax.Federal + tax.Provincial;
-            var shipping = (decimal)sessionHandler.ShippingCost;
-
-            var result = subtotal + shipping;
-            result += (result * (decimal)totalTax);
-
-            return result;
-        }
-
-        private decimal CalculateSubtotal(IEnumerable<OrderItem> orderItems)
-        {
-            decimal result = 0;
-
-            foreach (var item in orderItems)
-                result += item.Quantity * item.UnitPrice;
-
-            return result;
         }
     }
 }
