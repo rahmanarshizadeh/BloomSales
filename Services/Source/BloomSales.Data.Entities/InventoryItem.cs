@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace BloomSales.Data.Entities
 {
     [DataContract]
-    public class InventoryItem
+    public class InventoryItem : IIdentifiable
     {
         [DataMember]
         public int ID { get; set; }

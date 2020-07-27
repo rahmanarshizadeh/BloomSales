@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace BloomSales.Data.Entities
 {
     [DataContract]
-    public class Order
+    public class Order : IIdentifiable
     {
         [Required]
         [DataMember]

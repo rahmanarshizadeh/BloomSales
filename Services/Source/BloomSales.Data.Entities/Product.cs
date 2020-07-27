@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace BloomSales.Data.Entities
 {
     [DataContract]
-    public class Product
+    public class Product : IIdentifiable
     {
         [DataMember]
         public virtual ProductCategory Category { get; set; }

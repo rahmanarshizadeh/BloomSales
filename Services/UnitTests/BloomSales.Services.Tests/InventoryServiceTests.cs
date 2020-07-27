@@ -61,12 +61,7 @@ namespace BloomSales.Services.Tests
         public void GetAllProducts_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
-            List<Product> expected = new List<Product>();
-            expected.Add(new Product() { ID = 1 });
-            expected.Add(new Product() { ID = 2 });
-            expected.Add(new Product() { ID = 3 });
-            expected.Add(new Product() { ID = 4 });
-            expected.Add(new Product() { ID = 5 });
+            List<Product> expected = TestHelpers.CreateList<Product>(5);
             Mock<IProductRepository> mockProductRepo = new Mock<IProductRepository>();
             mockProductRepo.Setup(r => r.GetAllProducts()).Returns(expected);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
@@ -88,12 +83,7 @@ namespace BloomSales.Services.Tests
         public void GetAllProducts_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
-            List<Product> expected = new List<Product>();
-            expected.Add(new Product() { ID = 1 });
-            expected.Add(new Product() { ID = 2 });
-            expected.Add(new Product() { ID = 3 });
-            expected.Add(new Product() { ID = 4 });
-            expected.Add(new Product() { ID = 5 });
+            List<Product> expected = TestHelpers.CreateList<Product>(5);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             mockCache.Setup(c => c["allProducts"]).Returns(expected);
             InventoryService sut = new InventoryService(null, null, null, mockCache.Object, null);
@@ -112,12 +102,7 @@ namespace BloomSales.Services.Tests
         public void GetAllProducts_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
-            List<Product> expected = new List<Product>();
-            expected.Add(new Product() { ID = 1 });
-            expected.Add(new Product() { ID = 2 });
-            expected.Add(new Product() { ID = 3 });
-            expected.Add(new Product() { ID = 4 });
-            expected.Add(new Product() { ID = 5 });
+            List<Product> expected = TestHelpers.CreateList<Product>(5);
             Mock<IProductRepository> mockProductRepo = new Mock<IProductRepository>();
             mockProductRepo.Setup(r => r.GetAllProducts()).Returns(expected);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
@@ -137,10 +122,7 @@ namespace BloomSales.Services.Tests
         public void GetCategories_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
-            List<ProductCategory> expected = new List<ProductCategory>();
-            expected.Add(new ProductCategory() { ID = 1 });
-            expected.Add(new ProductCategory() { ID = 2 });
-            expected.Add(new ProductCategory() { ID = 3 });
+            List<ProductCategory> expected = TestHelpers.CreateList<ProductCategory>(3);
             Mock<IProductCategoryRepository> mockCategoryRepo = new Mock<IProductCategoryRepository>();
             mockCategoryRepo.Setup(r => r.GetAllCategories()).Returns(expected);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
@@ -162,11 +144,7 @@ namespace BloomSales.Services.Tests
         public void GetCategories_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
-            List<ProductCategory> expected = new List<ProductCategory>();
-            expected.Add(new ProductCategory() { ID = 1 });
-            expected.Add(new ProductCategory() { ID = 2 });
-            expected.Add(new ProductCategory() { ID = 3 });
-            expected.Add(new ProductCategory() { ID = 4 });
+            List<ProductCategory> expected = TestHelpers.CreateList<ProductCategory>(4);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             mockCache.Setup(c => c["allCategories"]).Returns(expected);
             InventoryService sut = new InventoryService(null, null, null, mockCache.Object, null);
@@ -185,10 +163,7 @@ namespace BloomSales.Services.Tests
         public void GetCategories_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
-            List<ProductCategory> expected = new List<ProductCategory>();
-            expected.Add(new ProductCategory() { ID = 1 });
-            expected.Add(new ProductCategory() { ID = 2 });
-            expected.Add(new ProductCategory() { ID = 3 });
+            List<ProductCategory> expected = TestHelpers.CreateList<ProductCategory>(3);
             Mock<IProductCategoryRepository> mockCategoryRepo = new Mock<IProductCategoryRepository>();
             mockCategoryRepo.Setup(r => r.GetAllCategories()).Returns(expected);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
@@ -208,15 +183,8 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByCity_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
-            expected.Add(new InventoryItem() { ID = 4 });
-            List<Warehouse> warehouses = new List<Warehouse>();
-            warehouses.Add(new Warehouse() { ID = 10 });
-            warehouses.Add(new Warehouse() { ID = 11 });
-            warehouses.Add(new Warehouse() { ID = 12 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(4);
+            List<Warehouse> warehouses = TestHelpers.CreateList<Warehouse>(3);
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
             mockLocationService.Setup(s => s.GetWarehousesByCity("Vancouver")).Returns(warehouses);
             Mock<IInventoryItemRepository> mockInventoryRepo = new Mock<IInventoryItemRepository>();
@@ -242,11 +210,7 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByCity_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
-            expected.Add(new InventoryItem() { ID = 4 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(4);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             mockCache.Setup(c => c["inventoryInVancouver"]).Returns(expected);
             InventoryService sut = new InventoryService(null, null, null, mockCache.Object, null);
@@ -265,15 +229,8 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByCity_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
-            expected.Add(new InventoryItem() { ID = 4 });
-            List<Warehouse> warehouses = new List<Warehouse>();
-            warehouses.Add(new Warehouse() { ID = 10 });
-            warehouses.Add(new Warehouse() { ID = 11 });
-            warehouses.Add(new Warehouse() { ID = 12 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(4);
+            List<Warehouse> warehouses = TestHelpers.CreateList<Warehouse>(3);
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
             mockLocationService.Setup(s => s.GetWarehousesByCity("Vancouver")).Returns(warehouses);
             Mock<IInventoryItemRepository> mockInventoryRepo = new Mock<IInventoryItemRepository>();
@@ -299,13 +256,8 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByRegion_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
-            List<Warehouse> warehouses = new List<Warehouse>();
-            warehouses.Add(new Warehouse() { ID = 33 });
-            warehouses.Add(new Warehouse() { ID = 22 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(3);
+            List<Warehouse> warehouses = TestHelpers.CreateList<Warehouse>(2);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
             mockLocationService.Setup(s => s.GetWarehousesByRegion("WesternCanada")).Returns(warehouses);
@@ -332,12 +284,7 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByRegion_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
-            expected.Add(new InventoryItem() { ID = 4 });
-            expected.Add(new InventoryItem() { ID = 5 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(5);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             mockCache.Setup(c => c[It.Is<string>(s => s.Equals("inventoryInEasternCanadaRegion"))])
                 .Returns(expected);
@@ -358,13 +305,8 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByRegion_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
-            List<Warehouse> warehouses = new List<Warehouse>();
-            warehouses.Add(new Warehouse() { ID = 33 });
-            warehouses.Add(new Warehouse() { ID = 22 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(3);
+            List<Warehouse> warehouses = TestHelpers.CreateList<Warehouse>(2);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
             mockLocationService.Setup(s => s.GetWarehousesByRegion("WesternCanada")).Returns(warehouses);
@@ -390,10 +332,7 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByWarehouse_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(3);
             Warehouse warehouse = new Warehouse() { ID = 13 };
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
@@ -419,12 +358,7 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByWarehouse_ResultExistsInCache_ReturnsResult()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
-            expected.Add(new InventoryItem() { ID = 4 });
-            expected.Add(new InventoryItem() { ID = 5 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(5);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             mockCache.Setup(c => c["inventoryInW-12Warehouse"]).Returns(expected);
             InventoryService sut = new InventoryService(null, null, null, mockCache.Object, null);
@@ -443,10 +377,7 @@ namespace BloomSales.Services.Tests
         public void GetInventoryByWarehouse_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
-            List<InventoryItem> expected = new List<InventoryItem>();
-            expected.Add(new InventoryItem() { ID = 1 });
-            expected.Add(new InventoryItem() { ID = 2 });
-            expected.Add(new InventoryItem() { ID = 3 });
+            List<InventoryItem> expected = TestHelpers.CreateList<InventoryItem>(3);
             Warehouse warehouse = new Warehouse() { ID = 13 };
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             Mock<ILocationService> mockLocationService = new Mock<ILocationService>();
@@ -471,11 +402,7 @@ namespace BloomSales.Services.Tests
         public void GetProductByCategory_ResultExistsInCache_ReturnsTheResult()
         {
             // arrange
-            List<Product> expected = new List<Product>();
-            expected.Add(new Product() { ID = 1 });
-            expected.Add(new Product() { ID = 2 });
-            expected.Add(new Product() { ID = 3 });
-            expected.Add(new Product() { ID = 4 });
+            List<Product> expected = TestHelpers.CreateList<Product>(4);
             Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
             mockCache.Setup(c => c["allProductsInHealthCategory"]).Returns(expected);
             InventoryService sut = new InventoryService(null, null, null, mockCache.Object, null);
@@ -494,10 +421,7 @@ namespace BloomSales.Services.Tests
         public void GetProductsByCategory_AfterFetchingResultFromDatabase_CachesTheResult()
         {
             // arrange
-            List<Product> expected = new List<Product>();
-            expected.Add(new Product() { ID = 1 });
-            expected.Add(new Product() { ID = 2 });
-            expected.Add(new Product() { ID = 3 });
+            List<Product> expected = TestHelpers.CreateList<Product>(3);
             ProductCategory category = new ProductCategory() { ID = 6, Name = "Health" };
             Mock<IProductCategoryRepository> mockCategoryRepo = new Mock<IProductCategoryRepository>();
             mockCategoryRepo.Setup(r => r.GetCategory("Health")).Returns(category);
@@ -525,10 +449,7 @@ namespace BloomSales.Services.Tests
         public void GetProductsByCategory_ResultNotExistsInCache_FetchesTheResultFromDatabase()
         {
             // arrange
-            List<Product> expected = new List<Product>();
-            expected.Add(new Product() { ID = 1 });
-            expected.Add(new Product() { ID = 2 });
-            expected.Add(new Product() { ID = 3 });
+            List<Product> expected = TestHelpers.CreateList<Product>(3);
             ProductCategory category = new ProductCategory() { ID = 6, Name = "Health" };
             Mock<IProductCategoryRepository> mockCategoryRepo = new Mock<IProductCategoryRepository>();
             mockCategoryRepo.Setup(r => r.GetCategory("Health")).Returns(category);

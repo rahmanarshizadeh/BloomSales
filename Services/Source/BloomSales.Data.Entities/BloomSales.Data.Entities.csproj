@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IIdentifiable.cs" />
     <Compile Include="ProductCategory.cs" />
     <Compile Include="ContactInfo.cs" />
     <Compile Include="InventoryItem.cs" />

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace BloomSales.Data.Entities
 {
     [DataContract]
-    public class OrderItem
+    public class OrderItem : IIdentifiable
     {
         [DataMember]
         public float Discount { get; set; }

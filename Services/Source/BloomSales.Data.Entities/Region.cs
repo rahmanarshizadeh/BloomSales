@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace BloomSales.Data.Entities
 {
     [DataContract]
-    public class Region
+    public class Region : IIdentifiable
     {
         [Required]
         [DataMember]

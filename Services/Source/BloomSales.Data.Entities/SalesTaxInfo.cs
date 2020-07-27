@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace BloomSales.Data.Entities
 {
     [DataContract]
-    public class SalesTaxInfo
+    public class SalesTaxInfo : IIdentifiable
     {
         [Required]
         [DataMember]
