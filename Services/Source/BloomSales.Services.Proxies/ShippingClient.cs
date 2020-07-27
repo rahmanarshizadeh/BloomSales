@@ -1,16 +1,22 @@
 ﻿using BloomSales.Data.Entities;
 using BloomSales.Services.Contracts;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Proxies
 {
     public class ShippingClient : ClientBase<IShippingService>, IShippingService
     {
+        public void AddDeliveryService(DeliveryService service)
+        {
+            Channel.AddDeliveryService(service);
+        }
+
+        public void AddShipper(Shipper shipper)
+        {
+            Channel.AddShipper(shipper);
+        }
+
         public IEnumerable<Shipper> GetAllShippers()
         {
             return Channel.GetAllShippers();
@@ -21,9 +27,9 @@ namespace BloomSales.Services.Proxies
             return Channel.GetServicesByShipper(shipper);
         }
 
-        public void RequestShipping(ShippingInfo shipping)
+        public ShippingInfo GetShipping(int orderID)
         {
-            Channel.RequestShipping(shipping);
+            return Channel.GetShipping(orderID);
         }
 
         public ShippingStatus GetShippingStatus(int orderID)
@@ -31,19 +37,9 @@ namespace BloomSales.Services.Proxies
             return Channel.GetShippingStatus(orderID);
         }
 
-        public ShippingInfo GetShipping(int orderID)
+        public void RequestShipping(ShippingInfo shipping)
         {
-            return Channel.GetShipping(orderID);
-        }
-
-        public void AddShipper(Shipper shipper)
-        {
-            Channel.AddShipper(shipper);
-        }
-
-        public void AddDeliveryService(DeliveryService service)
-        {
-            Channel.AddDeliveryService(service);
+            Channel.RequestShipping(shipping);
         }
     }
 }

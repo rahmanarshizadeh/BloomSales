@@ -9,11 +9,11 @@ namespace BloomSales.Data.Entities
         [DataMember]
         public int ID { get; set; }
 
+        [DataMember]
+        public virtual Region Region { get; set; }
+
         [Required]
         [DataMember]
         public int RegionID { get; set; }
-
-        [DataMember]
-        public virtual Region Region { get; set; }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using BloomSales.Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Contracts
 {
@@ -12,7 +9,10 @@ namespace BloomSales.Services.Contracts
     public interface IOrderService
     {
         [OperationContract]
-        bool PlaceOrder(Order order, ShippingInfo shipping, PaymentInfo payment);
+        void AddOrUpdateCart(string customerID, Order order);
+
+        [OperationContract]
+        Order GetCart(string customerID);
 
         [OperationContract]
         Order GetOrder(int id);
@@ -21,9 +21,6 @@ namespace BloomSales.Services.Contracts
         IEnumerable<Order> GetOrderHistoryByCustomer(string customerID, DateTime startDate, DateTime endDate);
 
         [OperationContract]
-        void AddOrUpdateCart(string customerID, Order order);
-
-        [OperationContract]
-        Order GetCart(string customerID);
+        bool PlaceOrder(Order order, ShippingInfo shipping, PaymentInfo payment);
     }
 }

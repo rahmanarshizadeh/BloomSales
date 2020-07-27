@@ -18,19 +18,6 @@ namespace BloomSales.Data
             AddWarehouses(context);
         }
 
-        private static void AddRegions(LocationDb context)
-        {
-            var regions = new List<Region>()
-            {
-                new Region { Continent = "North America", Country = "Canada", Name = "Eastern Canada" },
-                new Region { Continent = "North America", Country = "Canada", Name = "Northern Canada" },
-                new Region { Continent = "North America", Country = "Canada", Name = "Western Canada" }
-            };
-
-            context.Regions.AddRange(regions);
-            context.SaveChanges();
-        }
-
         private static void AddProvinces(LocationDb context)
         {
             var provinces = new List<Province>()
@@ -116,6 +103,19 @@ namespace BloomSales.Data
             };
 
             context.Provinces.AddRange(provinces);
+            context.SaveChanges();
+        }
+
+        private static void AddRegions(LocationDb context)
+        {
+            var regions = new List<Region>()
+            {
+                new Region { Continent = "North America", Country = "Canada", Name = "Eastern Canada" },
+                new Region { Continent = "North America", Country = "Canada", Name = "Northern Canada" },
+                new Region { Continent = "North America", Country = "Canada", Name = "Western Canada" }
+            };
+
+            context.Regions.AddRange(regions);
             context.SaveChanges();
         }
 

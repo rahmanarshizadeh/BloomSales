@@ -29,6 +29,12 @@ namespace BloomSales.Data.Repositories
             db.SaveChanges();
         }
 
+        public void Dispose()
+        {
+            if (db != null)
+                db.Dispose();
+        }
+
         public SalesTaxInfo GetTaxInfo(string country, string province)
         {
             return FindRecord(country, province);
@@ -42,12 +48,6 @@ namespace BloomSales.Data.Repositories
             record.Federal = salesTax.Federal;
 
             db.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            if (db != null)
-                db.Dispose();
         }
 
         private SalesTaxInfo FindRecord(string country, string province)

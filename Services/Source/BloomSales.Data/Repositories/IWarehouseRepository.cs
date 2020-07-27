@@ -1,28 +1,24 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
     public interface IWarehouseRepository : IRepository
     {
-        IEnumerable<Warehouse> GetWarehousesByRegion(string region);
-
-        IEnumerable<Warehouse> GetWarehousesByCity(string city);
-
-        IEnumerable<Warehouse> GetWarehousesByProvince(string province);
+        void AddWarehouse(Warehouse warehouse);
 
         Warehouse GetWarehouse(string name);
 
         Warehouse GetWarehouse(int id);
 
-        void AddWarehouse(Warehouse warehouse);
+        IEnumerable<Warehouse> GetWarehousesByCity(string city);
 
-        void UpdateWarehouse(Warehouse warehouse);
+        IEnumerable<Warehouse> GetWarehousesByProvince(string province);
+
+        IEnumerable<Warehouse> GetWarehousesByRegion(string region);
 
         void RemoveWarehouse(Warehouse warehouse);
+
+        void UpdateWarehouse(Warehouse warehouse);
     }
 }

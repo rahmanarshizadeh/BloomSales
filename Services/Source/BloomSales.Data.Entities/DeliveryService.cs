@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace BloomSales.Data.Entities
 {
     [DataContract]
     public class DeliveryService
     {
+        [Required]
+        [DataMember]
+        public decimal Cost { get; set; }
+
         [DataMember]
         public int ID { get; set; }
 
@@ -20,14 +20,10 @@ namespace BloomSales.Data.Entities
 
         [Required]
         [DataMember]
-        public decimal Cost { get; set; }
+        public virtual Shipper Shipper { get; set; }
 
         [Required]
         [DataMember]
         public int ShipperID { get; set; }
-
-        [Required]
-        [DataMember]
-        public virtual Shipper Shipper { get; set; }
     }
 }

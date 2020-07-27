@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Repositories
 {
@@ -29,18 +27,10 @@ namespace BloomSales.Data.Repositories
             return order.ID;
         }
 
-        public void UpdateOrder(Order order)
+        public void Dispose()
         {
-            var record = (from o in db.Orders
-                          where order.ID == o.ID
-                          select o).Single();
-
-            record.IsInternalOrder = order.IsInternalOrder;
-            record.Items = order.Items;
-            record.ParentOrderID = order.ParentOrderID;
-            record.HasProcessed = order.HasProcessed;
-
-            db.SaveChanges();
+            if (this.db != null)
+                db.Dispose();
         }
 
         public Order GetOrder(int id)
@@ -71,10 +61,18 @@ namespace BloomSales.Data.Repositories
             return result;
         }
 
-        public void Dispose()
+        public void UpdateOrder(Order order)
         {
-            if (this.db != null)
-                db.Dispose();
+            var record = (from o in db.Orders
+                          where order.ID == o.ID
+                          select o).Single();
+
+            record.IsInternalOrder = order.IsInternalOrder;
+            record.Items = order.Items;
+            record.ParentOrderID = order.ParentOrderID;
+            record.HasProcessed = order.HasProcessed;
+
+            db.SaveChanges();
         }
 
         private OrderItem[] GetOrderItems(int orderID)

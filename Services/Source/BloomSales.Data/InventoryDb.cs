@@ -11,10 +11,8 @@ namespace BloomSales.Data
             this.Configuration.ProxyCreationEnabled = false;
         }
 
-        public virtual DbSet<Product> Products { get; set; }
-
         public virtual DbSet<ProductCategory> Categories { get; set; }
-
         public virtual DbSet<InventoryItem> Inventories { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
     }
 }

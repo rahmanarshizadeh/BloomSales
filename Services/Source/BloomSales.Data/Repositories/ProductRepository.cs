@@ -1,9 +1,6 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -21,25 +18,6 @@ namespace BloomSales.Data.Repositories
             this.db = context;
         }
 
-        public IEnumerable<Product> GetAllProducts()
-        {
-            return this.db.Products.ToArray();
-        }
-
-        public IEnumerable<Product> GetProducts(int categoryID)
-        {
-            var result = (from p in db.Products
-                          where p.CategoryID == categoryID
-                          select p).ToArray();
-
-            return result;
-        }
-
-        public Product GetProduct(int productID)
-        {
-            return this.db.Products.Find(productID);
-        }
-
         public void AddProduct(Product product)
         {
             this.db.Products.Add(product);
@@ -50,6 +28,25 @@ namespace BloomSales.Data.Repositories
         {
             if (this.db != null)
                 db.Dispose();
+        }
+
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return this.db.Products.ToArray();
+        }
+
+        public Product GetProduct(int productID)
+        {
+            return this.db.Products.Find(productID);
+        }
+
+        public IEnumerable<Product> GetProducts(int categoryID)
+        {
+            var result = (from p in db.Products
+                          where p.CategoryID == categoryID
+                          select p).ToArray();
+
+            return result;
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using BloomSales.Data.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Repositories
 {
@@ -19,6 +16,18 @@ namespace BloomSales.Data.Repositories
         internal RegionRepository(LocationDb context)
         {
             this.db = context;
+        }
+
+        public void AddRegion(Region region)
+        {
+            db.Regions.Add(region);
+            db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            if (db != null)
+                db.Dispose();
         }
 
         public IEnumerable<Region> GetAllRegions()
@@ -67,18 +76,6 @@ namespace BloomSales.Data.Repositories
             }
 
             return null;
-        }
-
-        public void AddRegion(Region region)
-        {
-            db.Regions.Add(region);
-            db.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            if (db != null)
-                db.Dispose();
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -19,6 +16,18 @@ namespace BloomSales.Data.Repositories
         internal ProductCategoryRepository(InventoryDb context)
         {
             this.db = context;
+        }
+
+        public void AddCategory(ProductCategory category)
+        {
+            this.db.Categories.Add(category);
+            this.db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            if (this.db != null)
+                db.Dispose();
         }
 
         public IEnumerable<ProductCategory> GetAllCategories()
@@ -40,18 +49,6 @@ namespace BloomSales.Data.Repositories
             ProductCategory p = GetCategory(name);
 
             return p.ID;
-        }
-
-        public void AddCategory(ProductCategory category)
-        {
-            this.db.Categories.Add(category);
-            this.db.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            if (this.db != null)
-                db.Dispose();
         }
     }
 }

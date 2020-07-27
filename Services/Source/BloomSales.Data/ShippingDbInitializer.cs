@@ -1,5 +1,4 @@
 ﻿using BloomSales.Data.Entities;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -15,6 +14,70 @@ namespace BloomSales.Data
 
             if (context.Services.Count() == 0)
                 AddServices(context);
+        }
+
+        private void AddServices(ShippingDb context)
+        {
+            var services = new List<DeliveryService>()
+            {
+                new DeliveryService()
+                {
+                    ServiceName = "Internal Shipping",
+                    ShipperID = context.Shippers.Single(s => s.Name == "BloomSales").ID,
+                    Cost = 0M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "DHL Express",
+                    ShipperID = context.Shippers.Single(s => s.Name == "DHL").ID,
+                    Cost = 70M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "DHL Global",
+                    ShipperID = context.Shippers.Single(s => s.Name == "DHL").ID,
+                    Cost = 150M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "Xpresspost",
+                    ShipperID = context.Shippers.Single(s => s.Name == "Canada Post").ID,
+                    Cost = 9M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "UPS Express Critical",
+                    ShipperID = context.Shippers.Single(s => s.Name == "UPS").ID,
+                    Cost = 30M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "UPS Next Day Air",
+                    ShipperID = context.Shippers.Single(s => s.Name == "UPS").ID,
+                    Cost = 20M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "UPS Ground",
+                    ShipperID = context.Shippers.Single(s => s.Name == "UPS").ID,
+                    Cost = 10M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "FedEx International First",
+                    ShipperID = context.Shippers.Single(s => s.Name == "FedEx").ID,
+                    Cost = 150M
+                },
+                new DeliveryService()
+                {
+                    ServiceName = "FedEx Ground",
+                    ShipperID = context.Shippers.Single(s => s.Name == "FedEx").ID,
+                    Cost = 20M
+                }
+            };
+
+            context.Services.AddRange(services);
+            context.SaveChanges();
         }
 
         private void AddShippers(ShippingDb context)
@@ -79,70 +142,6 @@ namespace BloomSales.Data
             };
 
             context.Shippers.AddRange(shippers);
-            context.SaveChanges();
-        }
-
-        private void AddServices(ShippingDb context)
-        {
-            var services = new List<DeliveryService>()
-            {
-                new DeliveryService()
-                {
-                    ServiceName = "Internal Shipping",
-                    ShipperID = context.Shippers.Single(s => s.Name == "BloomSales").ID,
-                    Cost = 0M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "DHL Express",
-                    ShipperID = context.Shippers.Single(s => s.Name == "DHL").ID,
-                    Cost = 70M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "DHL Global",
-                    ShipperID = context.Shippers.Single(s => s.Name == "DHL").ID,
-                    Cost = 150M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "Xpresspost",
-                    ShipperID = context.Shippers.Single(s => s.Name == "Canada Post").ID,
-                    Cost = 9M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "UPS Express Critical",
-                    ShipperID = context.Shippers.Single(s => s.Name == "UPS").ID,
-                    Cost = 30M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "UPS Next Day Air",
-                    ShipperID = context.Shippers.Single(s => s.Name == "UPS").ID,
-                    Cost = 20M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "UPS Ground",
-                    ShipperID = context.Shippers.Single(s => s.Name == "UPS").ID,
-                    Cost = 10M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "FedEx International First",
-                    ShipperID = context.Shippers.Single(s => s.Name == "FedEx").ID,
-                    Cost = 150M
-                },
-                new DeliveryService()
-                {
-                    ServiceName = "FedEx Ground",
-                    ShipperID = context.Shippers.Single(s => s.Name == "FedEx").ID,
-                    Cost = 20M
-                }
-            };
-
-            context.Services.AddRange(services);
             context.SaveChanges();
         }
     }

@@ -1,10 +1,5 @@
 ﻿using BloomSales.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Contracts
 {
@@ -12,16 +7,16 @@ namespace BloomSales.Services.Contracts
     public interface IAccountingService
     {
         [OperationContract]
-        bool ProcessPayment(PaymentInfo payment);
+        void AddTaxInfo(SalesTaxInfo taxInfo);
 
         [OperationContract]
         PaymentInfo GetPaymentFor(int orderID);
 
         [OperationContract]
-        void AddTaxInfo(SalesTaxInfo taxInfo);
+        SalesTaxInfo GetTaxInfo(string country, string province);
 
         [OperationContract]
-        SalesTaxInfo GetTaxInfo(string country, string province);
+        bool ProcessPayment(PaymentInfo payment);
 
         [OperationContract]
         void UpdateTaxInfo(SalesTaxInfo taxInfo);

@@ -2,13 +2,8 @@
 using BloomSales.Services.Proxies;
 using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.IntegrationTests
 {
@@ -17,6 +12,15 @@ namespace BloomSales.Services.IntegrationTests
     {
         private static ServiceHost accountingSvcHost;
         private AccountingClient accountingClient;
+
+        [ClassCleanup]
+        public static void CleanupService()
+        {
+            accountingSvcHost.Close();
+
+            // drop the Shipping Database
+            Database.Delete("AccountingDatabase");
+        }
 
         [ClassInitialize]
         public static void InitializeService(TestContext textContext)
@@ -28,6 +32,12 @@ namespace BloomSales.Services.IntegrationTests
             // spin up Shipping Service
             accountingSvcHost = new ServiceHost(typeof(AccountingService));
             accountingSvcHost.Open();
+        }
+
+        [TestCleanup]
+        public void CleanupClient()
+        {
+            this.accountingClient.Close();
         }
 
         [TestInitialize]
@@ -61,21 +71,6 @@ namespace BloomSales.Services.IntegrationTests
             Assert.AreEqual("CAD", actualPayment.Currency);
             Assert.AreEqual(PaymentType.OnlineBanking, actualPayment.Type);
             Assert.IsTrue(actualPayment.IsReceived);
-        }
-
-        [TestCleanup]
-        public void CleanupClient()
-        {
-            this.accountingClient.Close();
-        }
-
-        [ClassCleanup]
-        public static void CleanupService()
-        {
-            accountingSvcHost.Close();
-
-            // drop the Shipping Database
-            Database.Delete("AccountingDatabase");
         }
     }
 }

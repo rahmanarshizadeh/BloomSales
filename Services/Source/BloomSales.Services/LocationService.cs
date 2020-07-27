@@ -14,11 +14,11 @@ namespace BloomSales.Services
                      InstanceContextMode = InstanceContextMode.PerCall)]
     public class LocationService : ILocationService, IDisposable
     {
-        private IRegionRepository regionRepo;
-        private IWarehouseRepository warehouseRepo;
-        private IProvinceRepository provinceRepo;
         private ObjectCache cache;
         private CacheItemPolicy defaultPolicy;
+        private IProvinceRepository provinceRepo;
+        private IRegionRepository regionRepo;
+        private IWarehouseRepository warehouseRepo;
 
         public LocationService()
         {
@@ -41,6 +41,27 @@ namespace BloomSales.Services
             this.warehouseRepo = warehouseRepo;
             this.provinceRepo = provinceRepo;
             this.cache = cache;
+        }
+
+        public void AddRegion(Region region)
+        {
+            regionRepo.AddRegion(region);
+        }
+
+        public void AddWarehouse(Warehouse warehouse)
+        {
+            warehouseRepo.AddWarehouse(warehouse);
+        }
+
+        public void Dispose()
+        {
+            // clean up resources
+
+            if (this.regionRepo != null)
+                regionRepo.Dispose();
+
+            if (this.warehouseRepo != null)
+                warehouseRepo.Dispose();
         }
 
         public IEnumerable<Province> GetAllProvinces(string country)
@@ -96,25 +117,6 @@ namespace BloomSales.Services
             return regions;
         }
 
-        public IEnumerable<Warehouse> GetWarehousesByRegion(string region)
-        {
-            string cacheKey = "warehousesIn" + region;
-
-            var warehouses = cache[cacheKey] as IEnumerable<Warehouse>;
-
-            if (warehouses == null)
-            {
-                warehouses = this.warehouseRepo.GetWarehousesByRegion(region);
-
-                CacheItemPolicy policy = new CacheItemPolicy();
-                // doesn't change very often, set it to 1 day
-                policy.SlidingExpiration = new TimeSpan(1, 0, 0, 0);
-                this.cache.Set(cacheKey, warehouses, policy);
-            }
-
-            return warehouses;
-        }
-
         public IEnumerable<Warehouse> GetNearestWarehousesTo(Warehouse warehouse)
         {
             string cacheKey = "nearestTo" + warehouse.Name;
@@ -155,23 +157,23 @@ namespace BloomSales.Services
             return warehouses;
         }
 
-        public IEnumerable<Warehouse> GetWarehousesByCity(string city)
+        public Warehouse GetWarehouseByID(int id)
         {
-            string cacheKey = "warehousesIn" + city;
+            string cacheKey = "Warehouse" + id.ToString();
 
-            var warehouses = this.cache[cacheKey] as IEnumerable<Warehouse>;
+            var warehouse = this.cache[cacheKey] as Warehouse;
 
-            if (warehouses == null)
+            if (warehouse == null)
             {
-                warehouses = this.warehouseRepo.GetWarehousesByCity(city);
+                warehouse = this.warehouseRepo.GetWarehouse(id);
 
                 CacheItemPolicy policy = new CacheItemPolicy();
-                // doesn't change very often, so set expiration time to 1 day
-                policy.SlidingExpiration = new TimeSpan(1, 0, 0, 0);
-                this.cache.Set(cacheKey, warehouses, policy);
+                // almost doesn't change, so set expiration time to 1 week
+                policy.SlidingExpiration = new TimeSpan(7, 0, 0, 0);
+                this.cache.Set(cacheKey, warehouse, policy);
             }
 
-            return warehouses;
+            return warehouse;
         }
 
         public Warehouse GetWarehouseByName(string name)
@@ -193,38 +195,42 @@ namespace BloomSales.Services
             return warehouse;
         }
 
-        public Warehouse GetWarehouseByID(int id)
+        public IEnumerable<Warehouse> GetWarehousesByCity(string city)
         {
-            string cacheKey = "Warehouse" + id.ToString();
+            string cacheKey = "warehousesIn" + city;
 
-            var warehouse = this.cache[cacheKey] as Warehouse;
+            var warehouses = this.cache[cacheKey] as IEnumerable<Warehouse>;
 
-            if (warehouse == null)
+            if (warehouses == null)
             {
-                warehouse = this.warehouseRepo.GetWarehouse(id);
+                warehouses = this.warehouseRepo.GetWarehousesByCity(city);
 
                 CacheItemPolicy policy = new CacheItemPolicy();
-                // almost doesn't change, so set expiration time to 1 week
-                policy.SlidingExpiration = new TimeSpan(7, 0, 0, 0);
-                this.cache.Set(cacheKey, warehouse, policy);
+                // doesn't change very often, so set expiration time to 1 day
+                policy.SlidingExpiration = new TimeSpan(1, 0, 0, 0);
+                this.cache.Set(cacheKey, warehouses, policy);
             }
 
-            return warehouse;
+            return warehouses;
         }
 
-        public void AddRegion(Region region)
+        public IEnumerable<Warehouse> GetWarehousesByRegion(string region)
         {
-            regionRepo.AddRegion(region);
-        }
+            string cacheKey = "warehousesIn" + region;
 
-        public void AddWarehouse(Warehouse warehouse)
-        {
-            warehouseRepo.AddWarehouse(warehouse);
-        }
+            var warehouses = cache[cacheKey] as IEnumerable<Warehouse>;
 
-        public void UpdateWarehouse(Warehouse warehouse)
-        {
-            warehouseRepo.UpdateWarehouse(warehouse);
+            if (warehouses == null)
+            {
+                warehouses = this.warehouseRepo.GetWarehousesByRegion(region);
+
+                CacheItemPolicy policy = new CacheItemPolicy();
+                // doesn't change very often, set it to 1 day
+                policy.SlidingExpiration = new TimeSpan(1, 0, 0, 0);
+                this.cache.Set(cacheKey, warehouses, policy);
+            }
+
+            return warehouses;
         }
 
         public void RemoveWarehouse(Warehouse warehouse)
@@ -232,15 +238,9 @@ namespace BloomSales.Services
             warehouseRepo.RemoveWarehouse(warehouse);
         }
 
-        public void Dispose()
+        public void UpdateWarehouse(Warehouse warehouse)
         {
-            // clean up resources
-
-            if (this.regionRepo != null)
-                regionRepo.Dispose();
-
-            if (this.warehouseRepo != null)
-                warehouseRepo.Dispose();
+            warehouseRepo.UpdateWarehouse(warehouse);
         }
 
         private IEnumerable<Warehouse> FindNearestWarehousesTo(Warehouse warehouse)

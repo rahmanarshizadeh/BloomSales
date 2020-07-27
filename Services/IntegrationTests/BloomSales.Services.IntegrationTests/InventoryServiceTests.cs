@@ -12,9 +12,21 @@ namespace BloomSales.Services.IntegrationTests
     [TestClass]
     public class InventoryServiceTests
     {
-        private static ServiceHost locationSvcHost;
         private static ServiceHost inventorySvcHost;
+        private static ServiceHost locationSvcHost;
         private InventoryClient inventoryClient;
+
+        [ClassCleanup]
+        public static void CleanupServices()
+
+        {
+            inventorySvcHost.Close();
+            locationSvcHost.Close();
+
+            // drop the used databases
+            Database.Delete("InventoryDatabase");
+            Database.Delete("LocationDatabase");
+        }
 
         [ClassInitialize]
         public static void InitializeServices(TestContext context)
@@ -36,142 +48,21 @@ namespace BloomSales.Services.IntegrationTests
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
         [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetAllProcucts_AtAllTimes_ReturnsAListOfAllProducts()
-        {
-            //arrange
-
-            // act
-            var actual = inventoryClient.GetAllProducts();
-
-            // assert
-            List<Product> products = new List<Product>(actual);
-            Assert.AreEqual(41, products.Count);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetProductsByCategory_GivenACategoryName_RetunsListOfRelatedProcuts()
+        public void AddCategory_GivenANewCategory_AddsToTheDatabase()
         {
             // arrange
+            var category = new ProductCategory()
+            {
+                Name = "ZZZ"
+            };
 
             // act
-            var actual = inventoryClient.GetProductsByCategory("Fridges");
+            inventoryClient.AddCategory(category);
 
             // assert
-            List<Product> fridges = new List<Product>(actual);
-            Assert.AreEqual(1, fridges.Count);
-            Assert.AreEqual("Kenmore®/MD 18.2 Cu.Ft Top Mount Refrigerator - White", fridges[0].Name);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetCategories_AtAllTimes_ReturnsListOfProductCategories()
-        {
-            // arrange
-
-            // act
-            var actual = this.inventoryClient.GetCategories();
-
-            // assert
-            var categories = new List<ProductCategory>(actual);
-            Assert.AreEqual(17, categories.Count);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetInventoryByCity_GivenACity_ReturnsInventoryForThatCity()
-        {
-            // arrange
-
-            // act
-            var actual = this.inventoryClient.GetInventoryByCity("Montreal");
-
-            // assert
-            var inventory = new List<InventoryItem>(actual);
-            Assert.AreEqual(41, inventory.Count);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetInventoryByWarehouse_GiveAWarehouseName_ReturnsInventoryForThatWarehouse()
-        {
-            // arrange
-
-            // act
-            var actual = inventoryClient.GetInventoryByWarehouse("BloomSales W#2");
-
-            // assert
-            var inventory = new List<InventoryItem>(actual);
-            Assert.AreEqual(41, inventory.Count);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetInventoryByRegion_GivenARegionName_ReturnsInventoryForThatRegion()
-        {
-            // arrange
-
-            // act
-            var actual = inventoryClient.GetInventoryByRegion("Western Canada");
-
-            // assert
-            var inventory = new List<InventoryItem>(actual);
-            Assert.AreEqual(82, inventory.Count);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetStocksByCity_GivenACityNameAndProductID_ReturnsStocksOfTheProductInTheCity()
-        {
-            // arrange
-
-            // act
-            var actual = inventoryClient.GetStocksByCity("Halifax", 28);
-
-            // assert
-            var stocks = new List<InventoryItem>(actual);
-            Assert.AreEqual(1, stocks.Count);
-            Assert.IsTrue(stocks[0].UnitsInStock != 0);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetStocksByRegion_GivenARegionAndProductID_ReturnsStocksOfTheProductInTheRegion()
-        {
-            // arrange
-
-            // act
-            var actual = inventoryClient.GetStocksByRegion("Eastern Canada", 20);
-
-            // assert
-            var stocks = new List<InventoryItem>(actual.OrderBy(s => s.ID));
-            Assert.AreEqual(5, stocks.Count);
-            Assert.IsTrue(stocks[0].UnitsInStock != 0);
-            Assert.IsTrue(stocks[1].UnitsInStock != 0);
-            Assert.IsTrue(stocks[2].UnitsInStock != 0);
-            Assert.IsTrue(stocks[3].UnitsInStock != 0);
-            Assert.IsTrue(stocks[4].UnitsInStock != 0);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void GetStockByWarehouse_GivenAWarehouseNameAndProductID_ReturnsStockOfTheProductInTheWarehouse()
-        {
-            // arrange
-
-            // act
-            var actual = inventoryClient.GetStockByWarehouse("BloomSales W#5", 34);
-
-            // assert
-            Assert.IsTrue(actual.UnitsInStock != 0);
+            var temp = inventoryClient.GetCategories();
+            var categories = new List<ProductCategory>(temp.OrderBy(p => p.ID));
+            Assert.AreEqual("ZZZ", categories[categories.Count - 1].Name);
         }
 
         [TestMethod]
@@ -225,6 +116,160 @@ namespace BloomSales.Services.IntegrationTests
             Assert.AreEqual(2121, actual.UnitsInStock);
         }
 
+        [TestCleanup]
+        public void CleanupClient()
+        {
+            this.inventoryClient.Close();
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetAllProcucts_AtAllTimes_ReturnsAListOfAllProducts()
+        {
+            //arrange
+
+            // act
+            var actual = inventoryClient.GetAllProducts();
+
+            // assert
+            List<Product> products = new List<Product>(actual);
+            Assert.AreEqual(41, products.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetCategories_AtAllTimes_ReturnsListOfProductCategories()
+        {
+            // arrange
+
+            // act
+            var actual = this.inventoryClient.GetCategories();
+
+            // assert
+            var categories = new List<ProductCategory>(actual);
+            Assert.AreEqual(17, categories.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetInventoryByCity_GivenACity_ReturnsInventoryForThatCity()
+        {
+            // arrange
+
+            // act
+            var actual = this.inventoryClient.GetInventoryByCity("Montreal");
+
+            // assert
+            var inventory = new List<InventoryItem>(actual);
+            Assert.AreEqual(41, inventory.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetInventoryByRegion_GivenARegionName_ReturnsInventoryForThatRegion()
+        {
+            // arrange
+
+            // act
+            var actual = inventoryClient.GetInventoryByRegion("Western Canada");
+
+            // assert
+            var inventory = new List<InventoryItem>(actual);
+            Assert.AreEqual(82, inventory.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetInventoryByWarehouse_GiveAWarehouseName_ReturnsInventoryForThatWarehouse()
+        {
+            // arrange
+
+            // act
+            var actual = inventoryClient.GetInventoryByWarehouse("BloomSales W#2");
+
+            // assert
+            var inventory = new List<InventoryItem>(actual);
+            Assert.AreEqual(41, inventory.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetProductsByCategory_GivenACategoryName_RetunsListOfRelatedProcuts()
+        {
+            // arrange
+
+            // act
+            var actual = inventoryClient.GetProductsByCategory("Fridges");
+
+            // assert
+            List<Product> fridges = new List<Product>(actual);
+            Assert.AreEqual(1, fridges.Count);
+            Assert.AreEqual("Kenmore®/MD 18.2 Cu.Ft Top Mount Refrigerator - White", fridges[0].Name);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetStockByWarehouse_GivenAWarehouseNameAndProductID_ReturnsStockOfTheProductInTheWarehouse()
+        {
+            // arrange
+
+            // act
+            var actual = inventoryClient.GetStockByWarehouse("BloomSales W#5", 34);
+
+            // assert
+            Assert.IsTrue(actual.UnitsInStock != 0);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetStocksByCity_GivenACityNameAndProductID_ReturnsStocksOfTheProductInTheCity()
+        {
+            // arrange
+
+            // act
+            var actual = inventoryClient.GetStocksByCity("Halifax", 28);
+
+            // assert
+            var stocks = new List<InventoryItem>(actual);
+            Assert.AreEqual(1, stocks.Count);
+            Assert.IsTrue(stocks[0].UnitsInStock != 0);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
+        public void GetStocksByRegion_GivenARegionAndProductID_ReturnsStocksOfTheProductInTheRegion()
+        {
+            // arrange
+
+            // act
+            var actual = inventoryClient.GetStocksByRegion("Eastern Canada", 20);
+
+            // assert
+            var stocks = new List<InventoryItem>(actual.OrderBy(s => s.ID));
+            Assert.AreEqual(5, stocks.Count);
+            Assert.IsTrue(stocks[0].UnitsInStock != 0);
+            Assert.IsTrue(stocks[1].UnitsInStock != 0);
+            Assert.IsTrue(stocks[2].UnitsInStock != 0);
+            Assert.IsTrue(stocks[3].UnitsInStock != 0);
+            Assert.IsTrue(stocks[4].UnitsInStock != 0);
+        }
+
+        [TestInitialize]
+        public void InitializeClient()
+
+        {
+            this.inventoryClient = new InventoryClient();
+        }
+
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
         [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
@@ -244,51 +289,6 @@ namespace BloomSales.Services.IntegrationTests
             // assert
             var actual = inventoryClient.GetStockByWarehouse("BloomSales W#4", 12);
             Assert.AreEqual(55, actual.UnitsInStock);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.InventoryServiceTests")]
-        public void AddCategory_GivenANewCategory_AddsToTheDatabase()
-        {
-            // arrange
-            var category = new ProductCategory()
-            {
-                Name = "ZZZ"
-            };
-
-            // act
-            inventoryClient.AddCategory(category);
-
-            // assert
-            var temp = inventoryClient.GetCategories();
-            var categories = new List<ProductCategory>(temp.OrderBy(p => p.ID));
-            Assert.AreEqual("ZZZ", categories[categories.Count - 1].Name);
-        }
-
-        [TestInitialize]
-        public void InitializeClient()
-
-        {
-            this.inventoryClient = new InventoryClient();
-        }
-
-        [TestCleanup]
-        public void CleanupClient()
-        {
-            this.inventoryClient.Close();
-        }
-
-        [ClassCleanup]
-        public static void CleanupServices()
-
-        {
-            inventorySvcHost.Close();
-            locationSvcHost.Close();
-
-            // drop the used databases
-            Database.Delete("InventoryDatabase");
-            Database.Delete("LocationDatabase");
         }
     }
 }

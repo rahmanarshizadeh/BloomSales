@@ -14,6 +14,26 @@ namespace BloomSales.Data.Tests.Repositories
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        public void AddRegion_OnAnEmptyTable_AddsTheNewRecord()
+        {
+            // arrange
+            List<Region> data = new List<Region>();
+            Mock<DbSet<Region>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
+            Mock<LocationDb> mockContext = new Mock<LocationDb>();
+            mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
+            RegionRepository sut = new RegionRepository(mockContext.Object);
+
+            // act
+            Region region = new Region { ID = 1, Continent = "North America", Country = "Canada", Name = "Eastern Canada", Provinces = null };
+            sut.AddRegion(region);
+
+            // assert
+            mockSet.Verify(s => s.Add(It.IsAny<Region>()), Times.Once());
+            mockContext.Verify(c => c.SaveChanges(), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllRegions_OnNonEmptyTable_ReturnsAllRegions()
         {
             // arrange
@@ -99,26 +119,6 @@ namespace BloomSales.Data.Tests.Repositories
             // assert
             mockSet.Verify(s => s.Find(It.Is<int>(id => id == 1)), Times.Once());
             Assert.IsTrue(expected.Equals(actual));
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        public void AddRegion_OnAnEmptyTable_AddsTheNewRecord()
-        {
-            // arrange
-            List<Region> data = new List<Region>();
-            Mock<DbSet<Region>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<LocationDb> mockContext = new Mock<LocationDb>();
-            mockContext.Setup(c => c.Regions).Returns(mockSet.Object);
-            RegionRepository sut = new RegionRepository(mockContext.Object);
-
-            // act
-            Region region = new Region { ID = 1, Continent = "North America", Country = "Canada", Name = "Eastern Canada", Provinces = null };
-            sut.AddRegion(region);
-
-            // assert
-            mockSet.Verify(s => s.Add(It.IsAny<Region>()), Times.Once());
-            mockContext.Verify(c => c.SaveChanges(), Times.Once());
         }
     }
 }

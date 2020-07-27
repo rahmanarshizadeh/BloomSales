@@ -109,6 +109,27 @@ namespace BloomSales.Data
             context.SaveChanges();
         }
 
+        private void AddInventories(InventoryDb context, LocationDb locationDb)
+        {
+            Random rand = new Random();
+            foreach (Product p in context.Products)
+            {
+                foreach (Warehouse w in locationDb.Warehouses)
+                {
+                    context.Inventories.Add(
+                            new InventoryItem()
+                            {
+                                ProductID = p.ID,
+                                WarehouseID = w.ID,
+                                UnitsInStock = (short)rand.Next(1, 40)
+                            }
+                        );
+                }
+            }
+
+            context.SaveChanges();
+        }
+
         private void AddProducts(InventoryDb context)
         {
             var products = new List<Product>
@@ -444,27 +465,6 @@ namespace BloomSales.Data
             };
 
             context.Products.AddRange(products);
-            context.SaveChanges();
-        }
-
-        private void AddInventories(InventoryDb context, LocationDb locationDb)
-        {
-            Random rand = new Random();
-            foreach (Product p in context.Products)
-            {
-                foreach (Warehouse w in locationDb.Warehouses)
-                {
-                    context.Inventories.Add(
-                            new InventoryItem()
-                            {
-                                ProductID = p.ID,
-                                WarehouseID = w.ID,
-                                UnitsInStock = (short)rand.Next(1, 40)
-                            }
-                        );
-                }
-            }
-
             context.SaveChanges();
         }
     }

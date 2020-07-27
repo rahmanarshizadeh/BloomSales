@@ -2,13 +2,10 @@
 using BloomSales.Services.Proxies;
 using BloomSales.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.IntegrationTests
 {
@@ -17,6 +14,15 @@ namespace BloomSales.Services.IntegrationTests
     {
         private static ServiceHost shippingSvcHost;
         private ShippingClient shippingClient;
+
+        [ClassCleanup]
+        public static void CleanupService()
+        {
+            shippingSvcHost.Close();
+
+            // drop the Shipping Database
+            Database.Delete("ShippingDatabase");
+        }
 
         [ClassInitialize]
         public static void InitializeService(TestContext textContext)
@@ -30,11 +36,10 @@ namespace BloomSales.Services.IntegrationTests
             shippingSvcHost.Open();
         }
 
-        [TestInitialize]
-        public void InitializeClient()
+        [TestCleanup]
+        public void CleanupClient()
         {
-            this.shippingClient = new ShippingClient();
-            shippingClient.Open();
+            this.shippingClient.Close();
         }
 
         [TestMethod]
@@ -77,36 +82,6 @@ namespace BloomSales.Services.IntegrationTests
         [TestMethod]
         [TestCategory(TestType.IntegrationTest)]
         [TestCategory("BloomSales.Services.IntegrationTests.ShippingServiceTests")]
-        public void RequestShipping_GivenANewShipping_AddsTheRequestToTheDatabase()
-        {
-            // arrange
-            var request = new ShippingInfo()
-            {
-                Name = "Not Relevant!",
-                City = "Not Relevant!",
-                Country = "Not Relevant!",
-                Email = "Not Relevant!",
-                Phone = "Not Relevant!",
-                PostalCode = "Irrelevant",
-                Province = "Not Relevant!",
-                StreetAddress = "Not Relevant!",
-                Status = ShippingStatus.None,
-                OrderID = 4141,
-                WarehouseID = 7,
-                ServiceID = 4
-            };
-
-            // act
-            shippingClient.RequestShipping(request);
-
-            // assert
-            var status = shippingClient.GetShippingStatus(4141);
-            Assert.AreEqual(ShippingStatus.ReceivedOrder, status);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.IntegrationTest)]
-        [TestCategory("BloomSales.Services.IntegrationTests.ShippingServiceTests")]
         public void GetShippingStatus_GivenAnOrderID_ReturnsTheShippingStatus()
         {
             // arrange
@@ -135,19 +110,41 @@ namespace BloomSales.Services.IntegrationTests
             Assert.AreEqual(ShippingStatus.ReceivedOrder, actual);
         }
 
-        [TestCleanup]
-        public void CleanupClient()
+        [TestInitialize]
+        public void InitializeClient()
         {
-            this.shippingClient.Close();
+            this.shippingClient = new ShippingClient();
+            shippingClient.Open();
         }
 
-        [ClassCleanup]
-        public static void CleanupService()
+        [TestMethod]
+        [TestCategory(TestType.IntegrationTest)]
+        [TestCategory("BloomSales.Services.IntegrationTests.ShippingServiceTests")]
+        public void RequestShipping_GivenANewShipping_AddsTheRequestToTheDatabase()
         {
-            shippingSvcHost.Close();
+            // arrange
+            var request = new ShippingInfo()
+            {
+                Name = "Not Relevant!",
+                City = "Not Relevant!",
+                Country = "Not Relevant!",
+                Email = "Not Relevant!",
+                Phone = "Not Relevant!",
+                PostalCode = "Irrelevant",
+                Province = "Not Relevant!",
+                StreetAddress = "Not Relevant!",
+                Status = ShippingStatus.None,
+                OrderID = 4141,
+                WarehouseID = 7,
+                ServiceID = 4
+            };
 
-            // drop the Shipping Database
-            Database.Delete("ShippingDatabase");
+            // act
+            shippingClient.RequestShipping(request);
+
+            // assert
+            var status = shippingClient.GetShippingStatus(4141);
+            Assert.AreEqual(ShippingStatus.ReceivedOrder, status);
         }
     }
 }

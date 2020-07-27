@@ -105,6 +105,18 @@ namespace BloomSales.Data.Tests.Repositories
             Assert.IsTrue(Equality.AreEqual(expected, actual));
         }
 
+        private static List<Order> CreateOrderData()
+        {
+            // arrange
+            List<Order> orderData = new List<Order>();
+            orderData.Add(new Order() { ID = 1 });
+            orderData.Add(new Order() { ID = 3 });
+            orderData.Add(new Order() { ID = 5 });
+            orderData.Add(new Order() { ID = 7, ParentOrderID = 5 });
+            orderData.Add(new Order() { ID = 8, ParentOrderID = 5 });
+            return orderData;
+        }
+
         private static List<OrderItem> CreateOrderItemsData()
         {
             List<OrderItem> orderItemsData = new List<OrderItem>();
@@ -117,18 +129,6 @@ namespace BloomSales.Data.Tests.Repositories
             orderItemsData.Add(new OrderItem() { ID = 106, OrderID = 8 });
             orderItemsData.Add(new OrderItem() { ID = 107, OrderID = 8 });
             return orderItemsData;
-        }
-
-        private static List<Order> CreateOrderData()
-        {
-            // arrange
-            List<Order> orderData = new List<Order>();
-            orderData.Add(new Order() { ID = 1 });
-            orderData.Add(new Order() { ID = 3 });
-            orderData.Add(new Order() { ID = 5 });
-            orderData.Add(new Order() { ID = 7, ParentOrderID = 5 });
-            orderData.Add(new Order() { ID = 8, ParentOrderID = 5 });
-            return orderData;
         }
     }
 }

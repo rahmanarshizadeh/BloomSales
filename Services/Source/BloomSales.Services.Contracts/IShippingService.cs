@@ -1,10 +1,6 @@
 ﻿using BloomSales.Data.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Contracts
 {
@@ -12,24 +8,24 @@ namespace BloomSales.Services.Contracts
     public interface IShippingService
     {
         [OperationContract]
+        void AddDeliveryService(DeliveryService service);
+
+        [OperationContract]
+        void AddShipper(Shipper shipper);
+
+        [OperationContract]
         IEnumerable<Shipper> GetAllShippers();
 
         [OperationContract]
         IEnumerable<DeliveryService> GetServicesByShipper(string shipper);
 
         [OperationContract]
-        void RequestShipping(ShippingInfo shipping);
+        ShippingInfo GetShipping(int orderID);
 
         [OperationContract]
         ShippingStatus GetShippingStatus(int orderID);
 
         [OperationContract]
-        ShippingInfo GetShipping(int orderID);
-
-        [OperationContract]
-        void AddShipper(Shipper shipper);
-
-        [OperationContract]
-        void AddDeliveryService(DeliveryService service);
+        void RequestShipping(ShippingInfo shipping);
     }
 }

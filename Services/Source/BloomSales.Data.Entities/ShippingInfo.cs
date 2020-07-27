@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Entities
 {
@@ -17,13 +13,16 @@ namespace BloomSales.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int OrderID { get; set; }
 
-        [Required]
-        [DataMember]
-        public int WarehouseID { get; set; }
-
         [NotMapped]
         [DataMember]
         public Warehouse PickupLocation { get; set; }
+
+        [DataMember]
+        public virtual DeliveryService Service { get; set; }
+
+        [Required]
+        [DataMember]
+        public int ServiceID { get; set; }
 
         public DateTime ShippedDate { get; set; }
 
@@ -33,9 +32,6 @@ namespace BloomSales.Data.Entities
 
         [Required]
         [DataMember]
-        public int ServiceID { get; set; }
-
-        [DataMember]
-        public virtual DeliveryService Service { get; set; }
+        public int WarehouseID { get; set; }
     }
 }

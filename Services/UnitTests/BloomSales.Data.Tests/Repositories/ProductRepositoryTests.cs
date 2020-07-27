@@ -14,6 +14,25 @@ namespace BloomSales.Data.Tests.Repositories
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        public void AddProduct_GivenANewProduct_AddsToDatabase()
+        {
+            // arrange
+            Product product = new Product() { ID = 12 };
+            Mock<DbSet<Product>> mockSet = new Mock<DbSet<Product>>();
+            Mock<InventoryDb> mockContext = new Mock<InventoryDb>();
+            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
+            ProductRepository sut = new ProductRepository(mockContext.Object);
+
+            // act
+            sut.AddProduct(product);
+
+            // assert
+            mockSet.Verify(s => s.Add(It.Is<Product>(p => p.ID == 12)), Times.Once());
+            mockContext.Verify(c => c.SaveChanges(), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllProducts_OnNonEmptyTable_ReturnsAllProducts()
         {
             // arrange
@@ -53,25 +72,6 @@ namespace BloomSales.Data.Tests.Repositories
             // assert
             Assert.AreEqual(expected, actual);
             mockSet.Verify(s => s.Find(2), Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        public void AddProduct_GivenANewProduct_AddsToDatabase()
-        {
-            // arrange
-            Product product = new Product() { ID = 12 };
-            Mock<DbSet<Product>> mockSet = new Mock<DbSet<Product>>();
-            Mock<InventoryDb> mockContext = new Mock<InventoryDb>();
-            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
-            ProductRepository sut = new ProductRepository(mockContext.Object);
-
-            // act
-            sut.AddProduct(product);
-
-            // assert
-            mockSet.Verify(s => s.Add(It.Is<Product>(p => p.ID == 12)), Times.Once());
-            mockContext.Verify(c => c.SaveChanges(), Times.Once());
         }
     }
 }

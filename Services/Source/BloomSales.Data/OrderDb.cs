@@ -12,14 +12,14 @@ namespace BloomSales.Data
             this.Configuration.ProxyCreationEnabled = false;
         }
 
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+
+        public virtual DbSet<Order> Orders { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Properties<DateTime>()
                 .Configure(c => c.HasColumnType("datetime2"));
         }
-
-        public virtual DbSet<Order> Orders { get; set; }
-
-        public virtual DbSet<OrderItem> OrderItems { get; set; }
     }
 }

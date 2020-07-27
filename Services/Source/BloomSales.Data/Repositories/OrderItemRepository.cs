@@ -1,9 +1,6 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -33,11 +30,10 @@ namespace BloomSales.Data.Repositories
             this.db.SaveChanges();
         }
 
-        public void RemoveItem(int id)
+        public void Dispose()
         {
-            OrderItem item = this.db.OrderItems.Find(id);
-            this.db.OrderItems.Remove(item);
-            this.db.SaveChanges();
+            if (this.db != null)
+                db.Dispose();
         }
 
         public IEnumerable<OrderItem> GetItemsByOrder(int orderID)
@@ -49,10 +45,11 @@ namespace BloomSales.Data.Repositories
             return result;
         }
 
-        public void Dispose()
+        public void RemoveItem(int id)
         {
-            if (this.db != null)
-                db.Dispose();
+            OrderItem item = this.db.OrderItems.Find(id);
+            this.db.OrderItems.Remove(item);
+            this.db.SaveChanges();
         }
     }
 }

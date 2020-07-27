@@ -15,6 +15,44 @@ namespace BloomSales.Services.Tests
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
         [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
+        public void AddDeliveryService_GivenANewService_AddsToDatabase()
+        {
+            // arrange
+            DeliveryService service = new DeliveryService() { ID = 2, ShipperID = 3 };
+            Mock<IDeliveryServiceRepository> mockServiceRepo = new Mock<IDeliveryServiceRepository>();
+            ShippingService sut = new ShippingService(null, null, mockServiceRepo.Object, null);
+
+            // act
+            sut.AddDeliveryService(service);
+
+            // assert
+            mockServiceRepo.Verify(
+                r => r.AddService(It.Is<DeliveryService>(s => s.ID == 2 && s.ShipperID == 3)),
+                Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
+        public void AddShipper_GivenANewShipper_AddsToDatabase()
+        {
+            // arrange
+            Shipper shipper = new Shipper() { ID = 3, Name = "DHL" };
+            Mock<IShipperRepository> mockShipperRepo = new Mock<IShipperRepository>();
+            ShippingService sut = new ShippingService(mockShipperRepo.Object, null, null, null);
+
+            // act
+            sut.AddShipper(shipper);
+
+            // assert
+            mockShipperRepo.Verify(
+                r => r.AddShipper(It.Is<Shipper>(s => s.ID == 3 && s.Name.Equals("DHL"))),
+                Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetAllShippers_ResultExistsInCache_ReturnsTheListOfShippers()
         {
             // arrange
@@ -69,26 +107,6 @@ namespace BloomSales.Services.Tests
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
         [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
-        public void GetServicesByShipper_ResultExistsInCache_ReturnsTheResult()
-        {
-            List<DeliveryService> expected = new List<DeliveryService>();
-            expected.Add(new DeliveryService() { ID = 1, ServiceName = "Regular" });
-            expected.Add(new DeliveryService() { ID = 2, ServiceName = "Express" });
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            mockCache.Setup(c => c["servicesByUPS"]).Returns(expected);
-            ShippingService sut = new ShippingService(null, null, null, mockCache.Object);
-
-            // act
-            var actual = sut.GetServicesByShipper("UPS");
-
-            // assert
-            Assert.IsTrue(Equality.AreEqual(expected, actual));
-            mockCache.Verify(c => c["servicesByUPS"], Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
         public void GetServiceByShipper_ResultNotExistsInCahce_FetchesTheResultFromDatabase()
         {
             // arrange
@@ -122,20 +140,21 @@ namespace BloomSales.Services.Tests
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
         [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
-        public void RequestShipping_GivenANewShipping_ReceivedsAndAddsToDatabase()
+        public void GetServicesByShipper_ResultExistsInCache_ReturnsTheResult()
         {
-            // arrange
-            Mock<IShippingInfoRepository> mockShippingRepo = new Mock<IShippingInfoRepository>();
-            ShippingInfo shipping = new ShippingInfo() { Status = ShippingStatus.None };
-            ShippingService sut = new ShippingService(null, mockShippingRepo.Object, null, null);
+            List<DeliveryService> expected = new List<DeliveryService>();
+            expected.Add(new DeliveryService() { ID = 1, ServiceName = "Regular" });
+            expected.Add(new DeliveryService() { ID = 2, ServiceName = "Express" });
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            mockCache.Setup(c => c["servicesByUPS"]).Returns(expected);
+            ShippingService sut = new ShippingService(null, null, null, mockCache.Object);
 
             // act
-            sut.RequestShipping(shipping);
+            var actual = sut.GetServicesByShipper("UPS");
 
             // assert
-            mockShippingRepo.Verify(
-                r => r.AddShipping(It.Is<ShippingInfo>(s => s.Status == ShippingStatus.ReceivedOrder)),
-                Times.Once());
+            Assert.IsTrue(Equality.AreEqual(expected, actual));
+            mockCache.Verify(c => c["servicesByUPS"], Times.Once());
         }
 
         [TestMethod]
@@ -178,38 +197,19 @@ namespace BloomSales.Services.Tests
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
         [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
-        public void AddShipper_GivenANewShipper_AddsToDatabase()
+        public void RequestShipping_GivenANewShipping_ReceivedsAndAddsToDatabase()
         {
             // arrange
-            Shipper shipper = new Shipper() { ID = 3, Name = "DHL" };
-            Mock<IShipperRepository> mockShipperRepo = new Mock<IShipperRepository>();
-            ShippingService sut = new ShippingService(mockShipperRepo.Object, null, null, null);
+            Mock<IShippingInfoRepository> mockShippingRepo = new Mock<IShippingInfoRepository>();
+            ShippingInfo shipping = new ShippingInfo() { Status = ShippingStatus.None };
+            ShippingService sut = new ShippingService(null, mockShippingRepo.Object, null, null);
 
             // act
-            sut.AddShipper(shipper);
+            sut.RequestShipping(shipping);
 
             // assert
-            mockShipperRepo.Verify(
-                r => r.AddShipper(It.Is<Shipper>(s => s.ID == 3 && s.Name.Equals("DHL"))),
-                Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.ShippingServiceTests")]
-        public void AddDeliveryService_GivenANewService_AddsToDatabase()
-        {
-            // arrange
-            DeliveryService service = new DeliveryService() { ID = 2, ShipperID = 3 };
-            Mock<IDeliveryServiceRepository> mockServiceRepo = new Mock<IDeliveryServiceRepository>();
-            ShippingService sut = new ShippingService(null, null, mockServiceRepo.Object, null);
-
-            // act
-            sut.AddDeliveryService(service);
-
-            // assert
-            mockServiceRepo.Verify(
-                r => r.AddService(It.Is<DeliveryService>(s => s.ID == 2 && s.ShipperID == 3)),
+            mockShippingRepo.Verify(
+                r => r.AddShipping(It.Is<ShippingInfo>(s => s.Status == ShippingStatus.ReceivedOrder)),
                 Times.Once());
         }
     }

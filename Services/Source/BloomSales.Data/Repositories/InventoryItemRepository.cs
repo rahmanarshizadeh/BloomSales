@@ -1,9 +1,6 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -21,13 +18,16 @@ namespace BloomSales.Data.Repositories
             this.db = context;
         }
 
-        public IEnumerable<InventoryItem> GetInventory(Warehouse warehouse)
+        public void AddToInventory(InventoryItem item)
         {
-            var result = (from i in db.Inventories
-                          where i.WarehouseID == warehouse.ID
-                          select i).ToArray();
+            this.db.Inventories.Add(item);
+            this.db.SaveChanges();
+        }
 
-            return result;
+        public void Dispose()
+        {
+            if (this.db != null)
+                db.Dispose();
         }
 
         public IEnumerable<InventoryItem> GetInventories(IEnumerable<Warehouse> warehouses)
@@ -39,6 +39,15 @@ namespace BloomSales.Data.Repositories
                 var list = GetInventory(w);
                 result.AddRange(list);
             }
+
+            return result;
+        }
+
+        public IEnumerable<InventoryItem> GetInventory(Warehouse warehouse)
+        {
+            var result = (from i in db.Inventories
+                          where i.WarehouseID == warehouse.ID
+                          select i).ToArray();
 
             return result;
         }
@@ -65,29 +74,17 @@ namespace BloomSales.Data.Repositories
             return result;
         }
 
-        public void AddToInventory(InventoryItem item)
-        {
-            this.db.Inventories.Add(item);
-            this.db.SaveChanges();
-        }
-
         public void UpdateStock(int inventoryItemID, short newStock)
         {
             var item = (from i in db.Inventories
-                           where i.ID == inventoryItemID
-                           select i).Single();
+                        where i.ID == inventoryItemID
+                        select i).Single();
 
             if (item.UnitsInStock != newStock)
             {
                 item.UnitsInStock = newStock;
                 db.SaveChanges();
             }
-        }
-
-        public void Dispose()
-        {
-            if (this.db != null)
-                db.Dispose();
         }
     }
 }

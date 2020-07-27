@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services
 {
     internal static class CachingPolicies
     {
+        private static CacheItemPolicy oneDay;
+        private static CacheItemPolicy oneHour;
         private static CacheItemPolicy oneMinute;
+        private static CacheItemPolicy sixHours;
         private static CacheItemPolicy tenMinutes;
         private static CacheItemPolicy thirtyMinutes;
-        private static CacheItemPolicy oneHour;
-        private static CacheItemPolicy sixHours;
         private static CacheItemPolicy twelveHours;
-        private static CacheItemPolicy oneDay;
 
         static CachingPolicies()
         {
@@ -28,9 +24,24 @@ namespace BloomSales.Services
             oneDay = new CacheItemPolicy() { SlidingExpiration = new TimeSpan(1, 0, 0, 0) };
         }
 
+        public static CacheItemPolicy OneDayPolicy
+        {
+            get { return oneDay; }
+        }
+
+        public static CacheItemPolicy OneHourPolicy
+        {
+            get { return oneHour; }
+        }
+
         public static CacheItemPolicy OneMinutePolicy
         {
             get { return oneMinute; }
+        }
+
+        public static CacheItemPolicy SixHoursPolicy
+        {
+            get { return sixHours; }
         }
 
         public static CacheItemPolicy TenMinutesPolicy
@@ -43,24 +54,9 @@ namespace BloomSales.Services
             get { return thirtyMinutes; }
         }
 
-        public static CacheItemPolicy OneHourPolicy
-        {
-            get { return oneHour; }
-        }
-
-        public static CacheItemPolicy SixHoursPolicy
-        {
-            get { return sixHours; }
-        }
-
         public static CacheItemPolicy TwelveHoursPolicy
         {
             get { return twelveHours; }
-        }
-
-        public static CacheItemPolicy OneDayPolicy
-        {
-            get { return oneDay; }
         }
     }
 }

@@ -14,6 +14,25 @@ namespace BloomSales.Data.Tests.Repositories
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        public void AddCategory_GivenANewCategory_AddsToDatabase()
+        {
+            // arrange
+            ProductCategory category = new ProductCategory() { ID = 12 };
+            Mock<DbSet<ProductCategory>> mockSet = new Mock<DbSet<ProductCategory>>();
+            Mock<InventoryDb> mockContext = new Mock<InventoryDb>();
+            mockContext.Setup(c => c.Categories).Returns(mockSet.Object);
+            ProductCategoryRepository sut = new ProductCategoryRepository(mockContext.Object);
+
+            // act
+            sut.AddCategory(category);
+
+            // assert
+            mockSet.Verify(s => s.Add(It.Is<ProductCategory>(c => c.ID == 12)), Times.Once());
+            mockContext.Verify(c => c.SaveChanges(), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetAllCategories_OnNotEmptyTable_ReturnsAllRecords()
         {
             // arrange
@@ -79,25 +98,6 @@ namespace BloomSales.Data.Tests.Repositories
 
             // assert
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        public void AddCategory_GivenANewCategory_AddsToDatabase()
-        {
-            // arrange
-            ProductCategory category = new ProductCategory() { ID = 12 };
-            Mock<DbSet<ProductCategory>> mockSet = new Mock<DbSet<ProductCategory>>();
-            Mock<InventoryDb> mockContext = new Mock<InventoryDb>();
-            mockContext.Setup(c => c.Categories).Returns(mockSet.Object);
-            ProductCategoryRepository sut = new ProductCategoryRepository(mockContext.Object);
-
-            // act
-            sut.AddCategory(category);
-
-            // assert
-            mockSet.Verify(s => s.Add(It.Is<ProductCategory>(c => c.ID == 12)), Times.Once());
-            mockContext.Verify(c => c.SaveChanges(), Times.Once());
         }
     }
 }

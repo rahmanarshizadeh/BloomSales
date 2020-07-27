@@ -1,9 +1,5 @@
 ﻿using BloomSales.Data.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Repositories
 {
@@ -27,6 +23,12 @@ namespace BloomSales.Data.Repositories
             db.SaveChanges();
         }
 
+        public void Dispose()
+        {
+            if (this.db != null)
+                db.Dispose();
+        }
+
         public PaymentInfo GetPayment(int orderID)
         {
             var result = (from p in db.Payments
@@ -34,12 +36,6 @@ namespace BloomSales.Data.Repositories
                           select p).SingleOrDefault();
 
             return result;
-        }
-
-        public void Dispose()
-        {
-            if (this.db != null)
-                db.Dispose();
         }
     }
 }

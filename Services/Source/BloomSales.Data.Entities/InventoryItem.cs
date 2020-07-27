@@ -10,16 +10,16 @@ namespace BloomSales.Data.Entities
         [DataMember]
         public int ID { get; set; }
 
-        [Required]
-        [DataMember]
-        public int ProductID { get; set; }
-
         [DataMember]
         public virtual Product Product { get; set; }
 
         [Required]
         [DataMember]
-        public int WarehouseID { get; set; }
+        public int ProductID { get; set; }
+
+        [Required]
+        [DataMember]
+        public short UnitsInStock { get; set; }
 
         [NotMapped]
         [DataMember]
@@ -27,6 +27,6 @@ namespace BloomSales.Data.Entities
 
         [Required]
         [DataMember]
-        public short UnitsInStock { get; set; }
+        public int WarehouseID { get; set; }
     }
 }

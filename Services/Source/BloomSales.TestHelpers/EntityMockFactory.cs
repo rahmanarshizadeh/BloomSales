@@ -1,16 +1,12 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.TestHelpers
 {
     public static class EntityMockFactory
     {
-        public static Mock<DbSet<TEntity>> CreateSet<TEntity>(IQueryable<TEntity> data) 
+        public static Mock<DbSet<TEntity>> CreateSet<TEntity>(IQueryable<TEntity> data)
             where TEntity : class
         {
             var mockSet = new Mock<DbSet<TEntity>>();

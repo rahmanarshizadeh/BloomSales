@@ -1,9 +1,6 @@
 ﻿using BloomSales.Data.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Repositories
 {
@@ -21,6 +18,12 @@ namespace BloomSales.Data.Repositories
             db = context;
         }
 
+        public void Dispose()
+        {
+            if (db != null)
+                db.Dispose();
+        }
+
         public IEnumerable<Province> GetProvincesForRegion(int regionID)
         {
             var result = (from p in db.Provinces
@@ -28,12 +31,6 @@ namespace BloomSales.Data.Repositories
                           select p).ToArray();
 
             return result;
-        }
-
-        public void Dispose()
-        {
-            if (db != null)
-                db.Dispose();
         }
     }
 }

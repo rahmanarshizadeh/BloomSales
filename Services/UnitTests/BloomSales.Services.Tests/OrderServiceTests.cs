@@ -17,6 +17,198 @@ namespace BloomSales.Services.Tests
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
         [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void AddOrUpdateCart_GivenANewOrder_AddsTheNewOrderToTheCache()
+        {
+            // arrange
+            Order order = new Order() { ID = 987654321 };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
+
+            // act
+            sut.AddOrUpdateCart("123", order);
+
+            // assert
+            mockCache.VerifySet(c => c["C123Cart"] = order, Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void AddOrUpdateCart_GivenANullOrderObject_ThrowsAnException()
+        {
+            // arrange
+            OrderService sut = new OrderService(null, null, null, null, null, null, null);
+
+            // act
+            sut.AddOrUpdateCart("111", null);
+
+            // assert
+            // nothing to assert.
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetCart_GivenACustomerHavingActiveCart_ReturnsTheCartContent()
+        {
+            // arrange
+            Order expected = new Order() { ID = 753 };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            mockCache.Setup(c => c["C159Cart"]).Returns(expected);
+            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
+
+            // act
+            var actual = sut.GetCart("159");
+
+            // assert
+            Assert.AreEqual(expected, actual);
+            mockCache.Verify(c => c["C159Cart"], Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetOrder_ResultExistsInCache_ReturnsResultFromCache()
+        {
+            // arrange
+            Order expected = new Order() { ID = 10 };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            mockCache.Setup(c => c["order#10"]).Returns(expected);
+            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
+
+            // act
+            var actual = sut.GetOrder(10);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetOrder_ResultNotExistsInCache_CachesTheResult()
+        {
+            // arrange
+            Order expected = new Order() { ID = 11 };
+            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
+            mockOrderRepo.Setup(r => r.GetOrder(11)).Returns(expected);
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
+
+            // act
+            sut.GetOrder(11);
+
+            // assert
+            mockCache.Verify(c => c.Set("order#11", It.Is<Order>(o => o.Equals(expected)), It.IsAny<CacheItemPolicy>(), null),
+                Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetOrder_ResultNotExistsInCache_FetchesTheResultFromDatabase()
+        {
+            // arrange
+            Order expected = new Order() { ID = 11 };
+            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
+            mockOrderRepo.Setup(r => r.GetOrder(11)).Returns(expected);
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
+
+            // act
+            var actual = sut.GetOrder(11);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+            mockOrderRepo.Verify(r => r.GetOrder(11), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetOrderHistoryByCustomer_ResultExistsInCache_ReturnsResultFromCache()
+        {
+            // arrange
+            IEnumerable<Order> expected = new Order[]
+            {
+                new Order() { ID = 20 },
+                new Order() { ID = 30 },
+                new Order() { ID = 40 }
+            };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            mockCache.Setup(c => c["c#12Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)"]).Returns(expected);
+            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
+
+            // act
+            var actual = sut.GetOrderHistoryByCustomer("12", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
+
+            // assert
+            Assert.AreEqual(expected, actual);
+            mockCache.Verify(c => c["c#12Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)"], Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetOrderHistoryByCustomer_ResultNotExistsInCache_CachesTheResult()
+        {
+            // arrange
+            IEnumerable<Order> expected = new Order[]
+            {
+                new Order() { ID = 30 },
+                new Order() { ID = 40 },
+                new Order() { ID = 50 },
+                new Order() { ID = 60 }
+            };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
+            mockOrderRepo.Setup(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
+                It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015"))).Returns(expected);
+            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
+
+            // act
+            var actual = sut.GetOrderHistoryByCustomer("21", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
+
+            // assert
+            mockCache.Verify(
+                c => c.Set("c#21Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)",
+                           It.Is<IEnumerable<Order>>(l => l.Equals(expected)),
+                           It.IsAny<CacheItemPolicy>(), null),
+                Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
+        public void GetOrderHistoryByCustomer_ResultNotExistsInCache_FetchesTheResultFromDatabase()
+        {
+            // arrange
+            IEnumerable<Order> expected = new Order[]
+            {
+                new Order() { ID = 30 },
+                new Order() { ID = 40 },
+                new Order() { ID = 50 },
+                new Order() { ID = 60 }
+            };
+            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
+            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
+            mockOrderRepo.Setup(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
+                It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015"))).Returns(expected);
+            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
+
+            // act
+            var actual = sut.GetOrderHistoryByCustomer("21", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
+
+            // assert
+            Assert.AreEqual(expected, actual);
+            mockOrderRepo.Verify(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
+                It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015")), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
         public void PlaceOrder_GivenANewOrderShippingAndPayment_PlacesTheOrder()
         {
             // arrange
@@ -161,198 +353,6 @@ namespace BloomSales.Services.Tests
             mockOrderRepo.Verify(r => r.AddOrder(It.Is<Order>(o => o.Items.Count() == 4)), Times.Once());
             mockShippingService.Verify(s => s.RequestShipping(It.Is<ShippingInfo>(si => si.WarehouseID == 10 && si.OrderID == 100)),
                 Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void GetOrder_ResultExistsInCache_ReturnsResultFromCache()
-        {
-            // arrange
-            Order expected = new Order() { ID = 10 };
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            mockCache.Setup(c => c["order#10"]).Returns(expected);
-            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
-
-            // act
-            var actual = sut.GetOrder(10);
-
-            // assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void GetOrder_ResultNotExistsInCache_FetchesTheResultFromDatabase()
-        {
-            // arrange
-            Order expected = new Order() { ID = 11 };
-            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
-            mockOrderRepo.Setup(r => r.GetOrder(11)).Returns(expected);
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
-
-            // act
-            var actual = sut.GetOrder(11);
-
-            // assert
-            Assert.AreEqual(expected, actual);
-            mockOrderRepo.Verify(r => r.GetOrder(11), Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void GetOrder_ResultNotExistsInCache_CachesTheResult()
-        {
-            // arrange
-            Order expected = new Order() { ID = 11 };
-            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
-            mockOrderRepo.Setup(r => r.GetOrder(11)).Returns(expected);
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
-
-            // act
-            sut.GetOrder(11);
-
-            // assert
-            mockCache.Verify(c => c.Set("order#11", It.Is<Order>(o => o.Equals(expected)), It.IsAny<CacheItemPolicy>(), null),
-                Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void GetOrderHistoryByCustomer_ResultExistsInCache_ReturnsResultFromCache()
-        {
-            // arrange
-            IEnumerable<Order> expected = new Order[]
-            {
-                new Order() { ID = 20 },
-                new Order() { ID = 30 },
-                new Order() { ID = 40 }
-            };
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            mockCache.Setup(c => c["c#12Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)"]).Returns(expected);
-            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
-
-            // act
-            var actual = sut.GetOrderHistoryByCustomer("12", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
-
-            // assert
-            Assert.AreEqual(expected, actual);
-            mockCache.Verify(c => c["c#12Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)"], Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void GetOrderHistoryByCustomer_ResultNotExistsInCache_FetchesTheResultFromDatabase()
-        {
-            // arrange
-            IEnumerable<Order> expected = new Order[]
-            {
-                new Order() { ID = 30 },
-                new Order() { ID = 40 },
-                new Order() { ID = 50 },
-                new Order() { ID = 60 }
-            };
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
-            mockOrderRepo.Setup(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
-                It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015"))).Returns(expected);
-            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
-
-            // act
-            var actual = sut.GetOrderHistoryByCustomer("21", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
-
-            // assert
-            Assert.AreEqual(expected, actual);
-            mockOrderRepo.Verify(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
-                It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015")), Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void GetOrderHistoryByCustomer_ResultNotExistsInCache_CachesTheResult()
-        {
-            // arrange
-            IEnumerable<Order> expected = new Order[]
-            {
-                new Order() { ID = 30 },
-                new Order() { ID = 40 },
-                new Order() { ID = 50 },
-                new Order() { ID = 60 }
-            };
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            Mock<IOrderRepository> mockOrderRepo = new Mock<IOrderRepository>();
-            mockOrderRepo.Setup(r => r.GetOrdersByCustomer("21", It.Is<DateTime>(sd => sd.ToShortDateString() == "2/1/2015"),
-                It.Is<DateTime>(ed => ed.ToShortDateString() == "6/1/2015"))).Returns(expected);
-            OrderService sut = new OrderService(null, null, null, null, mockOrderRepo.Object, null, mockCache.Object);
-
-            // act
-            var actual = sut.GetOrderHistoryByCustomer("21", new DateTime(2015, 2, 1), new DateTime(2015, 6, 1));
-
-            // assert
-            mockCache.Verify(
-                c => c.Set("c#21Orders(2/1/2015 12:00:00 AM-6/1/2015 12:00:00 AM)",
-                           It.Is<IEnumerable<Order>>(l => l.Equals(expected)),
-                           It.IsAny<CacheItemPolicy>(), null),
-                Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AddOrUpdateCart_GivenANullOrderObject_ThrowsAnException()
-        {
-            // arrange
-            OrderService sut = new OrderService(null, null, null, null, null, null, null);
-
-            // act
-            sut.AddOrUpdateCart("111", null);
-
-            // assert
-            // nothing to assert.
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void AddOrUpdateCart_GivenANewOrder_AddsTheNewOrderToTheCache()
-        {
-            // arrange
-            Order order = new Order() { ID = 987654321 };
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
-
-            // act
-            sut.AddOrUpdateCart("123", order);
-
-            // assert
-            mockCache.VerifySet(c => c["C123Cart"] = order, Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.OrderServiceTests")]
-        public void GetCart_GivenACustomerHavingActiveCart_ReturnsTheCartContent()
-        {
-            // arrange
-            Order expected = new Order() { ID = 753 };
-            Mock<ObjectCache> mockCache = new Mock<ObjectCache>();
-            mockCache.Setup(c => c["C159Cart"]).Returns(expected);
-            OrderService sut = new OrderService(null, null, null, null, null, null, mockCache.Object);
-
-            // act
-            var actual = sut.GetCart("159");
-
-            // assert
-            Assert.AreEqual(expected, actual);
-            mockCache.Verify(c => c["C159Cart"], Times.Once());
         }
     }
 }

@@ -3,11 +3,8 @@ using BloomSales.Data.Repositories;
 using BloomSales.Services.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Caching;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services
 {
@@ -16,10 +13,10 @@ namespace BloomSales.Services
                      InstanceContextMode = InstanceContextMode.PerCall)]
     public class ShippingService : IShippingService, IDisposable
     {
-        private IShippingInfoRepository shippingRepo;
+        private ObjectCache cache;
         private IDeliveryServiceRepository serviceRepo;
         private IShipperRepository shipperRepo;
-        private ObjectCache cache;
+        private IShippingInfoRepository shippingRepo;
 
         public ShippingService()
         {
@@ -38,6 +35,28 @@ namespace BloomSales.Services
             this.shipperRepo = shipperRepository;
             this.serviceRepo = serviceRepository;
             this.cache = cache;
+        }
+
+        public void AddDeliveryService(DeliveryService service)
+        {
+            this.serviceRepo.AddService(service);
+        }
+
+        public void AddShipper(Shipper shipper)
+        {
+            this.shipperRepo.AddShipper(shipper);
+        }
+
+        public void Dispose()
+        {
+            if (this.shipperRepo != null)
+                shippingRepo.Dispose();
+
+            if (this.shipperRepo != null)
+                shipperRepo.Dispose();
+
+            if (this.serviceRepo != null)
+                serviceRepo.Dispose();
         }
 
         public IEnumerable<Shipper> GetAllShippers()
@@ -75,10 +94,20 @@ namespace BloomSales.Services
             return result;
         }
 
-        public void RequestShipping(ShippingInfo shipping)
+        public ShippingInfo GetShipping(int orderID)
         {
-            shipping.Status = ShippingStatus.ReceivedOrder;
-            this.shippingRepo.AddShipping(shipping);
+            string cacheKey = "shippingForOrder#" + orderID.ToString();
+
+            var shipping = cache[cacheKey] as ShippingInfo;
+
+            if (shipping == null)
+            {
+                shipping = shippingRepo.GetShipping(orderID);
+
+                cache.Set(cacheKey, shipping, CachingPolicies.ThirtyMinutesPolicy);
+            }
+
+            return shipping;
         }
 
         public ShippingStatus GetShippingStatus(int orderID)
@@ -98,42 +127,10 @@ namespace BloomSales.Services
             return (ShippingStatus)status;
         }
 
-        public ShippingInfo GetShipping(int orderID)
+        public void RequestShipping(ShippingInfo shipping)
         {
-            string cacheKey = "shippingForOrder#" + orderID.ToString();
-
-            var shipping = cache[cacheKey] as ShippingInfo;
-
-            if (shipping == null)
-            {
-                shipping = shippingRepo.GetShipping(orderID);
-
-                cache.Set(cacheKey, shipping, CachingPolicies.ThirtyMinutesPolicy);
-            }
-
-            return shipping;
-        }
-
-        public void AddShipper(Shipper shipper)
-        {
-            this.shipperRepo.AddShipper(shipper);
-        }
-
-        public void AddDeliveryService(DeliveryService service)
-        {
-            this.serviceRepo.AddService(service);
-        }
-
-        public void Dispose()
-        {
-            if (this.shipperRepo != null)
-                shippingRepo.Dispose();
-
-            if (this.shipperRepo != null)
-                shipperRepo.Dispose();
-
-            if (this.serviceRepo != null)
-                serviceRepo.Dispose();
+            shipping.Status = ShippingStatus.ReceivedOrder;
+            this.shippingRepo.AddShipping(shipping);
         }
     }
 }

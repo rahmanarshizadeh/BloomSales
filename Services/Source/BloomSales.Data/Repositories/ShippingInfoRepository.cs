@@ -1,9 +1,5 @@
 ﻿using BloomSales.Data.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Repositories
 {
@@ -27,11 +23,10 @@ namespace BloomSales.Data.Repositories
             db.SaveChanges();
         }
 
-        public ShippingStatus GetShippingStatus(int orderID)
+        public void Dispose()
         {
-            ShippingInfo shipping = db.Shippings.Find(orderID);
-
-            return shipping.Status;
+            if (this.db != null)
+                db.Dispose();
         }
 
         public ShippingInfo GetShipping(int orderID)
@@ -47,10 +42,11 @@ namespace BloomSales.Data.Repositories
             return record;
         }
 
-        public void Dispose()
+        public ShippingStatus GetShippingStatus(int orderID)
         {
-            if (this.db != null)
-                db.Dispose();
+            ShippingInfo shipping = db.Shippings.Find(orderID);
+
+            return shipping.Status;
         }
     }
 }

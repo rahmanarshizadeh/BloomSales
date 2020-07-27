@@ -4,11 +4,8 @@ using BloomSales.Services.Contracts;
 using BloomSales.Services.Proxies;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Caching;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services
 {
@@ -18,15 +15,15 @@ namespace BloomSales.Services
     public class InventoryService : IInventoryService, IDisposable
     {
         private ObjectCache cache;
-        private IInventoryItemRepository inventoryRepo;
         private IProductCategoryRepository categoryRepo;
-        private IProductRepository productRepo;
+        private IInventoryItemRepository inventoryRepo;
         private ILocationService locationService;
         private CacheItemPolicy oneDayPolicy;
-        private CacheItemPolicy twelveHoursPolicy;
         private CacheItemPolicy oneHourPolicy;
-        private CacheItemPolicy thirtyMinutesPolicy;
+        private IProductRepository productRepo;
         private CacheItemPolicy tenMinutesPolicy;
+        private CacheItemPolicy thirtyMinutesPolicy;
+        private CacheItemPolicy twelveHoursPolicy;
 
         public InventoryService()
         {
@@ -51,6 +48,41 @@ namespace BloomSales.Services
             this.locationService = locationService;
         }
 
+        public void AddCategory(ProductCategory category)
+        {
+            this.categoryRepo.AddCategory(category);
+
+            // remove the cache record for "All Categories"
+            if (cache["allCategories"] != null)
+                cache.Remove("allCategories");
+        }
+
+        public void AddProduct(Product product)
+        {
+            this.productRepo.AddProduct(product);
+
+            // remove the cache record for "All Products"
+            if (cache["allProducts"] != null)
+                cache.Remove("allProducts");
+        }
+
+        public void AddToInventory(InventoryItem item)
+        {
+            this.inventoryRepo.AddToInventory(item);
+        }
+
+        public void Dispose()
+        {
+            if (this.categoryRepo != null)
+                categoryRepo.Dispose();
+
+            if (this.inventoryRepo != null)
+                inventoryRepo.Dispose();
+
+            if (this.productRepo != null)
+                productRepo.Dispose();
+        }
+
         public IEnumerable<Product> GetAllProducts()
         {
             string cacheKey = "allProducts";
@@ -61,6 +93,85 @@ namespace BloomSales.Services
             {
                 result = this.productRepo.GetAllProducts();
                 this.cache.Set(cacheKey, result, this.oneDayPolicy);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<ProductCategory> GetCategories()
+        {
+            string cacheKey = "allCategories";
+
+            var result = this.cache[cacheKey] as IEnumerable<ProductCategory>;
+
+            if (result == null)
+            {
+                result = this.categoryRepo.GetAllCategories();
+                this.cache.Set(cacheKey, result, this.oneDayPolicy);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<InventoryItem> GetInventoryByCity(string city)
+        {
+            string cacheKey = "inventoryIn" + city;
+
+            var result = this.cache[cacheKey] as IEnumerable<InventoryItem>;
+
+            if (result == null)
+            {
+                IEnumerable<Warehouse> warehouses = locationService.GetWarehousesByCity(city);
+                result = this.inventoryRepo.GetInventories(warehouses);
+                this.cache.Set(cacheKey, result, this.thirtyMinutesPolicy);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<InventoryItem> GetInventoryByRegion(string region)
+        {
+            string cacheKey = "inventoryIn" + region + "Region";
+
+            var result = this.cache[cacheKey] as IEnumerable<InventoryItem>;
+
+            if (result == null)
+            {
+                var warehouses = this.locationService.GetWarehousesByRegion(region);
+                result = this.inventoryRepo.GetInventories(warehouses);
+                this.cache.Set(cacheKey, result, this.tenMinutesPolicy);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<InventoryItem> GetInventoryByWarehouse(string warehouse)
+        {
+            string cacheKey = "inventoryIn" + warehouse + "Warehouse";
+
+            var result = this.cache[cacheKey] as IEnumerable<InventoryItem>;
+
+            if (result == null)
+            {
+                Warehouse w = this.locationService.GetWarehouseByName(warehouse);
+                result = this.inventoryRepo.GetInventory(w);
+                this.cache.Set(cacheKey, result, this.thirtyMinutesPolicy);
+            }
+
+            return result;
+        }
+
+        public Product GetProductByID(int productID)
+        {
+            string cacheKey = "product#" + productID;
+
+            Product result = cache[cacheKey] as Product;
+
+            if (result == null)
+            {
+                result = productRepo.GetProduct(productID);
+
+                cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
             }
 
             return result;
@@ -111,80 +222,17 @@ namespace BloomSales.Services
             return result;
         }
 
-        public Product GetProductByID(int productID)
+        public InventoryItem GetStockByWarehouse(string warehouse, int productID)
         {
-            string cacheKey = "product#" + productID;
+            string cacheKey = "stockOfP" + productID.ToString() + "In" + warehouse + "Warehouse";
 
-            Product result = cache[cacheKey] as Product;
-
-            if (result == null)
-            {
-                result = productRepo.GetProduct(productID);
-
-                cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
-            }
-
-            return result;
-        }
-
-        public IEnumerable<ProductCategory> GetCategories()
-        {
-            string cacheKey = "allCategories";
-
-            var result = this.cache[cacheKey] as IEnumerable<ProductCategory>;
-
-            if (result == null)
-            {
-                result = this.categoryRepo.GetAllCategories();
-                this.cache.Set(cacheKey, result, this.oneDayPolicy);
-            }
-
-            return result;
-        }
-
-        public IEnumerable<InventoryItem> GetInventoryByCity(string city)
-        {
-            string cacheKey = "inventoryIn" + city;
-
-            var result = this.cache[cacheKey] as IEnumerable<InventoryItem>;
-
-            if (result == null)
-            {
-                IEnumerable<Warehouse> warehouses = locationService.GetWarehousesByCity(city);
-                result = this.inventoryRepo.GetInventories(warehouses);
-                this.cache.Set(cacheKey, result, this.thirtyMinutesPolicy);
-            }
-
-            return result;
-        }
-
-        public IEnumerable<InventoryItem> GetInventoryByWarehouse(string warehouse)
-        {
-            string cacheKey = "inventoryIn" + warehouse + "Warehouse";
-
-            var result = this.cache[cacheKey] as IEnumerable<InventoryItem>;
+            var result = this.cache[cacheKey] as InventoryItem;
 
             if (result == null)
             {
                 Warehouse w = this.locationService.GetWarehouseByName(warehouse);
-                result = this.inventoryRepo.GetInventory(w);
-                this.cache.Set(cacheKey, result, this.thirtyMinutesPolicy);
-            }
-
-            return result;
-        }
-
-        public IEnumerable<InventoryItem> GetInventoryByRegion(string region)
-        {
-            string cacheKey = "inventoryIn" + region + "Region";
-
-            var result = this.cache[cacheKey] as IEnumerable<InventoryItem>;
-
-            if (result == null)
-            {
-                var warehouses = this.locationService.GetWarehousesByRegion(region);
-                result = this.inventoryRepo.GetInventories(warehouses);
-                this.cache.Set(cacheKey, result, this.tenMinutesPolicy);
+                result = this.inventoryRepo.GetStock(w, productID);
+                this.cache.Set(cacheKey, result, this.oneHourPolicy);
             }
 
             return result;
@@ -222,60 +270,9 @@ namespace BloomSales.Services
             return result;
         }
 
-        public InventoryItem GetStockByWarehouse(string warehouse, int productID)
-        {
-            string cacheKey = "stockOfP" + productID.ToString() + "In" + warehouse + "Warehouse";
-
-            var result = this.cache[cacheKey] as InventoryItem;
-
-            if (result == null)
-            {
-                Warehouse w = this.locationService.GetWarehouseByName(warehouse);
-                result = this.inventoryRepo.GetStock(w, productID);
-                this.cache.Set(cacheKey, result, this.oneHourPolicy);
-            }
-
-            return result;
-        }
-
-        public void AddProduct(Product product)
-        {
-            this.productRepo.AddProduct(product);
-
-            // remove the cache record for "All Products"
-            if (cache["allProducts"] != null)
-                cache.Remove("allProducts");
-        }
-
-        public void AddToInventory(InventoryItem item)
-        {
-            this.inventoryRepo.AddToInventory(item);
-        }
-
         public void UpdateStock(int inventoryItemID, short newStock)
         {
             this.inventoryRepo.UpdateStock(inventoryItemID, newStock);
-        }
-
-        public void AddCategory(ProductCategory category)
-        {
-            this.categoryRepo.AddCategory(category);
-
-            // remove the cache record for "All Categories"
-            if (cache["allCategories"] != null)
-                cache.Remove("allCategories");
-        }
-
-        public void Dispose()
-        {
-            if (this.categoryRepo != null)
-                categoryRepo.Dispose();
-
-            if (this.inventoryRepo != null)
-                inventoryRepo.Dispose();
-
-            if (this.productRepo != null)
-                productRepo.Dispose();
         }
 
         private void InitializePolicies()

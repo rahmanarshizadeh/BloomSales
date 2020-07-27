@@ -7,6 +7,9 @@ namespace BloomSales.Data.Entities
     public class OrderItem
     {
         [DataMember]
+        public float Discount { get; set; }
+
+        [DataMember]
         public int ID { get; set; }
 
         [Required]
@@ -19,13 +22,10 @@ namespace BloomSales.Data.Entities
 
         [Required]
         [DataMember]
-        public decimal UnitPrice { get; set; }
+        public short Quantity { get; set; }
 
         [Required]
         [DataMember]
-        public short Quantity { get; set; }
-
-        [DataMember]
-        public float Discount { get; set; }
+        public decimal UnitPrice { get; set; }
     }
 }

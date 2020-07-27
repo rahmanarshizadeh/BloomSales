@@ -11,10 +11,8 @@ namespace BloomSales.Data
             this.Configuration.ProxyCreationEnabled = false;
         }
 
-        public virtual DbSet<Region> Regions { get; set; }
-
         public virtual DbSet<Province> Provinces { get; set; }
-
+        public virtual DbSet<Region> Regions { get; set; }
         public virtual DbSet<Warehouse> Warehouses { get; set; }
     }
 }

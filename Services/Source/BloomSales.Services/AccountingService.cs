@@ -2,12 +2,8 @@
 using BloomSales.Data.Repositories;
 using BloomSales.Services.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Caching;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services
 {
@@ -16,9 +12,9 @@ namespace BloomSales.Services
                      InstanceContextMode = InstanceContextMode.PerCall)]
     public class AccountingService : IAccountingService, IDisposable
     {
+        private ObjectCache cache;
         private IPaymentInfoRepository paymentRepo;
         private ISalesTaxRepository taxRepo;
-        private ObjectCache cache;
 
         public AccountingService()
         {
@@ -35,16 +31,18 @@ namespace BloomSales.Services
             this.cache = cache;
         }
 
-        public bool ProcessPayment(PaymentInfo payment)
+        public void AddTaxInfo(SalesTaxInfo taxInfo)
         {
-            // assume that the process has been successfully processed.
+            taxRepo.AddTaxInfo(taxInfo);
+        }
 
-            payment.ReceivedDate = DateTime.Now;
-            payment.IsReceived = true;
+        public void Dispose()
+        {
+            if (this.paymentRepo != null)
+                paymentRepo.Dispose();
 
-            this.paymentRepo.AddPayment(payment);
-
-            return true;
+            if (this.taxRepo != null)
+                taxRepo.Dispose();
         }
 
         public PaymentInfo GetPaymentFor(int orderID)
@@ -65,11 +63,6 @@ namespace BloomSales.Services
             return result;
         }
 
-        public void AddTaxInfo(SalesTaxInfo taxInfo)
-        {
-            taxRepo.AddTaxInfo(taxInfo);
-        }
-
         public SalesTaxInfo GetTaxInfo(string country, string province)
         {
             string cacheKey = "taxFor" + province + country;
@@ -85,18 +78,21 @@ namespace BloomSales.Services
             return result;
         }
 
+        public bool ProcessPayment(PaymentInfo payment)
+        {
+            // assume that the process has been successfully processed.
+
+            payment.ReceivedDate = DateTime.Now;
+            payment.IsReceived = true;
+
+            this.paymentRepo.AddPayment(payment);
+
+            return true;
+        }
+
         public void UpdateTaxInfo(SalesTaxInfo taxInfo)
         {
             taxRepo.UpdateTaxInfo(taxInfo);
-        }
-
-        public void Dispose()
-        {
-            if (this.paymentRepo != null)
-                paymentRepo.Dispose();
-
-            if (this.taxRepo != null)
-                taxRepo.Dispose();
         }
     }
 }

@@ -1,4 +1,3 @@
-
 namespace BloomSales.Data.Migrations
 {
     using System.Data.Entity.Migrations;

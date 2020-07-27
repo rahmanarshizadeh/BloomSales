@@ -14,26 +14,6 @@ namespace BloomSales.Services.Tests
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
         [TestCategory("BloomSales.Services.Tests.AccountingServiceTests")]
-        public void ProcessPayment_GivenANewPayment_ProcessesAndAddsThePaymentToDatabase()
-        {
-            // arrange
-            Mock<IPaymentInfoRepository> mockRepo = new Mock<IPaymentInfoRepository>();
-            PaymentInfo payment = new PaymentInfo() { OrderID = 10 };
-            AccountingService sut = new AccountingService(mockRepo.Object, null, null);
-
-            // act
-            sut.ProcessPayment(payment);
-
-            // assert
-            mockRepo.Verify(
-                r => r.AddPayment(It.Is<PaymentInfo>(
-                    p => p.OrderID == 10 && p.ReceivedDate != DateTime.MinValue && p.IsReceived == true)),
-                    Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
-        [TestCategory("BloomSales.Services.Tests.AccountingServiceTests")]
         public void GetPaymentFor_ResultExistsInCache_ReturnsThePaymentResult()
         {
             // arrange
@@ -73,6 +53,26 @@ namespace BloomSales.Services.Tests
                     It.IsAny<CacheItemPolicy>(),
                     null),
                  Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        [TestCategory("BloomSales.Services.Tests.AccountingServiceTests")]
+        public void ProcessPayment_GivenANewPayment_ProcessesAndAddsThePaymentToDatabase()
+        {
+            // arrange
+            Mock<IPaymentInfoRepository> mockRepo = new Mock<IPaymentInfoRepository>();
+            PaymentInfo payment = new PaymentInfo() { OrderID = 10 };
+            AccountingService sut = new AccountingService(mockRepo.Object, null, null);
+
+            // act
+            sut.ProcessPayment(payment);
+
+            // assert
+            mockRepo.Verify(
+                r => r.AddPayment(It.Is<PaymentInfo>(
+                    p => p.OrderID == 10 && p.ReceivedDate != DateTime.MinValue && p.IsReceived == true)),
+                    Times.Once());
         }
     }
 }

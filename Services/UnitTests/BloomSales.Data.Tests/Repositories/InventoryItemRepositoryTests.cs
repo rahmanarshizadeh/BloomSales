@@ -14,6 +14,26 @@ namespace BloomSales.Data.Tests.Repositories
     {
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
+        public void AddToInventory_GivenANewItem_AddsToDatabase()
+        {
+            // arrange
+            InventoryItem item = new InventoryItem() { ID = 2 };
+            List<InventoryItem> data = new List<InventoryItem>();
+            Mock<DbSet<InventoryItem>> mockSet = new Mock<DbSet<InventoryItem>>();
+            Mock<InventoryDb> mockContext = new Mock<InventoryDb>();
+            mockContext.Setup(c => c.Inventories).Returns(mockSet.Object);
+            InventoryItemRepository sut = new InventoryItemRepository(mockContext.Object);
+
+            // act
+            sut.AddToInventory(item);
+
+            // assert
+            mockSet.Verify(s => s.Add(It.Is<InventoryItem>(i => i.ID == 2)), Times.Once());
+            mockContext.Verify(c => c.SaveChanges(), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
         public void GetInventories_GivenAValidListOfWarehouses_ReturnsTheirInventories()
         {
             List<Warehouse> warehouses = new List<Warehouse>();
@@ -78,32 +98,6 @@ namespace BloomSales.Data.Tests.Repositories
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
-        public void GetStock_GivenAValidWarehouseAndProductID_ReturnsItsStockInTheWarehouse()
-        {
-            // arrange
-            Warehouse warehouse = new Warehouse() { ID = 15 };
-            List<InventoryItem> data = new List<InventoryItem>();
-            data.Add(new InventoryItem() { WarehouseID = 11, ProductID = 100 });
-            data.Add(new InventoryItem() { WarehouseID = 15, ProductID = 101 });
-            data.Add(new InventoryItem() { WarehouseID = 12, ProductID = 101 });
-            data.Add(new InventoryItem() { WarehouseID = 15, ProductID = 130 });
-            data.Add(new InventoryItem() { WarehouseID = 14, ProductID = 120 });
-            data.Add(new InventoryItem() { WarehouseID = 15, ProductID = 150 });
-            InventoryItem expected = data[5];
-            Mock<DbSet<InventoryItem>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
-            Mock<InventoryDb> mockContext = new Mock<InventoryDb>();
-            mockContext.Setup(c => c.Inventories).Returns(mockSet.Object);
-            InventoryItemRepository sut = new InventoryItemRepository(mockContext.Object);
-
-            // act
-            var actual = sut.GetStock(warehouse, 150);
-
-            // assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
         public void GetStock_GivenAValidListOfWarehousesAndAProductID_ReturnsTheStocksInTheWarehouses()
         {
             // arrange
@@ -136,22 +130,28 @@ namespace BloomSales.Data.Tests.Repositories
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
-        public void AddToInventory_GivenANewItem_AddsToDatabase()
+        public void GetStock_GivenAValidWarehouseAndProductID_ReturnsItsStockInTheWarehouse()
         {
             // arrange
-            InventoryItem item = new InventoryItem() { ID = 2 };
+            Warehouse warehouse = new Warehouse() { ID = 15 };
             List<InventoryItem> data = new List<InventoryItem>();
-            Mock<DbSet<InventoryItem>> mockSet = new Mock<DbSet<InventoryItem>>();
+            data.Add(new InventoryItem() { WarehouseID = 11, ProductID = 100 });
+            data.Add(new InventoryItem() { WarehouseID = 15, ProductID = 101 });
+            data.Add(new InventoryItem() { WarehouseID = 12, ProductID = 101 });
+            data.Add(new InventoryItem() { WarehouseID = 15, ProductID = 130 });
+            data.Add(new InventoryItem() { WarehouseID = 14, ProductID = 120 });
+            data.Add(new InventoryItem() { WarehouseID = 15, ProductID = 150 });
+            InventoryItem expected = data[5];
+            Mock<DbSet<InventoryItem>> mockSet = EntityMockFactory.CreateSet(data.AsQueryable());
             Mock<InventoryDb> mockContext = new Mock<InventoryDb>();
             mockContext.Setup(c => c.Inventories).Returns(mockSet.Object);
             InventoryItemRepository sut = new InventoryItemRepository(mockContext.Object);
 
             // act
-            sut.AddToInventory(item);
+            var actual = sut.GetStock(warehouse, 150);
 
             // assert
-            mockSet.Verify(s => s.Add(It.Is<InventoryItem>(i => i.ID == 2)), Times.Once());
-            mockContext.Verify(c => c.SaveChanges(), Times.Once());
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]

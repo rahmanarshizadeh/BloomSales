@@ -1,9 +1,6 @@
-﻿using System;
+﻿using BloomSales.Data.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloomSales.Data.Entities;
 
 namespace BloomSales.Data.Repositories
 {
@@ -27,6 +24,12 @@ namespace BloomSales.Data.Repositories
             db.SaveChanges();
         }
 
+        public void Dispose()
+        {
+            if (this.db != null)
+                db.Dispose();
+        }
+
         public IEnumerable<Shipper> GetAllShippers()
         {
             var result = db.Shippers.ToArray();
@@ -41,12 +44,6 @@ namespace BloomSales.Data.Repositories
                           select s).SingleOrDefault();
 
             return result;
-        }
-
-        public void Dispose()
-        {
-            if (this.db != null)
-                db.Dispose();
         }
     }
 }

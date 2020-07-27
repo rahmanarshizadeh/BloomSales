@@ -1,9 +1,6 @@
 ﻿using BloomSales.Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Data.Repositories
 {
@@ -11,10 +8,10 @@ namespace BloomSales.Data.Repositories
     {
         int AddOrder(Order order);
 
-        void UpdateOrder(Order order);
-
         Order GetOrder(int id);
 
         IEnumerable<Order> GetOrdersByCustomer(string cusotmerID, DateTime startDate, DateTime endDate);
+
+        void UpdateOrder(Order order);
     }
 }

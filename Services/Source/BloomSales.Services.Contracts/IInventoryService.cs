@@ -8,37 +8,7 @@ namespace BloomSales.Services.Contracts
     public interface IInventoryService
     {
         [OperationContract]
-        IEnumerable<Product> GetAllProducts();
-
-        [OperationContract]
-        IEnumerable<Product> GetProductsByCategory(string categoryName);
-
-        [OperationContract]
-        IEnumerable<Product> GetProductsByIDs(IEnumerable<int> productsIDs);
-
-        [OperationContract]
-        Product GetProductByID(int productID);
-
-        [OperationContract]
-        IEnumerable<ProductCategory> GetCategories();
-
-        [OperationContract]
-        IEnumerable<InventoryItem> GetInventoryByCity(string city);
-
-        [OperationContract]
-        IEnumerable<InventoryItem> GetInventoryByWarehouse(string warehouse);
-
-        [OperationContract]
-        IEnumerable<InventoryItem> GetInventoryByRegion(string region);
-
-        [OperationContract]
-        IEnumerable<InventoryItem> GetStocksByCity(string city, int productID);
-
-        [OperationContract]
-        IEnumerable<InventoryItem> GetStocksByRegion(string region, int productID);
-
-        [OperationContract]
-        InventoryItem GetStockByWarehouse(string warehouse, int productID);
+        void AddCategory(ProductCategory category);
 
         [OperationContract]
         void AddProduct(Product product);
@@ -47,9 +17,39 @@ namespace BloomSales.Services.Contracts
         void AddToInventory(InventoryItem item);
 
         [OperationContract]
-        void UpdateStock(int inventoryItemID, short newStock);
+        IEnumerable<Product> GetAllProducts();
 
         [OperationContract]
-        void AddCategory(ProductCategory category);
+        IEnumerable<ProductCategory> GetCategories();
+
+        [OperationContract]
+        IEnumerable<InventoryItem> GetInventoryByCity(string city);
+
+        [OperationContract]
+        IEnumerable<InventoryItem> GetInventoryByRegion(string region);
+
+        [OperationContract]
+        IEnumerable<InventoryItem> GetInventoryByWarehouse(string warehouse);
+
+        [OperationContract]
+        Product GetProductByID(int productID);
+
+        [OperationContract]
+        IEnumerable<Product> GetProductsByCategory(string categoryName);
+
+        [OperationContract]
+        IEnumerable<Product> GetProductsByIDs(IEnumerable<int> productsIDs);
+
+        [OperationContract]
+        InventoryItem GetStockByWarehouse(string warehouse, int productID);
+
+        [OperationContract]
+        IEnumerable<InventoryItem> GetStocksByCity(string city, int productID);
+
+        [OperationContract]
+        IEnumerable<InventoryItem> GetStocksByRegion(string region, int productID);
+
+        [OperationContract]
+        void UpdateStock(int inventoryItemID, short newStock);
     }
 }

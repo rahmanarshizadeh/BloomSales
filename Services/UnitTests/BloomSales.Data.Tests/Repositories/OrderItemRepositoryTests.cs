@@ -56,26 +56,6 @@ namespace BloomSales.Data.Tests.Repositories
 
         [TestMethod]
         [TestCategory(TestType.UnitTest)]
-        public void RemoveItem_GivenAValidID_DeletesTheRecordFromDatabase()
-        {
-            // arrange
-            OrderItem item = new OrderItem() { ID = 10 };
-            Mock<DbSet<OrderItem>> mockSet = new Mock<DbSet<OrderItem>>();
-            mockSet.Setup(s => s.Find(10)).Returns(item);
-            Mock<OrderDb> mockContext = new Mock<OrderDb>();
-            mockContext.Setup(c => c.OrderItems).Returns(mockSet.Object);
-            OrderItemRepository sut = new OrderItemRepository(mockContext.Object);
-
-            // act
-            sut.RemoveItem(10);
-
-            // assert
-            mockSet.Verify(s => s.Remove(It.Is<OrderItem>(oi => oi.ID == 10)), Times.Once());
-            mockContext.Verify(c => c.SaveChanges(), Times.Once());
-        }
-
-        [TestMethod]
-        [TestCategory(TestType.UnitTest)]
         public void GetItemsByOrder_GivenAValidOrderID_ReturnsTheListOfItemsForThatOrder()
         {
             // arrange
@@ -100,6 +80,26 @@ namespace BloomSales.Data.Tests.Repositories
 
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
+        }
+
+        [TestMethod]
+        [TestCategory(TestType.UnitTest)]
+        public void RemoveItem_GivenAValidID_DeletesTheRecordFromDatabase()
+        {
+            // arrange
+            OrderItem item = new OrderItem() { ID = 10 };
+            Mock<DbSet<OrderItem>> mockSet = new Mock<DbSet<OrderItem>>();
+            mockSet.Setup(s => s.Find(10)).Returns(item);
+            Mock<OrderDb> mockContext = new Mock<OrderDb>();
+            mockContext.Setup(c => c.OrderItems).Returns(mockSet.Object);
+            OrderItemRepository sut = new OrderItemRepository(mockContext.Object);
+
+            // act
+            sut.RemoveItem(10);
+
+            // assert
+            mockSet.Verify(s => s.Remove(It.Is<OrderItem>(oi => oi.ID == 10)), Times.Once());
+            mockContext.Verify(c => c.SaveChanges(), Times.Once());
         }
     }
 }

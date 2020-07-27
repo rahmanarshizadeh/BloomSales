@@ -15,13 +15,13 @@ namespace BloomSales.Services
                      InstanceContextMode = InstanceContextMode.PerCall)]
     public class OrderService : IOrderService, IDisposable
     {
-        private ILocationService locationService;
-        private IShippingService shippingService;
         private IAccountingService accountingService;
-        private IInventoryService inventoryService;
-        private IOrderRepository orderRepo;
-        private IOrderItemRepository orderItemRepo;
         private ObjectCache cache;
+        private IInventoryService inventoryService;
+        private ILocationService locationService;
+        private IOrderItemRepository orderItemRepo;
+        private IOrderRepository orderRepo;
+        private IShippingService shippingService;
 
         public OrderService()
         {
@@ -49,6 +49,62 @@ namespace BloomSales.Services
             this.orderRepo = orderRepository;
             this.orderItemRepo = orderItemRepository;
             this.cache = cache;
+        }
+
+        public void AddOrUpdateCart(string customerID, Order order)
+        {
+            if (order == null)
+                throw new ArgumentNullException("order", "Order object cannot be null.");
+
+            string cacheKey = "C" + customerID + "Cart";
+
+            cache[cacheKey] = order;
+        }
+
+        public void Dispose()
+        {
+            if (this.orderRepo != null)
+                orderRepo.Dispose();
+
+            if (this.orderItemRepo != null)
+                orderItemRepo.Dispose();
+        }
+
+        public Order GetCart(string customerID)
+        {
+            string cacheKey = "C" + customerID.ToString() + "Cart";
+
+            return cache[cacheKey] as Order;
+        }
+
+        public Order GetOrder(int id)
+        {
+            string cacheKey = "order#" + id.ToString();
+
+            var result = cache[cacheKey] as Order;
+
+            if (result == null)
+            {
+                result = this.orderRepo.GetOrder(id);
+                this.cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<Order> GetOrderHistoryByCustomer(string customerID, DateTime startDate, DateTime endDate)
+        {
+            string cacheKey = "c#" + customerID.ToString() + "Orders(" + startDate.ToString() + "-" + endDate.ToString() + ")";
+
+            var result = this.cache[cacheKey] as IEnumerable<Order>;
+
+            if (result == null)
+            {
+                result = this.orderRepo.GetOrdersByCustomer(customerID, startDate, endDate);
+                this.cache.Set(cacheKey, result, CachingPolicies.TenMinutesPolicy);
+            }
+
+            return result;
         }
 
         public bool PlaceOrder(Order order, ShippingInfo shipping, PaymentInfo payment)
@@ -90,87 +146,6 @@ namespace BloomSales.Services
             return true;
         }
 
-        public Order GetOrder(int id)
-        {
-            string cacheKey = "order#" + id.ToString();
-
-            var result = cache[cacheKey] as Order;
-
-            if (result == null)
-            {
-                result = this.orderRepo.GetOrder(id);
-                this.cache.Set(cacheKey, result, CachingPolicies.OneDayPolicy);
-            }
-
-            return result;
-        }
-
-        public IEnumerable<Order> GetOrderHistoryByCustomer(string customerID, DateTime startDate, DateTime endDate)
-        {
-            string cacheKey = "c#" + customerID.ToString() + "Orders(" + startDate.ToString() + "-" + endDate.ToString() + ")";
-
-            var result = this.cache[cacheKey] as IEnumerable<Order>;
-
-            if (result == null)
-            {
-                result = this.orderRepo.GetOrdersByCustomer(customerID, startDate, endDate);
-                this.cache.Set(cacheKey, result, CachingPolicies.TenMinutesPolicy);
-            }
-
-            return result;
-        }
-
-        public void AddOrUpdateCart(string customerID, Order order)
-        {
-            if (order == null)
-                throw new ArgumentNullException("order", "Order object cannot be null.");
-
-            string cacheKey = "C" + customerID + "Cart";
-
-            cache[cacheKey] = order;
-        }
-
-        public Order GetCart(string customerID)
-        {
-            string cacheKey = "C" + customerID.ToString() + "Cart";
-
-            return cache[cacheKey] as Order;
-        }
-
-        public void Dispose()
-        {
-            if (this.orderRepo != null)
-                orderRepo.Dispose();
-
-            if (this.orderItemRepo != null)
-                orderItemRepo.Dispose();
-        }
-
-        private IDictionary<Warehouse, IEnumerable<OrderItem>> SegmentOrderOnAvailability(
-            IEnumerable<OrderItem> itemsList, ShippingInfo shipping)
-        {
-            List<OrderItem> items = new List<OrderItem>(itemsList);
-
-            Dictionary<Warehouse, IEnumerable<OrderItem>> orderSegments =
-                new Dictionary<Warehouse, IEnumerable<OrderItem>>();
-
-            var warehouses =
-                locationService.GetNearestWarehousesTo(shipping.City,
-                                                       shipping.Province,
-                                                       shipping.Country);
-
-            foreach (Warehouse w in warehouses)
-            {
-                if (items.Count > 0)
-                    CheckOrderItems(items, w, orderSegments);
-                else
-                    // no other item is left
-                    break;
-            }
-
-            return orderSegments;
-        }
-
         private void CheckOrderItems(List<OrderItem> itemsList, Warehouse warehouse,
                                      Dictionary<Warehouse, IEnumerable<OrderItem>> orderSegments)
         {
@@ -197,31 +172,6 @@ namespace BloomSales.Services
 
             if (availableItems.Count > 0)
                 orderSegments.Add(warehouse, availableItems);
-        }
-
-        private Warehouse PlaceSuborders(IDictionary<Warehouse, IEnumerable<OrderItem>> orderSegments,
-                                    int parentOrderID)
-        {
-            var keys = orderSegments.Keys;
-            var services = this.shippingService.GetServicesByShipper("BloomSales");
-            int serviceID = services.First().ID;
-
-            Warehouse destination = keys.First();
-
-            for (int i = 1; i < keys.Count; i++)
-            {
-                var warehouse = keys.ElementAt(i);
-                var items = orderSegments[warehouse];
-
-                Order suborder = CreateSuborder(parentOrderID, items);
-                suborder.OrderDate = DateTime.Today;
-                suborder.ID = this.orderRepo.AddOrder(suborder);
-
-                ShippingInfo shipping = CreateShipping(destination, warehouse, suborder.ID, serviceID);
-                this.shippingService.RequestShipping(shipping);
-            }
-
-            return destination;
         }
 
         private ShippingInfo CreateShipping(ContactInfo destination, Warehouse warehouse,
@@ -259,11 +209,61 @@ namespace BloomSales.Services
             return suborder;
         }
 
+        private Warehouse PlaceSuborders(IDictionary<Warehouse, IEnumerable<OrderItem>> orderSegments,
+                                    int parentOrderID)
+        {
+            var keys = orderSegments.Keys;
+            var services = this.shippingService.GetServicesByShipper("BloomSales");
+            int serviceID = services.First().ID;
+
+            Warehouse destination = keys.First();
+
+            for (int i = 1; i < keys.Count; i++)
+            {
+                var warehouse = keys.ElementAt(i);
+                var items = orderSegments[warehouse];
+
+                Order suborder = CreateSuborder(parentOrderID, items);
+                suborder.OrderDate = DateTime.Today;
+                suborder.ID = this.orderRepo.AddOrder(suborder);
+
+                ShippingInfo shipping = CreateShipping(destination, warehouse, suborder.ID, serviceID);
+                this.shippingService.RequestShipping(shipping);
+            }
+
+            return destination;
+        }
+
         private void RemoveFromCart(string customerID)
         {
             string cacheKey = "C" + customerID + "Cart";
 
             cache.Remove(cacheKey);
+        }
+
+        private IDictionary<Warehouse, IEnumerable<OrderItem>> SegmentOrderOnAvailability(
+                                                    IEnumerable<OrderItem> itemsList, ShippingInfo shipping)
+        {
+            List<OrderItem> items = new List<OrderItem>(itemsList);
+
+            Dictionary<Warehouse, IEnumerable<OrderItem>> orderSegments =
+                new Dictionary<Warehouse, IEnumerable<OrderItem>>();
+
+            var warehouses =
+                locationService.GetNearestWarehousesTo(shipping.City,
+                                                       shipping.Province,
+                                                       shipping.Country);
+
+            foreach (Warehouse w in warehouses)
+            {
+                if (items.Count > 0)
+                    CheckOrderItems(items, w, orderSegments);
+                else
+                    // no other item is left
+                    break;
+            }
+
+            return orderSegments;
         }
     }
 }

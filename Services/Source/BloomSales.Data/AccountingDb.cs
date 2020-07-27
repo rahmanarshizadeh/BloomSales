@@ -12,14 +12,14 @@ namespace BloomSales.Data
             this.Configuration.ProxyCreationEnabled = false;
         }
 
+        public virtual DbSet<PaymentInfo> Payments { get; set; }
+
+        public virtual DbSet<SalesTaxInfo> Taxes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Properties<DateTime>()
                 .Configure(c => c.HasColumnType("datetime2"));
         }
-
-        public virtual DbSet<PaymentInfo> Payments { get; set; }
-
-        public virtual DbSet<SalesTaxInfo> Taxes { get; set; }
     }
 }

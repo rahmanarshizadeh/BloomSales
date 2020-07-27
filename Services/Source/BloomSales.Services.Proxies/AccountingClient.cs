@@ -1,19 +1,14 @@
 ﻿using BloomSales.Data.Entities;
 using BloomSales.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloomSales.Services.Proxies
 {
     public class AccountingClient : ClientBase<IAccountingService>, IAccountingService
     {
-        public bool ProcessPayment(PaymentInfo payment)
+        public void AddTaxInfo(SalesTaxInfo taxInfo)
         {
-            return Channel.ProcessPayment(payment);
+            Channel.AddTaxInfo(taxInfo);
         }
 
         public PaymentInfo GetPaymentFor(int orderID)
@@ -21,14 +16,14 @@ namespace BloomSales.Services.Proxies
             return Channel.GetPaymentFor(orderID);
         }
 
-        public void AddTaxInfo(SalesTaxInfo taxInfo)
-        {
-            Channel.AddTaxInfo(taxInfo);
-        }
-
         public SalesTaxInfo GetTaxInfo(string country, string province)
         {
             return Channel.GetTaxInfo(country, province);
+        }
+
+        public bool ProcessPayment(PaymentInfo payment)
+        {
+            return Channel.ProcessPayment(payment);
         }
 
         public void UpdateTaxInfo(SalesTaxInfo taxInfo)
