@@ -35,6 +35,9 @@ namespace BloomSales.Services.Tests
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
             mockCache.Verify(c => c["allProducts"], Times.Once());
+
+            //Todo Rahman: Verify that productRepo.GetAllProducts() was  Not Called
+            //Todo Rahman: Constructor has optional parameter i think
         }
 
         [TestMethod]
@@ -60,6 +63,8 @@ namespace BloomSales.Services.Tests
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
             mockProductRepo.Verify(r => r.GetAllProducts(), Times.Once());
+
+            //Todo Rahman: mockCache.Verify(c => c["allProducts"], Times.Once());
         }
 
         [TestMethod]
@@ -110,6 +115,8 @@ namespace BloomSales.Services.Tests
             // assert
             Assert.IsTrue(Equality.AreEqual(expected, actual));
             mockCache.Verify(c => c["allProductsInHealthCategory"], Times.Once());
+
+            //Todo Rahman: Verify that  ProductRepo.GetProducts(6) was  Not Called
         }
 
         [TestMethod]
@@ -789,6 +796,8 @@ namespace BloomSales.Services.Tests
 
             // assert
             mockInventoryRepo.Verify(r => r.UpdateStock(20, 140), Times.Once());
+
+            //Todo Rahman: reset cach
         }
 
         [TestMethod]
@@ -814,6 +823,8 @@ namespace BloomSales.Services.Tests
             mockCache.Verify(
                 c => c.Remove("allCategories", null),
                 Times.Once());
+
+            //Test adding to db
         }
     }
 }
